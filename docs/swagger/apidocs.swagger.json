@@ -1,0 +1,326 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Inventory API",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "Inventory"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/check_stock": {
+      "post": {
+        "summary": "Check stock",
+        "description": "Use this API to check a product stock",
+        "operationId": "Inventory_CheckStock",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbStockResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbStockRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      }
+    },
+    "/api/create_product": {
+      "post": {
+        "summary": "Create product",
+        "description": "Use this API to create a product",
+        "operationId": "Inventory_CreateProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbProductResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCreateProductRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      }
+    },
+    "/api/delete_product": {
+      "delete": {
+        "summary": "Delete product",
+        "description": "Use this API to delete a product",
+        "operationId": "Inventory_DeleteProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDeleteProductResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      }
+    },
+    "/api/get_product": {
+      "get": {
+        "summary": "Get product",
+        "description": "Use this API to get a product",
+        "operationId": "Inventory_GetProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbProductResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      }
+    },
+    "/api/release_stock": {
+      "post": {
+        "summary": "Release stock",
+        "description": "Use this API to release a product stock",
+        "operationId": "Inventory_ReleaseStock",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbStockResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbStockRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      }
+    },
+    "/api/reserve_stock": {
+      "post": {
+        "summary": "Reserve stock",
+        "description": "Use this API to reserve a product stock",
+        "operationId": "Inventory_ReserveStock",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbStockResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbStockRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "pbCreateProductRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbDeleteProductResponse": {
+      "type": "object",
+      "properties": {
+        "is_success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "pbProduct": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "reserved": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "available": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbProductResponse": {
+      "type": "object",
+      "properties": {
+        "product": {
+          "$ref": "#/definitions/pbProduct"
+        }
+      }
+    },
+    "pbStockRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "pbStockResponse": {
+      "type": "object",
+      "properties": {
+        "is_success": {
+          "type": "boolean"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

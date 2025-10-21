@@ -1,0 +1,15 @@
+.PHONY: proto
+proto:
+	rm -f pb/*.go
+	rm -f proto/*.go
+	rm -f doc/swagger/*.swagger.json
+	rm -f doc/statik/*
+	protoc \
+	--proto_path=proto \
+	--go_out=proto --go_opt=paths=source_relative \
+    --go-grpc_out=proto --go-grpc_opt=paths=source_relative \
+    --grpc-gateway_out=proto --grpc-gateway_opt=paths=source_relative \
+    --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,json_names_for_fields=false \
+    --experimental_allow_proto3_optional \
+    proto/*.proto
+	statik -src=./doc/swagger -dest=./doc

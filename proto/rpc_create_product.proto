@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "product.proto";
+
+option go_package = "github.com/ymanshur/synasishouse/pb";
+
+message CreateProductRequest {
+  string code = 1;
+  int32 total = 2;
+}
+
+message ProductResponse {
+  Product product = 1;
+}

@@ -1,0 +1,11 @@
+# IDE specific files and directories
+.vscode
+
+# Local environment variables
+config/app*.env
+
+# Log files
+*.log
+
+# Temporary files
+tmp

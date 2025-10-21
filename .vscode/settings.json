@@ -1,0 +1,25 @@
+{
+  "rest-client.environmentVariables": {
+    "development": {
+      "BASE_URL": "http://localhost:8000"
+    },
+    "$shared": {}
+  },
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "go.testFlags": [
+    "-count=1",
+    "-v" // Optional: for verbose output
+  ],
+  "codium.codeCompletion.enable": false,
+  "protoc": {
+    "options": [
+      "--proto_path=protos",
+    ]
+  },
+  "[proto3]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  }
+}
