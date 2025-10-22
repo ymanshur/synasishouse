@@ -15,7 +15,7 @@ jobs:
           - name: Inventory Service
             context: ./inventory-service
             dockerfile: ./inventory-service/Dockerfile
-            image: /synasishouse/inventory
+            image: synasishouse/inventory
 
     name: Build and publish ${{ matrix.name }} image
     runs-on: ubuntu-latest
