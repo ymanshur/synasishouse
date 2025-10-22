@@ -15,7 +15,7 @@ type CreateProductRequest struct {
 func (r CreateProductRequest) Validate() error {
 	return validation.ValidateStruct(&r,
 		validation.Field(&r.Code, validation.Required),
-		validation.Field(&r.Total, validation.Min(1)),
+		validation.Field(&r.Total, validation.Required, validation.Min(1)),
 	)
 }
 

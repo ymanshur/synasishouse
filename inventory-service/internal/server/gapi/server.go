@@ -32,10 +32,11 @@ type Server struct {
 
 // NewServer creates a new gRPC server.
 func NewServer(
-	config *appctx.Config,
 	productUseCase usecase.Producter,
 	stockUseCase usecase.Stocker,
 ) (*Server, error) {
+	config := appctx.LoadConfig()
+
 	server := &Server{
 		rpcServerAddr:  config.GRPCServerAddress,
 		productUseCase: productUseCase,
@@ -90,9 +91,7 @@ func (s *Server) Run(ctx context.Context) error {
 			return err
 		}
 	case <-ctx.Done():
-		log.Info().Msg("graceful shutdown gRPC server")
 		s.rpcServer.GracefulStop()
-		log.Info().Msg("gRPC server is stopped")
 	}
 
 	return nil

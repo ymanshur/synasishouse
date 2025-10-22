@@ -75,10 +75,10 @@ make test
 Environment variables allowed for production service:
 
 ```shell
-DB_SOURCE=postgresql://postgres:postgres@localhost:5432/inventory?sslmode=disable
-DB_MIGRATION_URL=file://db/migration
+APP_DB_SOURCE=postgresql://postgres:postgres@localhost:5432/inventory?sslmode=disable
+APP_DB_MIGRATION_URL=file://db/migration
 
-GRPC_SERVER_ADDRESS=0.0.0.0:9090
+APP_GRPC_SERVER_ADDRESS=0.0.0.0:9090
 ```
 
 Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile)
@@ -92,3 +92,11 @@ make run
 ### Data Model
 
 <img width="377" height="344" alt="Synasis House" src="https://github.com/user-attachments/assets/2d8e3f63-39d0-4807-9d75-03e7f1c28b7a" />
+
+#### Product
+
+| Field | Type | Description | Constraint |
+| id | UUIDv4 | Product internal indetifier | PK |
+| code | String | Product external identifier | Required, Unique |
+| total | Number | Total stock of product | Required, Positive |
+| reserved | Number | Total reserved stock of product | Default: 0 |

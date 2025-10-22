@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/ymanshur/synasishouse/inventory/internal/common"
+	"github.com/ymanshur/synasishouse/inventory/internal/consts"
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
 	"github.com/ymanshur/synasishouse/inventory/internal/repo"
 	"github.com/ymanshur/synasishouse/inventory/internal/typex"
@@ -34,7 +34,7 @@ func (u *stockUseCase) Check(ctx context.Context, req presentation.StockRequest)
 
 	err = u.repo.CheckStock(ctx, req.Code, req.Amount)
 	if err != nil {
-		if errors.Is(err, common.ErrRecordNotFound) {
+		if errors.Is(err, consts.ErrRecordNotFound) {
 			return typex.NewNotFoundError("stock")
 		}
 		return fmt.Errorf("check stock: %w", err)
@@ -51,7 +51,7 @@ func (u *stockUseCase) Reserve(ctx context.Context, req presentation.StockReques
 
 	err = u.repo.ReserveStock(ctx, req.Code, req.Amount)
 	if err != nil {
-		if errors.Is(err, common.ErrRecordNotFound) {
+		if errors.Is(err, consts.ErrRecordNotFound) {
 			return typex.NewNotFoundError("stock")
 		}
 		return fmt.Errorf("reserve stock: %w", err)
@@ -68,7 +68,7 @@ func (u *stockUseCase) Release(ctx context.Context, req presentation.StockReques
 
 	err = u.repo.ReleaseStock(ctx, req.Code, req.Amount)
 	if err != nil {
-		if errors.Is(err, common.ErrRecordNotFound) {
+		if errors.Is(err, consts.ErrRecordNotFound) {
 			return typex.NewNotFoundError("stock")
 		}
 		return fmt.Errorf("release stock: %w", err)

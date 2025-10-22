@@ -15,3 +15,7 @@ func (r StockRequest) Validate() error {
 		validation.Field(&r.Amount, validation.Required, validation.Min(1)),
 	)
 }
+
+type StockResponse struct {
+	IsAvailable bool `json:"is_available"`
+}

@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	db "github.com/ymanshur/synasishouse/inventory/db/sqlc"
 	"github.com/ymanshur/synasishouse/inventory/internal/common"
+	"github.com/ymanshur/synasishouse/inventory/internal/consts"
 	"github.com/ymanshur/synasishouse/inventory/internal/dto"
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
 	"github.com/ymanshur/synasishouse/inventory/internal/repo"
@@ -41,7 +42,7 @@ func (u *productUseCase) Create(ctx context.Context, req presentation.CreateProd
 		Total: req.Total,
 	})
 	if err != nil {
-		if common.ErrorCode(err) == common.UniqueViolation {
+		if common.PGErrorCode(err) == consts.UniqueViolation {
 			return nil, typex.NewUnprocessableEntityError("product unique constraint violated")
 		}
 		return nil, fmt.Errorf("create product: %w", err)
@@ -64,7 +65,7 @@ func (u *productUseCase) Get(ctx context.Context, req presentation.GetProductReq
 
 	product, err := u.repo.GetProduct(ctx, id)
 	if err != nil {
-		if errors.Is(err, common.ErrRecordNotFound) {
+		if errors.Is(err, consts.ErrRecordNotFound) {
 			return nil, typex.NewNotFoundError("product")
 		}
 		return nil, fmt.Errorf("get product: %w", err)
@@ -90,7 +91,7 @@ func (u *productUseCase) Update(ctx context.Context, req presentation.UpdateProd
 		ID:   id,
 	})
 	if err != nil {
-		if common.ErrorCode(err) == common.UniqueViolation {
+		if common.PGErrorCode(err) == consts.UniqueViolation {
 			return nil, typex.NewUnprocessableEntityError("product unique constraint violated")
 		}
 		return nil, fmt.Errorf("update product: %w", err)
@@ -113,7 +114,7 @@ func (u *productUseCase) Delete(ctx context.Context, req presentation.GetProduct
 
 	err = u.repo.DeleteProduct(ctx, id)
 	if err != nil {
-		if errors.Is(err, common.ErrRecordNotFound) {
+		if errors.Is(err, consts.ErrRecordNotFound) {
 			return typex.NewNotFoundError("product")
 		}
 		return fmt.Errorf("delete product: %w", err)

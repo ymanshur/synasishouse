@@ -32,7 +32,7 @@ func Start() {
 
 	conn, err := pgxpool.New(ctx, config.DBSource)
 	if err != nil {
-		log.Fatal().Err(err).Msg("cannot connect to db:")
+		log.Fatal().Err(err).Msg("cannot connect to database")
 	}
 
 	runDBMigration(config.DBMigrationURL, config.DBSource)
@@ -44,7 +44,6 @@ func Start() {
 
 	runGRPCServer(
 		ctx,
-		&config,
 		productUseCase,
 		stockUseCase,
 	)
@@ -52,15 +51,14 @@ func Start() {
 
 func runGRPCServer(
 	ctx context.Context,
-	config *appctx.Config,
 	productUseCase usecase.Producter,
 	stockUseCase usecase.Stocker,
 ) {
-	server, err := gapi.NewServer(config, productUseCase, stockUseCase)
+	server, err := gapi.NewServer(productUseCase, stockUseCase)
 
 	err = server.Run(ctx)
 	if err != nil {
-		log.Fatal().Err(err)
+		log.Fatal().Err(err).Msg("cannot run gRPC server")
 	}
 }
 

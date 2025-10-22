@@ -26,7 +26,7 @@ run:
 	docker run --rm \
 	--name ${APP_NAME} \
 	-p 9090:9090 \
-	-e DB_SOURCE="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
+	-e APP_DB_SOURCE="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
 	${APP_IMAGE}:latest
 
 POSTGRES_VERSION?=14-alpine
