@@ -11,6 +11,10 @@ message CreateProductRequest {
   int32 total = 2;
 }
 
+message GetProductRequest {
+  string id = 1;
+}
+
 message ProductResponse {
   Product product = 1;
 }

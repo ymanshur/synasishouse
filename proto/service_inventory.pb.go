@@ -27,16 +27,16 @@ var File_service_inventory_proto protoreflect.FileDescriptor
 
 const file_service_inventory_proto_rawDesc = "" +
 	"\n" +
-	"\x17service_inventory.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x13rpc_get_stock.proto\x1a\x18rpc_create_product.proto\x1a\x15rpc_get_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xe9\x06\n" +
-	"\tInventory\x12\x88\x01\n" +
+	"\x17service_inventory.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0frpc_stock.proto\x1a\x11rpc_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xef\x06\n" +
+	"\tInventory\x12\x83\x01\n" +
 	"\n" +
-	"CheckStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"R\x92A4\x12\vCheck stock\x1a%Use this API to check a product stock\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/check_stock\x12\x90\x01\n" +
-	"\fReserveStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"X\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/reserve_stock\x12\x90\x01\n" +
-	"\fReleaseStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"X\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/release_stock\x12\x93\x01\n" +
-	"\rCreateProduct\x12\x18.pb.CreateProductRequest\x1a\x13.pb.ProductResponse\"S\x92A2\x12\x0eCreate product\x1a Use this API to create a product\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/create_product\x12\x81\x01\n" +
+	"CheckStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"M\x92A4\x12\vCheck stock\x1a%Use this API to check a product stock\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/stocks\x12\x98\x01\n" +
+	"\fReserveStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"`\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/reserve\x12\x98\x01\n" +
+	"\fReleaseStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"`\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/release\x12\x8d\x01\n" +
+	"\rCreateProduct\x12\x18.pb.CreateProductRequest\x1a\x13.pb.ProductResponse\"M\x92A2\x12\x0eCreate product\x1a Use this API to create a product\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/products\x12\x83\x01\n" +
 	"\n" +
-	"GetProduct\x12\x15.pb.GetProductRequest\x1a\x13.pb.ProductResponse\"G\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x12\x12\x10/api/get_product\x12\x90\x01\n" +
-	"\rDeleteProduct\x12\x15.pb.GetProductRequest\x1a\x16.google.protobuf.Empty\"P\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x15*\x13/api/delete_productB>\x92A\x16\x12\x14\n" +
+	"GetProduct\x12\x15.pb.GetProductRequest\x1a\x13.pb.ProductResponse\"I\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x14\x12\x12/api/products/{id}\x12\x8f\x01\n" +
+	"\rDeleteProduct\x12\x15.pb.GetProductRequest\x1a\x16.google.protobuf.Empty\"O\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x14*\x12/api/products/{id}B>\x92A\x16\x12\x14\n" +
 	"\rInventory API2\x031.0Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
 
 var file_service_inventory_proto_goTypes = []any{
@@ -72,9 +72,8 @@ func file_service_inventory_proto_init() {
 	if File_service_inventory_proto != nil {
 		return
 	}
-	file_rpc_get_stock_proto_init()
-	file_rpc_create_product_proto_init()
-	file_rpc_get_product_proto_init()
+	file_rpc_stock_proto_init()
+	file_rpc_product_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -4,9 +4,8 @@ package pb;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "rpc_get_stock.proto";
-import "rpc_create_product.proto";
-import "rpc_get_product.proto";
+import "rpc_stock.proto";
+import "rpc_product.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/ymanshur/synasishouse/pb";
@@ -21,7 +20,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service Inventory {
   rpc CheckStock (GetStockRequest) returns (StockResponse) {
     option (google.api.http) = {
-      post: "/api/check_stock"
+      post: "/api/stocks"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -31,7 +30,7 @@ service Inventory {
   }
   rpc ReserveStock (GetStockRequest) returns (StockResponse) {
     option (google.api.http) = {
-      post: "/api/reserve_stock"
+      post: "/api/stocks/{code}/reserve"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -41,7 +40,7 @@ service Inventory {
   }
   rpc ReleaseStock (GetStockRequest) returns (StockResponse) {
     option (google.api.http) = {
-      post: "/api/release_stock"
+      post: "/api/stocks/{code}/release"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -51,7 +50,7 @@ service Inventory {
   }
   rpc CreateProduct (CreateProductRequest) returns (ProductResponse) {
     option (google.api.http) = {
-      post: "/api/create_product"
+      post: "/api/products"
       body: "*"
     };
       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -61,7 +60,7 @@ service Inventory {
   }
   rpc GetProduct (GetProductRequest) returns (ProductResponse) {
     option (google.api.http) = {
-      get: "/api/get_product"
+      get: "/api/products/{id}"
     };
       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Use this API to get a product";
@@ -70,7 +69,7 @@ service Inventory {
   }
   rpc DeleteProduct (GetProductRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete: "/api/delete_product"
+      delete: "/api/products/{id}"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Use this API to delete a product";

@@ -72,7 +72,7 @@ make test
 
 ### Run the backend and the database in a Docker container
 
-Environment variables allowed for production service:
+Environment variables allowed in production:
 
 ```shell
 APP_DB_SOURCE=postgresql://postgres:postgres@localhost:5432/inventory?sslmode=disable

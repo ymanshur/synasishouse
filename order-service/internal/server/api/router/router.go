@@ -52,8 +52,9 @@ func (r *Router) Route() http.Handler {
 	healthHandler := handler.NewHealth()
 	orderHandler := handler.NewOrder(r.orderUseCase)
 
-	router.GET("/health", healthHandler.Check)
-	router.POST("/checkout", orderHandler.Checkout)
+	ApiRoutes := router.Group("/api")
+	ApiRoutes.GET("/health", healthHandler.Check)
+	ApiRoutes.POST("/checkout", orderHandler.Checkout)
 
 	return router
 }

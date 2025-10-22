@@ -42,7 +42,7 @@ make test
 
 ### Run the backend and the database in a Docker container
 
-Environment variables allowed for production service:
+Environment variables allowed in production:
 
 ```shell
 APP_ENVIRONMENT=development
@@ -61,20 +61,20 @@ make run
 
 ## Documentation
 
-### Data Model
+<!-- ### Data Model -->
 
 ### API
 
 #### Health Check
 
 ```http
-GET http://0.0.0.0:8000/health HTTP/1.1
+GET http://0.0.0.0:8000/api/health HTTP/1.1
 ```
 
 ### Checkout an order
 
 ```http
-POST http://0.0.0.0:8000/checkout HTTP/1.1
+POST http://0.0.0.0:8000/api/checkout HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 

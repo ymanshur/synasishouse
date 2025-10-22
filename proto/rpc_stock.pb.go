@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.9
 // 	protoc        v3.12.4
-// source: rpc_get_stock.proto
+// source: rpc_stock.proto
 
 package pb
 
@@ -31,7 +31,7 @@ type GetStockRequest struct {
 
 func (x *GetStockRequest) Reset() {
 	*x = GetStockRequest{}
-	mi := &file_rpc_get_stock_proto_msgTypes[0]
+	mi := &file_rpc_stock_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +43,7 @@ func (x *GetStockRequest) String() string {
 func (*GetStockRequest) ProtoMessage() {}
 
 func (x *GetStockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_get_stock_proto_msgTypes[0]
+	mi := &file_rpc_stock_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,7 +56,7 @@ func (x *GetStockRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStockRequest.ProtoReflect.Descriptor instead.
 func (*GetStockRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_get_stock_proto_rawDescGZIP(), []int{0}
+	return file_rpc_stock_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *GetStockRequest) GetCode() string {
@@ -82,7 +82,7 @@ type StockResponse struct {
 
 func (x *StockResponse) Reset() {
 	*x = StockResponse{}
-	mi := &file_rpc_get_stock_proto_msgTypes[1]
+	mi := &file_rpc_stock_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -94,7 +94,7 @@ func (x *StockResponse) String() string {
 func (*StockResponse) ProtoMessage() {}
 
 func (x *StockResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_get_stock_proto_msgTypes[1]
+	mi := &file_rpc_stock_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -107,7 +107,7 @@ func (x *StockResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StockResponse.ProtoReflect.Descriptor instead.
 func (*StockResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_get_stock_proto_rawDescGZIP(), []int{1}
+	return file_rpc_stock_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *StockResponse) GetIsAvailable() bool {
@@ -117,11 +117,11 @@ func (x *StockResponse) GetIsAvailable() bool {
 	return false
 }
 
-var File_rpc_get_stock_proto protoreflect.FileDescriptor
+var File_rpc_stock_proto protoreflect.FileDescriptor
 
-const file_rpc_get_stock_proto_rawDesc = "" +
+const file_rpc_stock_proto_rawDesc = "" +
 	"\n" +
-	"\x13rpc_get_stock.proto\x12\x02pb\"=\n" +
+	"\x0frpc_stock.proto\x12\x02pb\"=\n" +
 	"\x0fGetStockRequest\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x16\n" +
 	"\x06amount\x18\x02 \x01(\x05R\x06amount\"2\n" +
@@ -129,23 +129,23 @@ const file_rpc_get_stock_proto_rawDesc = "" +
 	"\fis_available\x18\x01 \x01(\bR\visAvailableB%Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
 
 var (
-	file_rpc_get_stock_proto_rawDescOnce sync.Once
-	file_rpc_get_stock_proto_rawDescData []byte
+	file_rpc_stock_proto_rawDescOnce sync.Once
+	file_rpc_stock_proto_rawDescData []byte
 )
 
-func file_rpc_get_stock_proto_rawDescGZIP() []byte {
-	file_rpc_get_stock_proto_rawDescOnce.Do(func() {
-		file_rpc_get_stock_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_rpc_get_stock_proto_rawDesc), len(file_rpc_get_stock_proto_rawDesc)))
+func file_rpc_stock_proto_rawDescGZIP() []byte {
+	file_rpc_stock_proto_rawDescOnce.Do(func() {
+		file_rpc_stock_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_rpc_stock_proto_rawDesc), len(file_rpc_stock_proto_rawDesc)))
 	})
-	return file_rpc_get_stock_proto_rawDescData
+	return file_rpc_stock_proto_rawDescData
 }
 
-var file_rpc_get_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_rpc_get_stock_proto_goTypes = []any{
+var file_rpc_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_rpc_stock_proto_goTypes = []any{
 	(*GetStockRequest)(nil), // 0: pb.GetStockRequest
 	(*StockResponse)(nil),   // 1: pb.StockResponse
 }
-var file_rpc_get_stock_proto_depIdxs = []int32{
+var file_rpc_stock_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -153,26 +153,26 @@ var file_rpc_get_stock_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_rpc_get_stock_proto_init() }
-func file_rpc_get_stock_proto_init() {
-	if File_rpc_get_stock_proto != nil {
+func init() { file_rpc_stock_proto_init() }
+func file_rpc_stock_proto_init() {
+	if File_rpc_stock_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_rpc_get_stock_proto_rawDesc), len(file_rpc_get_stock_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_rpc_stock_proto_rawDesc), len(file_rpc_stock_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_rpc_get_stock_proto_goTypes,
-		DependencyIndexes: file_rpc_get_stock_proto_depIdxs,
-		MessageInfos:      file_rpc_get_stock_proto_msgTypes,
+		GoTypes:           file_rpc_stock_proto_goTypes,
+		DependencyIndexes: file_rpc_stock_proto_depIdxs,
+		MessageInfos:      file_rpc_stock_proto_msgTypes,
 	}.Build()
-	File_rpc_get_stock_proto = out.File
-	file_rpc_get_stock_proto_goTypes = nil
-	file_rpc_get_stock_proto_depIdxs = nil
+	File_rpc_stock_proto = out.File
+	file_rpc_stock_proto_goTypes = nil
+	file_rpc_stock_proto_depIdxs = nil
 }

@@ -16,41 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/check_stock": {
-      "post": {
-        "summary": "Check stock",
-        "description": "Use this API to check a product stock",
-        "operationId": "Inventory_CheckStock",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbStockResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbGetStockRequest"
-            }
-          }
-        ],
-        "tags": [
-          "Inventory"
-        ]
-      }
-    },
-    "/api/create_product": {
+    "/api/products": {
       "post": {
         "summary": "Create product",
         "description": "Use this API to create a product",
@@ -84,7 +50,37 @@
         ]
       }
     },
-    "/api/delete_product": {
+    "/api/products/{id}": {
+      "get": {
+        "summary": "Get product",
+        "description": "Use this API to get a product",
+        "operationId": "Inventory_GetProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbProductResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
+      },
       "delete": {
         "summary": "Delete product",
         "description": "Use this API to delete a product",
@@ -107,8 +103,8 @@
         "parameters": [
           {
             "name": "id",
-            "in": "query",
-            "required": false,
+            "in": "path",
+            "required": true,
             "type": "string"
           }
         ],
@@ -117,16 +113,16 @@
         ]
       }
     },
-    "/api/get_product": {
-      "get": {
-        "summary": "Get product",
-        "description": "Use this API to get a product",
-        "operationId": "Inventory_GetProduct",
+    "/api/stocks": {
+      "post": {
+        "summary": "Check stock",
+        "description": "Use this API to check a product stock",
+        "operationId": "Inventory_CheckStock",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbProductResponse"
+              "$ref": "#/definitions/pbStockResponse"
             }
           },
           "default": {
@@ -138,10 +134,12 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbGetStockRequest"
+            }
           }
         ],
         "tags": [
@@ -149,7 +147,7 @@
         ]
       }
     },
-    "/api/release_stock": {
+    "/api/stocks/{code}/release": {
       "post": {
         "summary": "Release stock",
         "description": "Use this API to release a product stock",
@@ -170,11 +168,17 @@
         },
         "parameters": [
           {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbGetStockRequest"
+              "$ref": "#/definitions/InventoryReleaseStockBody"
             }
           }
         ],
@@ -183,7 +187,7 @@
         ]
       }
     },
-    "/api/reserve_stock": {
+    "/api/stocks/{code}/reserve": {
       "post": {
         "summary": "Reserve stock",
         "description": "Use this API to reserve a product stock",
@@ -204,11 +208,17 @@
         },
         "parameters": [
           {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbGetStockRequest"
+              "$ref": "#/definitions/InventoryReserveStockBody"
             }
           }
         ],
@@ -219,6 +229,24 @@
     }
   },
   "definitions": {
+    "InventoryReleaseStockBody": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "InventoryReserveStockBody": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "pbCreateProductRequest": {
       "type": "object",
       "properties": {
