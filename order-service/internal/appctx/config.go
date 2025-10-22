@@ -1,9 +1,12 @@
 package appctx
 
 import (
+	"fmt"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -11,57 +14,97 @@ import (
 )
 
 var (
-	config     Config
+	oneConfig  *Config
 	configOnce sync.Once
 )
 
 // Config stores all configurations
 type Config struct {
-	Environment string `mapstructure:"ENVIRONMENT"`
+	Environment string `mapstructure:"environment"`
 
-	HTTPServerAddress string `mapstructure:"HTTP_SERVER_ADDRESS"`
+	HTTPServer ServerConfig `mapstructure:"http_server"`
 
-	DBSource       string `mapstructure:"DB_SOURCE"`
-	DBMigrationURL string `mapstructure:"DB_MIGRATION_URL"`
-
-	GRPCClientHostInventory string `mapstructure:"GRPC_CLIENT_HOST_INVENTORY"`
-	GRPCClientPortInventory int    `mapstructure:"GRPC_CLIENT_PORT_INVENTORY"`
+	GRPCClient GRPCClient `mapstructure:"grpc_client"`
 }
 
-type GRPCAddr struct {
-	Host string `yaml:"host" json:"host"`
-	Port int    `yaml:"port" json:"port"`
+// GRPCClient stores all gRPC client configurations
+type GRPCClient struct {
+	Inventory ClientConfig `mapstructure:"inventory"`
 }
 
-// LoadConfig load single config instance.
-// It will read app.yaml in config directory.
-func LoadConfig() Config {
-	return LoadConfigWithFilename(consts.DefaultConfigFilename)
+type ClientConfig struct {
+	Host            string `mapstructure:"host"`
+	Port            int    `mapstructure:"port"`
+	Addr            string `mapstructure:"addr"`
+	MaxRetry        uint
+	PerRetryTimeout time.Duration
 }
 
-// LoadConfigWithFilename reads configuration from a given filename or environment variables once
-func LoadConfigWithFilename(finename string) Config {
+// GetAddr get client address
+func (c ClientConfig) GetAddr() string {
+	if c.Addr != "" {
+		return c.Addr
+	}
+	return fmt.Sprintf("%s:%d", c.Host, c.Port)
+}
+
+type ServerConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
+	Addr string `mapstructure:"addr"`
+}
+
+// GetAddr get server address
+func (c ServerConfig) GetAddr() string {
+	if c.Addr != "" {
+		return c.Addr
+	}
+	return fmt.Sprintf("%s:%d", c.Host, c.Port)
+}
+
+// LoadConfig return config instance.
+// It will read [consts.DefaultConfigFilename] file with [consts.DefaultConfigExt] extension
+func LoadConfig() *Config {
 	configOnce.Do(func() {
-		path := filepath.Join(rootDir())
-		viper.AddConfigPath(path)
-		viper.SetConfigName(finename)
-		viper.SetConfigType("env") // json, yml, etc.
-
-		// AutomaticEnv will override config file
-		viper.AutomaticEnv()
-
-		err := viper.ReadInConfig()
+		var err error
+		oneConfig, err = LoadConfigWithFilename(consts.DefaultConfigFilename, consts.DefaultConfigExt)
 		if err != nil {
-			log.Fatal().Err(err)
-		}
-
-		err = viper.Unmarshal(&config)
-		if err != nil {
-			log.Fatal().Err(err)
+			log.Fatal().Err(err).Msg("cannot load config")
 		}
 	})
 
-	return config
+	return oneConfig
+}
+
+// LoadConfigWithFilename reads configuration from a given filename
+// at root project directory or environment variables.
+func LoadConfigWithFilename(filename, ext string) (*Config, error) {
+	path := filepath.Join(rootDir())
+	viper.AddConfigPath(path)
+	viper.SetConfigName(filename)
+	viper.SetConfigType(ext) // json, yml, etc.
+
+	viper.AutomaticEnv()
+	viper.SetEnvPrefix("APP")
+
+	// Replace dots in keys with underscores for environment variable compatibility
+	// (e.g., "db.host" becomes "DB_HOST")
+	replacer := strings.NewReplacer(".", "_")
+	viper.SetEnvKeyReplacer(replacer)
+
+	var config Config
+
+	err := viper.ReadInConfig()
+	if err != nil {
+		return nil, fmt.Errorf("cannot read config: %w", err)
+	}
+
+	err = viper.Unmarshal(&config)
+	if err != nil {
+		return nil, fmt.Errorf("unmarshal config: %w", err)
+	}
+
+	return &config, nil
 }
 
 // rootDir get an absolute root dir of current project

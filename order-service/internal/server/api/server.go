@@ -13,8 +13,6 @@ import (
 	"github.com/ymanshur/synasishouse/order/internal/usecase"
 )
 
-var _ server.Server = (*Server)(nil) // check in runtime [Server] implement [server.Server]
-
 // Server serves HTTP requests
 type Server struct {
 	httpServerAddr string
@@ -23,13 +21,13 @@ type Server struct {
 
 // NewServer creates a new HTTP server and set up routing
 func NewServer(
-	config *appctx.Config,
 	orderUseCase usecase.Orderer,
-) *Server {
+) server.Server {
+	config := appctx.LoadConfig()
+
 	return &Server{
-		httpServerAddr: config.HTTPServerAddress,
+		httpServerAddr: config.HTTPServer.GetAddr(),
 		router: router.NewRouter(
-			config,
 			orderUseCase,
 		),
 	}
@@ -37,18 +35,18 @@ func NewServer(
 
 // Run the HTTP server
 func (s *Server) Run(ctx context.Context) error {
+	log.Info().Msgf("starting HTTP server at %s", s.httpServerAddr)
+
 	httpServer := &http.Server{
 		Addr:    s.httpServerAddr,
 		Handler: s.Route(),
 	}
 
-	log.Info().Msgf("start HTTP server at %s", httpServer.Addr)
-
 	errServe := make(chan error)
 
 	go func() {
 		if err := httpServer.ListenAndServe(); err != http.ErrServerClosed {
-			errServe <- fmt.Errorf("start HTTP server: %w", err)
+			errServe <- fmt.Errorf("listen and serve: %w", err)
 		}
 	}()
 
@@ -64,7 +62,7 @@ func (s *Server) Run(ctx context.Context) error {
 
 			// shutdown stop the HTTP server gratefully
 			if err := httpServer.Shutdown(ctxShutdown); err != nil {
-				return fmt.Errorf("shutdown HTTP server: %w", err)
+				return fmt.Errorf("shutdown: %w", err)
 			}
 
 			return nil

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/ymanshur/synasishouse/pkg/util"
 )
 
 // Response presentation contract object
@@ -58,7 +59,7 @@ func (r *Response) WithData(v any) *Response {
 	return r
 }
 
-// WithErrors parse the validation errors
+// WithErrors parse the Gin validation errors
 func (r *Response) WithErrors(err error) *Response {
 	r.Success = false
 
@@ -95,7 +96,7 @@ func (r *Response) WithTranslationError(err error) *Response {
 		r.code = http.StatusNotFound
 		r.Message = notFoundErr.Error()
 	default:
-		if code, ok := translateGRPCError(err); ok {
+		if code, ok := util.TranslateGRPCError(err); ok {
 			r.code = code
 			r.Message = err.Error()
 			return r

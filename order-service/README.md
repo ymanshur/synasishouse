@@ -1,6 +1,6 @@
 # Order Service
 
-This backend application serves to orchestrate order events and process them to order service though RPC call: **Checkout**, **Reserve**, and **Release** to validatate stock.
+This backend application serves to orchestrate order events and process them to Inventory service though RPC call: **Checkout**, **Reserve**, and **Release** to action stock.
 
 ## Table Content
 
@@ -19,27 +19,6 @@ This backend application serves to orchestrate order events and process them to 
 ### Prerequisite
 
 - Go-lang version 1.24.9
-- PostgreSQL 14
-
-### Setup Database
-
-Start database PostgreSQL 14 container service:
-
-```bash
-make postgres POSTGRES_VERSION=14
-```
-
-Create `order` database:
-
-```bash
-make createdb
-```
-
-Create database migration under database/migration:
-
-```bash
-make migrate name=init_schema
-```
 
 ### Run the backend on the local machine
 
@@ -66,12 +45,12 @@ make test
 Environment variables allowed for production service:
 
 ```shell
-ENVIRONMENT=development
+APP_ENVIRONMENT=development
 
-HTTP_SERVER_ADDRESS=0.0.0.0:8000
+APP_HTTP_SERVER_ADDR=0.0.0.0:8000
 
-GRPC_CLIENT_HOST_INVENTORY=localhost
-GRPC_CLIENT_PORT_INVENTORY=9090
+APP_GRPC_CLIENT_INVENTORY_HOST=localhost
+APP_GRPC_CLIENT_INVENTORY_PORT=9090
 ```
 
 Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile)
@@ -90,4 +69,30 @@ make run
 
 ```http
 GET http://0.0.0.0:8000/health HTTP/1.1
+```
+
+### Checkout an order
+
+```http
+POST http://0.0.0.0:8000/checkout HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "code": "NO01",
+    "amount": 1
+}
+```
+
+#### Stock not found
+
+```bash
+HTTP/1.1 404 Not Found
+Content-Type: application/json; charset=utf-8
+
+{
+  "success": false,
+  "message": "stock not found"
+}
+
 ```

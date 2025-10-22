@@ -2,14 +2,18 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/ymanshur/synasishouse/order/internal/connector"
 	"github.com/ymanshur/synasishouse/order/internal/presentation"
+	"github.com/ymanshur/synasishouse/order/internal/typex"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type Orderer interface {
-	Checkout(ctx context.Context, req presentation.OrderRequest) (bool, error)
+	Checkout(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error)
 }
 
 type orderUseCase struct {
@@ -20,10 +24,10 @@ func NewOrder(conn connector.Inventorier) Orderer {
 	return &orderUseCase{conn: conn}
 }
 
-func (u *orderUseCase) Checkout(ctx context.Context, req presentation.OrderRequest) (bool, error) {
+func (u *orderUseCase) Checkout(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
 	ok, err := u.conn.CheckStock(ctx, connector.StockParams{
@@ -31,8 +35,14 @@ func (u *orderUseCase) Checkout(ctx context.Context, req presentation.OrderReque
 		Amount: req.Amount,
 	})
 	if err != nil {
-		return false, err
+		errRPC := status.Convert(err)
+		if errRPC.Code() == codes.NotFound {
+			return nil, typex.NewNotFoundError("stock")
+		}
+
+		return nil, fmt.Errorf("check stock: %w", err)
 	}
 
-	return ok, nil
+	res := &presentation.OrderResponse{IsAvailable: ok}
+	return res, nil
 }

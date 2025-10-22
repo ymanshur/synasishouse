@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,7 +25,7 @@ func (h *OrderHandler) Checkout(c *gin.Context) {
 	var req presentation.OrderRequest
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
-		log.Warn().Err(err)
+		log.Warn().Err(err).Msg("cannot bind request")
 		response.New().
 			WithCode(http.StatusBadRequest).
 			WithErrors(err).
@@ -32,17 +33,17 @@ func (h *OrderHandler) Checkout(c *gin.Context) {
 		return
 	}
 
-	ok, err := h.orderUseCase.Checkout(ctx, req)
+	res, err := h.orderUseCase.Checkout(ctx, req)
+	fmt.Println(err)
 	if err != nil {
-		log.Err(err)
+		log.Error().Err(err).Msg("cannot checkout order")
 		response.New().
 			WithTranslationError(err).
 			JSON(c)
 		return
 	}
 
-	if !ok {
-		log.Warn().Err(err)
+	if !res.IsAvailable {
 		response.New().
 			WithCode(http.StatusUnprocessableEntity).
 			WithMessage("stock is unavailable").

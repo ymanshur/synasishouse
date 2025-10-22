@@ -16,23 +16,22 @@ import (
 
 // Router
 type Router struct {
-	config       *appctx.Config
 	orderUseCase usecase.Orderer
 }
 
 func NewRouter(
-	config *appctx.Config,
 	orderUseCase usecase.Orderer,
 ) Router {
 	return Router{
-		config:       config,
 		orderUseCase: orderUseCase,
 	}
 }
 
 // Route preparing Gin router and return HTTP handler
 func (r *Router) Route() http.Handler {
-	if util.TranslateEnv(r.config.Environment) == "production" {
+	config := appctx.LoadConfig()
+
+	if util.TranslateEnv(config.Environment) == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 

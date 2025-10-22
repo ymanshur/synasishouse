@@ -2,6 +2,8 @@ package typex
 
 import (
 	"fmt"
+
+	"github.com/ymanshur/synasishouse/pkg/util"
 )
 
 // UnProcessableEnity status error
@@ -35,7 +37,8 @@ func NewConflictError(data string) error {
 	return Conflict(fmt.Sprintf("%s already exists", data))
 }
 
-// NewNotFoundError creates [NotFound] status with custom error message
-func NewNotFoundError(data string) error {
-	return NotFound(fmt.Sprintf("%s not found", data))
+// NewNotFoundError creates [NotFound] status with custom error message and wrap predecessor errors
+func NewNotFoundError(data string, errs ...error) error {
+	s := NotFound(fmt.Sprintf("%s not found", data))
+	return util.JoinErrors(s, errs...)
 }
