@@ -10,19 +10,23 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/ymanshur/synasishouse/order/internal/appctx"
 	"github.com/ymanshur/synasishouse/order/internal/server/api/handler"
+	"github.com/ymanshur/synasishouse/order/internal/usecase"
 	"github.com/ymanshur/synasishouse/pkg/util"
 )
 
 // Router
 type Router struct {
-	config *appctx.Config
+	config       *appctx.Config
+	orderUseCase usecase.Orderer
 }
 
 func NewRouter(
 	config *appctx.Config,
+	orderUseCase usecase.Orderer,
 ) Router {
 	return Router{
-		config: config,
+		config:       config,
+		orderUseCase: orderUseCase,
 	}
 }
 
@@ -47,8 +51,10 @@ func (r *Router) Route() http.Handler {
 	router.Use(gin.Recovery())
 
 	healthHandler := handler.NewHealth()
+	orderHandler := handler.NewOrder(r.orderUseCase)
 
 	router.GET("/health", healthHandler.Check)
+	router.POST("/checkout", orderHandler.Checkout)
 
 	return router
 }

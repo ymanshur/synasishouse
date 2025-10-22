@@ -95,6 +95,12 @@ func (r *Response) WithTranslationError(err error) *Response {
 		r.code = http.StatusNotFound
 		r.Message = notFoundErr.Error()
 	default:
+		if code, ok := translateGRPCError(err); ok {
+			r.code = code
+			r.Message = err.Error()
+			return r
+		}
+
 		r.code = http.StatusInternalServerError
 		r.Message = "something went wrong"
 	}

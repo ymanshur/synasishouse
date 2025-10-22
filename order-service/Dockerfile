@@ -23,6 +23,6 @@ COPY app.env.example ./app.env
 COPY db/migration ./db/migration
 
 # EXPOSE act as a documentation about which ports are intended to be published
-EXPOSE 9090/tcp
+EXPOSE 8000/tcp
 
 CMD [ "/app/main" ]

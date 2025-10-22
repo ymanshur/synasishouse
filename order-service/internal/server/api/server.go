@@ -10,6 +10,7 @@ import (
 	"github.com/ymanshur/synasishouse/order/internal/consts"
 	"github.com/ymanshur/synasishouse/order/internal/server"
 	"github.com/ymanshur/synasishouse/order/internal/server/api/router"
+	"github.com/ymanshur/synasishouse/order/internal/usecase"
 )
 
 var _ server.Server = (*Server)(nil) // check in runtime [Server] implement [server.Server]
@@ -23,11 +24,13 @@ type Server struct {
 // NewServer creates a new HTTP server and set up routing
 func NewServer(
 	config *appctx.Config,
+	orderUseCase usecase.Orderer,
 ) *Server {
 	return &Server{
 		httpServerAddr: config.HTTPServerAddress,
 		router: router.NewRouter(
 			config,
+			orderUseCase,
 		),
 	}
 }

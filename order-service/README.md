@@ -67,10 +67,11 @@ Environment variables allowed for production service:
 
 ```shell
 ENVIRONMENT=development
-DB_SOURCE=postgresql://postgres:postgres@localhost:5432/order?sslmode=disable
-DB_MIGRATION_URL=file://db/migration
 
 HTTP_SERVER_ADDRESS=0.0.0.0:8000
+
+GRPC_CLIENT_HOST_INVENTORY=localhost
+GRPC_CLIENT_PORT_INVENTORY=9090
 ```
 
 Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile)

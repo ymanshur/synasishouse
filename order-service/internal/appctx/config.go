@@ -23,6 +23,14 @@ type Config struct {
 
 	DBSource       string `mapstructure:"DB_SOURCE"`
 	DBMigrationURL string `mapstructure:"DB_MIGRATION_URL"`
+
+	GRPCClientHostInventory string `mapstructure:"GRPC_CLIENT_HOST_INVENTORY"`
+	GRPCClientPortInventory int    `mapstructure:"GRPC_CLIENT_PORT_INVENTORY"`
+}
+
+type GRPCAddr struct {
+	Host string `yaml:"host" json:"host"`
+	Port int    `yaml:"port" json:"port"`
 }
 
 // LoadConfig load single config instance.
