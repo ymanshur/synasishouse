@@ -2,8 +2,6 @@ syntax = "proto3";
 
 package pb;
 
-import "product.proto";
-
 option go_package = "github.com/ymanshur/synasishouse/pb";
 
 message GetProductRequest {
