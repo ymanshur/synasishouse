@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -34,7 +33,6 @@ func (h *OrderHandler) Checkout(c *gin.Context) {
 	}
 
 	res, err := h.orderUseCase.Checkout(ctx, req)
-	fmt.Println(err)
 	if err != nil {
 		log.Error().Err(err).Msg("cannot checkout order")
 		response.New().

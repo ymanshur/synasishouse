@@ -18,4 +18,4 @@ Communication between services using the **gRPC protocol**, and there is a gatew
 
 ## API
 
-Open <https://ymanshur.github.io/simplebank/docs/swagger> to see API documentation based on the gRPC Gateway proto definition
+Open <https://ymanshur.github.io/simplebank/docs/swagger> to see API documentation based on the gRPC Gateway proto annotation.

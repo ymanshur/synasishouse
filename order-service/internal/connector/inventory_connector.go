@@ -27,7 +27,7 @@ type StockParams struct {
 }
 
 func (c *inventoryConn) CheckStock(ctx context.Context, arg StockParams) (bool, error) {
-	check, err := c.client.CheckStock(ctx, &pb.StockRequest{
+	res, err := c.client.CheckStock(ctx, &pb.GetStockRequest{
 		Code:   arg.Code,
 		Amount: arg.Amount,
 	})
@@ -35,5 +35,5 @@ func (c *inventoryConn) CheckStock(ctx context.Context, arg StockParams) (bool, 
 		return false, err
 	}
 
-	return check.GetIsSuccess(), nil
+	return res.GetIsAvailable(), nil
 }

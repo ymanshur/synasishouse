@@ -30,7 +30,7 @@ func (u *orderUseCase) Checkout(ctx context.Context, req presentation.OrderReque
 		return nil, err
 	}
 
-	ok, err := u.conn.CheckStock(ctx, connector.StockParams{
+	isAvailable, err := u.conn.CheckStock(ctx, connector.StockParams{
 		Code:   req.Code,
 		Amount: req.Amount,
 	})
@@ -43,6 +43,6 @@ func (u *orderUseCase) Checkout(ctx context.Context, req presentation.OrderReque
 		return nil, fmt.Errorf("check stock: %w", err)
 	}
 
-	res := &presentation.OrderResponse{IsAvailable: ok}
+	res := &presentation.OrderResponse{IsAvailable: isAvailable}
 	return res, nil
 }
