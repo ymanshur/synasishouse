@@ -1,6 +1,6 @@
 
 
-APP_NAME?=inventory
+APP_NAME?=order
 APP_IMAGE?=ymanshur/synasishouse/${APP_NAME}
 
 clear:
@@ -25,8 +25,9 @@ build: modsync
 run:
 	docker run --rm \
 	--name ${APP_NAME} \
-	-p 9090:9090 \
+	-p 8000:8000 \
 	-e DB_SOURCE="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
+	-e ENVIRONMENT=development \
 	${APP_IMAGE}:latest
 
 POSTGRES_VERSION?=14-alpine
