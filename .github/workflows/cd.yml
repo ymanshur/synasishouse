@@ -23,6 +23,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Go Environment
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.24.9"
+
+      - name: Run go mod vendor
+        run: |
+          if [ -f "${{ matrix.context }}/go.mod" ]; then
+            echo "Running 'go mod vendor' in directory: ${{ matrix.context }}"
+            cd ${{ matrix.context }}
+            go mod vendor
+          else
+            echo "Skipping 'go mod vendor': go.mod not found in context directory."
+          fi
+
       - name: Extract Docker image metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -37,9 +52,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
-      - name: Vendor Go modules
-        run: go mod vendor
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
