@@ -15,10 +15,13 @@ jobs:
           - name: Inventory Service
             context: ./inventory-service
             dockerfile: ./inventory-service/Dockerfile
-            image: ${{ vars.DOCKER_USERNAME }}/synasishouse/inventory
+            image: /synasishouse/inventory
 
     name: Build and publish ${{ matrix.name }} image
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,28 +41,18 @@ jobs:
             echo "Skipping 'go mod vendor': go.mod not found in context directory."
           fi
 
-      - name: Extract Docker image metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ matrix.image }}
+      - name: Set short git commit SHA
+        id: vars
+        run: |
+          shortSHA=$(git rev-parse --short ${{ github.sha }})
+          echo "GITHUB_SHORT_SHA=$shortSHA" >> $GITHUB_ENV
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v6
-        with:
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          annotations: ${{ steps.meta.outputs.annotations }}
-          context: ${{ matrix.context }}
-          file: ${{ matrix.dockerfile }}
-          provenance: true
-          sbom: true
+      - name: Build and publish the image to GitHub Container Registry
+        env:
+          USERNAME: ${{ github.actor }}
+          REPOSITORY: ${{ matrix.image }}
+          IMAGE_TAG: ${{ env.GITHUB_SHORT_SHA }}
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $USERNAME --password-stdin
+          docker build . --file deployment/Dockerfile --tag ghcr.io/$USERNAME/$REPOSITORY:$IMAGE_TAG
+          docker push ghcr.io/$USERNAME/$REPOSITORY:$IMAGE_TAG
