@@ -1,0 +1,56 @@
+services:
+  postgres:
+    container_name: simplewallet-postgres
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=simplewallet
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 512M
+  backend:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile
+    container_name: simplewallet-backend
+    image: simplewallet
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=simplewallet
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["/app/main"]
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1024M
+
+volumes:
+  pg_data:
+    name: simplewallet-pg-data
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./tmp/pg_data

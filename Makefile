@@ -2,14 +2,18 @@
 proto:
 	rm -f pb/*.go
 	rm -f proto/*.go
-	rm -f doc/swagger/*.swagger.json
-	rm -f doc/statik/*
+	rm -f docs/swagger/*.swagger.json
+	rm -f docs/statik/*
 	protoc \
 	--proto_path=proto \
 	--go_out=proto --go_opt=paths=source_relative \
     --go-grpc_out=proto --go-grpc_opt=paths=source_relative \
     --grpc-gateway_out=proto --grpc-gateway_opt=paths=source_relative \
-    --openapiv2_out=doc/swagger --openapiv2_opt=allow_merge=true,json_names_for_fields=false \
+    --openapiv2_out=docs/swagger --openapiv2_opt=allow_merge=true,json_names_for_fields=false \
     --experimental_allow_proto3_optional \
     proto/*.proto
-	statik -src=./doc/swagger -dest=./doc
+	statik -src=./docs/swagger -dest=./docs
+
+container:
+	mkdir -p tmp/pg_data
+	docker compose -p ${APP_NAME} --project-directory . -f deployment/docker-compose.yaml up --build
