@@ -54,5 +54,6 @@ jobs:
           IMAGE_TAG: ${{ env.GITHUB_SHORT_SHA }}
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $USERNAME --password-stdin
-          docker build . --file deployment/Dockerfile --tag ghcr.io/$USERNAME/$REPOSITORY:$IMAGE_TAG
+          cd ${{ matrix.context }}
+          docker build . --tag ghcr.io/$USERNAME/$REPOSITORY:$IMAGE_TAG
           docker push ghcr.io/$USERNAME/$REPOSITORY:$IMAGE_TAG
