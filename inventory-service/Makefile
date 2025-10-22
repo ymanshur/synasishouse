@@ -1,6 +1,7 @@
 
 
 APP_NAME?=inventory
+APP_IMAGE?=ymanshur/synasishouse/${APP_NAME}
 
 clear:
 	clear
@@ -12,23 +13,22 @@ server: clear
 test:
 	go test -v -cover ./...
 
-build: test
-	docker build -t ${APP_NAME}:latest -f deployment/Dockerfile .
+modsync:
+	go get -u
+	go mod tidy
+	go mod vendor
 
-# build then run with necessary environment variables
-run: build
+build: modsync
+	docker build -t ${APP_IMAGE}:latest .
+
+# run with necessary environment variables
+run:
 	docker run --rm \
 	--name ${APP_NAME} \
 	-p 9090:9090 \
-	-e DB_SOURCE="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=${DB_SSL}" \
-	-e DB_SOURCE=host.docker.internal \
-	-e DB_USER=<your_db_user> \
-	-e DB_PASSWORD=<your_db_passowrd> \
-	${APP_NAME}:latest
-
-container:
-	mkdir -p tmp/pg_data
-	docker compose -p ${APP_NAME} --project-directory . -f deployment/docker-compose.yaml up --build
+	-e DB_SOURCE="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
+	-e ENVIRONMENT=development \
+	${APP_IMAGE}:latest
 
 POSTGRES_VERSION?=14-alpine
 POSTGRES_NAME=postgres${POSTGRES_VERSION}

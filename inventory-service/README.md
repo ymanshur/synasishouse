@@ -1,5 +1,7 @@
 # Inventory Service
 
+This backend application serves to manage product stock and provide RPC endpoint to action warehousing management including: **Checkout**, **Reserve**, and **Release** stock.
+
 ## Table Content
 
 1. [Requirement](#requirement)
@@ -7,6 +9,19 @@
 3. [Documentation](#documentation)
 
 ## Requirement
+
+### Functional
+
+1. Other parties might acquire a stock via a checkout endpoint. The application will **hold reserved stock for later confirmation**.
+2. If at any time there is a failure for the next process, the reserved stock can be released again.
+3. For further development, stock can only be held for a certain period of time such as 24 hours. After that time, the application will release the stock and will be notified to the *Order* application or sent in the form of an event to a message broker.
+
+### Non Functional
+
+- Communication is done using the **gRPC protocol** and Pub/Sub messages if needed.
+- The expiry system that will be applied;
+    1. Synchronously every time a product is checked out or released along with other stock.
+    2. Scheduling and batching processes are carried out so as not to interfere with organic traffic.
 
 ## Getting Started
 
@@ -23,7 +38,7 @@ Start database PostgreSQL 14 container service:
 make postgres POSTGRES_VERSION=14
 ```
 
-Create `simplewallet` database:
+Create `inventory` database:
 
 ```bash
 make createdb
@@ -40,14 +55,14 @@ make migrate name=init_schema
 Copy the configuration file under config directory and run:
 
 ```bash
-cp config/app.yaml.dist config/app.yaml
+cp config/app.env.example config/app.env
 ```
 
 ```bash
 make server
 ```
 
-It will run at <http://0.0.0.0:8000> as default
+It will run at <http://0.0.0.0:9090> as default
 
 Test the backend:
 
@@ -55,28 +70,18 @@ Test the backend:
 make test
 ```
 
-### Run the backend and the database in Docker containers
+### Run the backend and the database in Docker container
 
 Environment variables allowed for production service:
 
 ```shell
-APP_NAME=inventory
-APP_ENV=production
-APP_DEBUG=false
-DB_NAME=inventory
-DB_HOST=
-DB_PORT=
-DB_USER=
-DB_PASSWORD=
+DB_SOURCE=postgresql://postgres:postgres@localhost:5432/inventory?sslmode=disable
+DB_MIGRATION_URL=file://db/migration
+
+GRPC_SERVER_ADDRESS=0.0.0.0:9090
 ```
 
-The following command will create PostgreSQL 14 and bind the volume data in [tmp](tmp) directory and run the [docker-compose.yaml](deployment/docker-compose.yaml) file after build the backend image.
-
-```bash
-make containers
-```
-
-Alternatively, if you have already have PostgreSQL service, just run the following command to create only the backend container
+Make sure the environment variables are defined when run the following command, update at [Makefile](./Makefile)
 
 ```bash
 make run
@@ -87,9 +92,3 @@ make run
 ### Data Model
 
 ### API
-
-#### Health Check
-
-```http
-GET http://0.0.0.0:8000/health HTTP/1.1
-```

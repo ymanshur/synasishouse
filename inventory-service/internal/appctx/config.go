@@ -2,12 +2,12 @@ package appctx
 
 import (
 	"path/filepath"
+	"runtime"
 	"sync"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 	"github.com/ymanshur/synasishouse/inventory/internal/consts"
-	"github.com/ymanshur/synasishouse/pkg/util"
 )
 
 var (
@@ -32,10 +32,7 @@ func LoadConfig() Config {
 // LoadConfigWithFilename reads configuration from a given filename or environment variables once
 func LoadConfigWithFilename(finename string) Config {
 	configOnce.Do(func() {
-		// projectPath is default config path
-		projectPath := util.RootDir()
-		path := filepath.Join(projectPath, "inventory-service", "config")
-
+		path := filepath.Join(rootDir())
 		viper.AddConfigPath(path)
 		viper.SetConfigName(finename)
 		viper.SetConfigType("env") // json, yml, etc.
@@ -55,4 +52,13 @@ func LoadConfigWithFilename(finename string) Config {
 	})
 
 	return config
+}
+
+// rootDir get an absolute root dir of current project
+func rootDir() string {
+	_, b, _, ok := runtime.Caller(0)
+	if ok {
+		return filepath.Join(filepath.Dir(b), "..", "..")
+	}
+	return ""
 }
