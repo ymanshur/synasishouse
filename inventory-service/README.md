@@ -92,6 +92,3 @@ make run
 ### Data Model
 
 <img width="377" height="344" alt="Synasis House" src="https://github.com/user-attachments/assets/2d8e3f63-39d0-4807-9d75-03e7f1c28b7a" />
-
-
-### API
