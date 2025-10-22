@@ -27,7 +27,6 @@ type Product struct {
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 	Reserved      int32                  `protobuf:"varint,3,opt,name=reserved,proto3" json:"reserved,omitempty"`
-	Available     int32                  `protobuf:"varint,4,opt,name=available,proto3" json:"available,omitempty"`
 	UpdatedAt     *timestamp.Timestamp   `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	CreatedAt     *timestamp.Timestamp   `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -85,13 +84,6 @@ func (x *Product) GetReserved() int32 {
 	return 0
 }
 
-func (x *Product) GetAvailable() int32 {
-	if x != nil {
-		return x.Available
-	}
-	return 0
-}
-
 func (x *Product) GetUpdatedAt() *timestamp.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
@@ -110,12 +102,11 @@ var File_product_proto protoreflect.FileDescriptor
 
 const file_product_proto_rawDesc = "" +
 	"\n" +
-	"\rproduct.proto\x12\x02pb\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe3\x01\n" +
+	"\rproduct.proto\x12\x02pb\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc5\x01\n" +
 	"\aProduct\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x14\n" +
 	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x1a\n" +
-	"\breserved\x18\x03 \x01(\x05R\breserved\x12\x1c\n" +
-	"\tavailable\x18\x04 \x01(\x05R\tavailable\x129\n" +
+	"\breserved\x18\x03 \x01(\x05R\breserved\x129\n" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
 	"\n" +

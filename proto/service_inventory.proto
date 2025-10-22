@@ -3,10 +3,10 @@ syntax = "proto3";
 package pb;
 
 import "google/api/annotations.proto";
-import "rpc_stock.proto";
+import "google/protobuf/empty.proto";
+import "rpc_get_stock.proto";
 import "rpc_create_product.proto";
 import "rpc_get_product.proto";
-import "rpc_delete_product.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/ymanshur/synasishouse/pb";
@@ -19,7 +19,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service Inventory {
-  rpc CheckStock (StockRequest) returns (StockResponse) {
+  rpc CheckStock (GetStockRequest) returns (StockResponse) {
     option (google.api.http) = {
       post: "/api/check_stock"
       body: "*"
@@ -29,7 +29,7 @@ service Inventory {
       summary: "Check stock";
     };
   }
-  rpc ReserveStock (StockRequest) returns (StockResponse) {
+  rpc ReserveStock (GetStockRequest) returns (StockResponse) {
     option (google.api.http) = {
       post: "/api/reserve_stock"
       body: "*"
@@ -39,7 +39,7 @@ service Inventory {
       summary: "Reserve stock";
     };
   }
-  rpc ReleaseStock (StockRequest) returns (StockResponse) {
+  rpc ReleaseStock (GetStockRequest) returns (StockResponse) {
     option (google.api.http) = {
       post: "/api/release_stock"
       body: "*"
@@ -68,7 +68,7 @@ service Inventory {
       summary: "Get product";
     };
   }
-  rpc DeleteProduct (DeleteProductRequest) returns (DeleteProductResponse) {
+  rpc DeleteProduct (GetProductRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete: "/api/delete_product"
     };

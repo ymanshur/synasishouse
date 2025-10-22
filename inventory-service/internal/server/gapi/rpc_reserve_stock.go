@@ -7,8 +7,8 @@ import (
 	"github.com/ymanshur/synasishouse/pb"
 )
 
-func (r *Server) ReserveStock(ctx context.Context, req *pb.StockRequest) (*pb.StockResponse, error) {
-	err := r.stockUseCase.Check(ctx, presentation.StockRequest{
+func (r *Server) ReserveStock(ctx context.Context, req *pb.GetStockRequest) (*pb.StockResponse, error) {
+	res, err := r.stockUseCase.Check(ctx, presentation.GetStockRequest{
 		Code:   req.GetCode(),
 		Amount: req.GetAmount(),
 	})
@@ -16,8 +16,7 @@ func (r *Server) ReserveStock(ctx context.Context, req *pb.StockRequest) (*pb.St
 		return nil, translationError(err)
 	}
 
-	res := pb.StockResponse{
-		IsSuccess: true,
-	}
-	return &res, nil
+	return &pb.StockResponse{
+		IsAvailable: res.IsAvailable,
+	}, nil
 }

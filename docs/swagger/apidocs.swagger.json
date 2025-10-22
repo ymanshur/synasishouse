@@ -41,7 +41,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbStockRequest"
+              "$ref": "#/definitions/pbGetStockRequest"
             }
           }
         ],
@@ -93,7 +93,8 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbDeleteProductResponse"
+              "type": "object",
+              "properties": {}
             }
           },
           "default": {
@@ -173,7 +174,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbStockRequest"
+              "$ref": "#/definitions/pbGetStockRequest"
             }
           }
         ],
@@ -207,7 +208,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbStockRequest"
+              "$ref": "#/definitions/pbGetStockRequest"
             }
           }
         ],
@@ -230,11 +231,15 @@
         }
       }
     },
-    "pbDeleteProductResponse": {
+    "pbGetStockRequest": {
       "type": "object",
       "properties": {
-        "is_success": {
-          "type": "boolean"
+        "code": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -249,10 +254,6 @@
           "format": "int32"
         },
         "reserved": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "available": {
           "type": "integer",
           "format": "int32"
         },
@@ -274,22 +275,10 @@
         }
       }
     },
-    "pbStockRequest": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "amount": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "pbStockResponse": {
       "type": "object",
       "properties": {
-        "is_success": {
+        "is_available": {
           "type": "boolean"
         }
       }

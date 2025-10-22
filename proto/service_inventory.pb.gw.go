@@ -37,7 +37,7 @@ var (
 
 func request_Inventory_CheckStock_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq StockRequest
+		protoReq GetStockRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -52,7 +52,7 @@ func request_Inventory_CheckStock_0(ctx context.Context, marshaler runtime.Marsh
 
 func local_request_Inventory_CheckStock_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq StockRequest
+		protoReq GetStockRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -64,7 +64,7 @@ func local_request_Inventory_CheckStock_0(ctx context.Context, marshaler runtime
 
 func request_Inventory_ReserveStock_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq StockRequest
+		protoReq GetStockRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -79,7 +79,7 @@ func request_Inventory_ReserveStock_0(ctx context.Context, marshaler runtime.Mar
 
 func local_request_Inventory_ReserveStock_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq StockRequest
+		protoReq GetStockRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -91,7 +91,7 @@ func local_request_Inventory_ReserveStock_0(ctx context.Context, marshaler runti
 
 func request_Inventory_ReleaseStock_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq StockRequest
+		protoReq GetStockRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -106,7 +106,7 @@ func request_Inventory_ReleaseStock_0(ctx context.Context, marshaler runtime.Mar
 
 func local_request_Inventory_ReleaseStock_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq StockRequest
+		protoReq GetStockRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
@@ -182,7 +182,7 @@ var filter_Inventory_DeleteProduct_0 = &utilities.DoubleArray{Encoding: map[stri
 
 func request_Inventory_DeleteProduct_0(ctx context.Context, marshaler runtime.Marshaler, client InventoryClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq DeleteProductRequest
+		protoReq GetProductRequest
 		metadata runtime.ServerMetadata
 	)
 	if req.Body != nil {
@@ -200,7 +200,7 @@ func request_Inventory_DeleteProduct_0(ctx context.Context, marshaler runtime.Ma
 
 func local_request_Inventory_DeleteProduct_0(ctx context.Context, marshaler runtime.Marshaler, server InventoryServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq DeleteProductRequest
+		protoReq GetProductRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {

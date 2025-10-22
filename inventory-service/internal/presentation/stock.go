@@ -4,12 +4,12 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
-type StockRequest struct {
+type GetStockRequest struct {
 	Code   string `json:"code"`
 	Amount int32  `json:"amount"`
 }
 
-func (r StockRequest) Validate() error {
+func (r GetStockRequest) Validate() error {
 	return validation.ValidateStruct(&r,
 		validation.Field(&r.Code, validation.Required),
 		validation.Field(&r.Amount, validation.Required, validation.Min(1)),

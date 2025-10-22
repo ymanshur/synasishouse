@@ -13,9 +13,9 @@ import (
 )
 
 type Stocker interface {
-	Check(ctx context.Context, req presentation.StockRequest) error
-	Reserve(ctx context.Context, req presentation.StockRequest) error
-	Release(ctx context.Context, req presentation.StockRequest) error
+	Check(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error)
+	Reserve(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error)
+	Release(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error)
 }
 
 type stockUseCase struct {
@@ -26,53 +26,56 @@ func NewStock(repo repo.Repo) Stocker {
 	return &stockUseCase{repo: repo}
 }
 
-func (u *stockUseCase) Check(ctx context.Context, req presentation.StockRequest) error {
+func (u *stockUseCase) Check(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = u.repo.CheckStock(ctx, req.Code, req.Amount)
+	isAvailable, err := u.repo.CheckStock(ctx, req.Code, req.Amount)
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
-			return typex.NewNotFoundError("stock")
+			return nil, typex.NewNotFoundError("stock")
 		}
-		return fmt.Errorf("check stock: %w", err)
+		return nil, fmt.Errorf("check stock: %w", err)
 	}
 
-	return nil
+	res := &presentation.StockResponse{IsAvailable: isAvailable}
+	return res, nil
 }
 
-func (u *stockUseCase) Reserve(ctx context.Context, req presentation.StockRequest) error {
+func (u *stockUseCase) Reserve(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = u.repo.ReserveStock(ctx, req.Code, req.Amount)
+	isAvailable, err := u.repo.ReserveStock(ctx, req.Code, req.Amount)
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
-			return typex.NewNotFoundError("stock")
+			return nil, typex.NewNotFoundError("stock")
 		}
-		return fmt.Errorf("reserve stock: %w", err)
+		return nil, fmt.Errorf("reserve stock: %w", err)
 	}
 
-	return nil
+	res := &presentation.StockResponse{IsAvailable: isAvailable}
+	return res, nil
 }
 
-func (u *stockUseCase) Release(ctx context.Context, req presentation.StockRequest) error {
+func (u *stockUseCase) Release(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	err = u.repo.ReleaseStock(ctx, req.Code, req.Amount)
+	isAvailable, err := u.repo.ReleaseStock(ctx, req.Code, req.Amount)
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
-			return typex.NewNotFoundError("stock")
+			return nil, typex.NewNotFoundError("stock")
 		}
-		return fmt.Errorf("release stock: %w", err)
+		return nil, fmt.Errorf("release stock: %w", err)
 	}
 
-	return nil
+	res := &presentation.StockResponse{IsAvailable: isAvailable}
+	return res, nil
 }

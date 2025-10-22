@@ -7,6 +7,7 @@
 package pb
 
 import (
+	empty "github.com/golang/protobuf/ptypes/empty"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -26,40 +27,39 @@ var File_service_inventory_proto protoreflect.FileDescriptor
 
 const file_service_inventory_proto_rawDesc = "" +
 	"\n" +
-	"\x17service_inventory.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x0frpc_stock.proto\x1a\x18rpc_create_product.proto\x1a\x15rpc_get_product.proto\x1a\x18rpc_delete_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xe6\x06\n" +
-	"\tInventory\x12\x85\x01\n" +
+	"\x17service_inventory.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x13rpc_get_stock.proto\x1a\x18rpc_create_product.proto\x1a\x15rpc_get_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xe9\x06\n" +
+	"\tInventory\x12\x88\x01\n" +
 	"\n" +
-	"CheckStock\x12\x10.pb.StockRequest\x1a\x11.pb.StockResponse\"R\x92A4\x12\vCheck stock\x1a%Use this API to check a product stock\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/check_stock\x12\x8d\x01\n" +
-	"\fReserveStock\x12\x10.pb.StockRequest\x1a\x11.pb.StockResponse\"X\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/reserve_stock\x12\x8d\x01\n" +
-	"\fReleaseStock\x12\x10.pb.StockRequest\x1a\x11.pb.StockResponse\"X\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/release_stock\x12\x93\x01\n" +
+	"CheckStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"R\x92A4\x12\vCheck stock\x1a%Use this API to check a product stock\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/check_stock\x12\x90\x01\n" +
+	"\fReserveStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"X\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/reserve_stock\x12\x90\x01\n" +
+	"\fReleaseStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"X\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/api/release_stock\x12\x93\x01\n" +
 	"\rCreateProduct\x12\x18.pb.CreateProductRequest\x1a\x13.pb.ProductResponse\"S\x92A2\x12\x0eCreate product\x1a Use this API to create a product\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/create_product\x12\x81\x01\n" +
 	"\n" +
-	"GetProduct\x12\x15.pb.GetProductRequest\x1a\x13.pb.ProductResponse\"G\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x12\x12\x10/api/get_product\x12\x96\x01\n" +
-	"\rDeleteProduct\x12\x18.pb.DeleteProductRequest\x1a\x19.pb.DeleteProductResponse\"P\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x15*\x13/api/delete_productB>\x92A\x16\x12\x14\n" +
+	"GetProduct\x12\x15.pb.GetProductRequest\x1a\x13.pb.ProductResponse\"G\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x12\x12\x10/api/get_product\x12\x90\x01\n" +
+	"\rDeleteProduct\x12\x15.pb.GetProductRequest\x1a\x16.google.protobuf.Empty\"P\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x15*\x13/api/delete_productB>\x92A\x16\x12\x14\n" +
 	"\rInventory API2\x031.0Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
 
 var file_service_inventory_proto_goTypes = []any{
-	(*StockRequest)(nil),          // 0: pb.StockRequest
-	(*CreateProductRequest)(nil),  // 1: pb.CreateProductRequest
-	(*GetProductRequest)(nil),     // 2: pb.GetProductRequest
-	(*DeleteProductRequest)(nil),  // 3: pb.DeleteProductRequest
-	(*StockResponse)(nil),         // 4: pb.StockResponse
-	(*ProductResponse)(nil),       // 5: pb.ProductResponse
-	(*DeleteProductResponse)(nil), // 6: pb.DeleteProductResponse
+	(*GetStockRequest)(nil),      // 0: pb.GetStockRequest
+	(*CreateProductRequest)(nil), // 1: pb.CreateProductRequest
+	(*GetProductRequest)(nil),    // 2: pb.GetProductRequest
+	(*StockResponse)(nil),        // 3: pb.StockResponse
+	(*ProductResponse)(nil),      // 4: pb.ProductResponse
+	(*empty.Empty)(nil),          // 5: google.protobuf.Empty
 }
 var file_service_inventory_proto_depIdxs = []int32{
-	0, // 0: pb.Inventory.CheckStock:input_type -> pb.StockRequest
-	0, // 1: pb.Inventory.ReserveStock:input_type -> pb.StockRequest
-	0, // 2: pb.Inventory.ReleaseStock:input_type -> pb.StockRequest
+	0, // 0: pb.Inventory.CheckStock:input_type -> pb.GetStockRequest
+	0, // 1: pb.Inventory.ReserveStock:input_type -> pb.GetStockRequest
+	0, // 2: pb.Inventory.ReleaseStock:input_type -> pb.GetStockRequest
 	1, // 3: pb.Inventory.CreateProduct:input_type -> pb.CreateProductRequest
 	2, // 4: pb.Inventory.GetProduct:input_type -> pb.GetProductRequest
-	3, // 5: pb.Inventory.DeleteProduct:input_type -> pb.DeleteProductRequest
-	4, // 6: pb.Inventory.CheckStock:output_type -> pb.StockResponse
-	4, // 7: pb.Inventory.ReserveStock:output_type -> pb.StockResponse
-	4, // 8: pb.Inventory.ReleaseStock:output_type -> pb.StockResponse
-	5, // 9: pb.Inventory.CreateProduct:output_type -> pb.ProductResponse
-	5, // 10: pb.Inventory.GetProduct:output_type -> pb.ProductResponse
-	6, // 11: pb.Inventory.DeleteProduct:output_type -> pb.DeleteProductResponse
+	2, // 5: pb.Inventory.DeleteProduct:input_type -> pb.GetProductRequest
+	3, // 6: pb.Inventory.CheckStock:output_type -> pb.StockResponse
+	3, // 7: pb.Inventory.ReserveStock:output_type -> pb.StockResponse
+	3, // 8: pb.Inventory.ReleaseStock:output_type -> pb.StockResponse
+	4, // 9: pb.Inventory.CreateProduct:output_type -> pb.ProductResponse
+	4, // 10: pb.Inventory.GetProduct:output_type -> pb.ProductResponse
+	5, // 11: pb.Inventory.DeleteProduct:output_type -> google.protobuf.Empty
 	6, // [6:12] is the sub-list for method output_type
 	0, // [0:6] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -72,10 +72,9 @@ func file_service_inventory_proto_init() {
 	if File_service_inventory_proto != nil {
 		return
 	}
-	file_rpc_stock_proto_init()
+	file_rpc_get_stock_proto_init()
 	file_rpc_create_product_proto_init()
 	file_rpc_get_product_proto_init()
-	file_rpc_delete_product_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

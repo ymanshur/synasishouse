@@ -10,7 +10,6 @@ message Product {
   string code = 1;
   int32 total = 2;
   int32 reserved = 3;
-  int32 available = 4;
   google.protobuf.Timestamp updated_at = 5;
   google.protobuf.Timestamp created_at = 6;
 }

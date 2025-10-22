@@ -16,15 +16,14 @@ func (r *Server) GetProduct(ctx context.Context, req *pb.GetProductRequest) (*pb
 		return nil, translationError(err)
 	}
 
-	res := pb.ProductResponse{
+	res := &pb.ProductResponse{
 		Product: &pb.Product{
 			Code:      product.Code,
 			Total:     product.Total,
 			Reserved:  product.Reserved,
-			Available: product.Available,
 			UpdatedAt: timestamppb.New(product.UpdatedAt),
 			CreatedAt: timestamppb.New(product.CreatedAt),
 		},
 	}
-	return &res, nil
+	return res, nil
 }

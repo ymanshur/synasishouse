@@ -12,9 +12,9 @@ import (
 type Repo interface {
 	db.Querier
 
-	CheckStock(ctx context.Context, code string, amount int32) error
-	ReserveStock(ctx context.Context, code string, amount int32) error
-	ReleaseStock(ctx context.Context, code string, amount int32) error
+	CheckStock(ctx context.Context, code string, amount int32) (bool, error)
+	ReserveStock(ctx context.Context, code string, amount int32) (bool, error)
+	ReleaseStock(ctx context.Context, code string, amount int32) (bool, error)
 }
 
 // repo provides all functions to execute SQL queries and transactions

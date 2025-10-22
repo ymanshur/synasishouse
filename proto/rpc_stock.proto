@@ -4,11 +4,11 @@ package pb;
 
 option go_package = "github.com/ymanshur/synasishouse/pb";
 
-message StockRequest {
+message GetStockRequest {
   string code = 1;
   int32 amount = 2;
 }
 
 message StockResponse {
-  bool is_success = 1;
+  bool is_available = 1;
 }

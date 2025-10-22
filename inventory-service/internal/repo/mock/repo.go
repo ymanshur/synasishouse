@@ -37,11 +37,12 @@ func (m *MockRepo) EXPECT() *MockRepoMockRecorder {
 }
 
 // CheckStock mocks base method.
-func (m *MockRepo) CheckStock(arg0 context.Context, arg1 string, arg2 int32) error {
+func (m *MockRepo) CheckStock(arg0 context.Context, arg1 string, arg2 int32) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CheckStock", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CheckStock indicates an expected call of CheckStock.
@@ -95,11 +96,12 @@ func (mr *MockRepoMockRecorder) GetProduct(arg0, arg1 interface{}) *gomock.Call 
 }
 
 // ReleaseStock mocks base method.
-func (m *MockRepo) ReleaseStock(arg0 context.Context, arg1 string, arg2 int32) error {
+func (m *MockRepo) ReleaseStock(arg0 context.Context, arg1 string, arg2 int32) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReleaseStock", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // ReleaseStock indicates an expected call of ReleaseStock.
@@ -109,11 +111,12 @@ func (mr *MockRepoMockRecorder) ReleaseStock(arg0, arg1, arg2 interface{}) *gomo
 }
 
 // ReserveStock mocks base method.
-func (m *MockRepo) ReserveStock(arg0 context.Context, arg1 string, arg2 int32) error {
+func (m *MockRepo) ReserveStock(arg0 context.Context, arg1 string, arg2 int32) (bool, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReserveStock", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // ReserveStock indicates an expected call of ReserveStock.

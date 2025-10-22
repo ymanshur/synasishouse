@@ -18,6 +18,10 @@ var (
 )
 
 func translationError(err error) error {
+	if err == nil {
+		return nil
+	}
+
 	switch {
 	case errors.As(err, &validationErrs):
 		return invalidArgumentError(convertValidationErrors(validationErrs))

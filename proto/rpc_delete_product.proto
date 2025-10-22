@@ -7,7 +7,3 @@ option go_package = "github.com/ymanshur/synasishouse/pb";
 message DeleteProductRequest {
   string id = 1;
 }
-
-message DeleteProductResponse {
-  bool is_success = 1;
-}

@@ -69,7 +69,7 @@ var File_rpc_get_product_proto protoreflect.FileDescriptor
 
 const file_rpc_get_product_proto_rawDesc = "" +
 	"\n" +
-	"\x15rpc_get_product.proto\x12\x02pb\x1a\rproduct.proto\"#\n" +
+	"\x15rpc_get_product.proto\x12\x02pb\"#\n" +
 	"\x11GetProductRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02idB%Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
 
@@ -102,7 +102,6 @@ func file_rpc_get_product_proto_init() {
 	if File_rpc_get_product_proto != nil {
 		return
 	}
-	file_product_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

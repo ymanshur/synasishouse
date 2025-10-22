@@ -64,7 +64,7 @@ make server
 
 It will run at <http://0.0.0.0:9090> as the default
 
-Test the backend:
+Test the business logic:
 
 ```bash
 make test

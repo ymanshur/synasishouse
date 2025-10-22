@@ -72,5 +72,5 @@ migratereset: migratedrop migrateup
 sqlc:
 	sqlc generate -f db/sqlc.yaml
 
-mocks:
+mock:
 	mockgen -package mockrepo -destination internal/repo/mock/repo.go github.com/ymanshur/synasishouse/inventory/internal/repo Repo
