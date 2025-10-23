@@ -13,7 +13,9 @@ WHERE id = $1 LIMIT 1;
 
 -- name: UpdateProduct :one
 UPDATE products
-SET code = $1
+SET
+    code = $1,
+    updated_at = NOW()
 WHERE id = $2
 RETURNING *;
 
@@ -21,10 +23,11 @@ RETURNING *;
 DELETE FROM products
 WHERE id = $1;
 
--- name: UpdateStock :one
+-- name: AddStock :one
 UPDATE products
 SET
-    total = COALESCE(sqlc.narg(total), total),
-    reserved = COALESCE(sqlc.narg(reserved), reserved)
+    total = total + sqlc.arg(total),
+    reserved = reserved + sqlc.arg(reserved),
+    updated_at = NOW()
 WHERE code = sqlc.arg(code)
 RETURNING *;

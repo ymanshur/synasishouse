@@ -27,41 +27,45 @@ var File_service_inventory_proto protoreflect.FileDescriptor
 
 const file_service_inventory_proto_rawDesc = "" +
 	"\n" +
-	"\x17service_inventory.proto\x12\x02pb\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0frpc_stock.proto\x1a\x11rpc_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xef\x06\n" +
-	"\tInventory\x12\x83\x01\n" +
+	"\x17service_inventory.proto\x12\x10synasishouse.api\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0frpc_stock.proto\x1a\x11rpc_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xc3\t\n" +
+	"\tInventory\x12\xa5\x01\n" +
 	"\n" +
-	"CheckStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"M\x92A4\x12\vCheck stock\x1a%Use this API to check a product stock\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/stocks\x12\x98\x01\n" +
-	"\fReserveStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"`\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/reserve\x12\x98\x01\n" +
-	"\fReleaseStock\x12\x13.pb.GetStockRequest\x1a\x11.pb.StockResponse\"`\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/release\x12\x8d\x01\n" +
-	"\rCreateProduct\x12\x18.pb.CreateProductRequest\x1a\x13.pb.ProductResponse\"M\x92A2\x12\x0eCreate product\x1a Use this API to create a product\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/products\x12\x83\x01\n" +
+	"CheckStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"P\x92A7\x12\vCheck stock\x1a(Use this API to checkout a product stock\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/stocks\x12\xb7\x01\n" +
+	"\fReserveStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"`\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/reserve\x12\xb7\x01\n" +
+	"\fReleaseStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"`\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/release\x12\xa9\x01\n" +
+	"\rCreateProduct\x12&.synasishouse.api.CreateProductRequest\x1a!.synasishouse.api.ProductResponse\"M\x92A2\x12\x0eCreate product\x1a Use this API to create a product\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/products\x12\x9f\x01\n" +
 	"\n" +
-	"GetProduct\x12\x15.pb.GetProductRequest\x1a\x13.pb.ProductResponse\"I\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x14\x12\x12/api/products/{id}\x12\x8f\x01\n" +
-	"\rDeleteProduct\x12\x15.pb.GetProductRequest\x1a\x16.google.protobuf.Empty\"O\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x14*\x12/api/products/{id}B>\x92A\x16\x12\x14\n" +
+	"GetProduct\x12#.synasishouse.api.GetProductRequest\x1a!.synasishouse.api.ProductResponse\"I\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x14\x12\x12/api/products/{id}\x12\xab\x01\n" +
+	"\rUpdateProduct\x12&.synasishouse.api.UpdateProductRequest\x1a!.synasishouse.api.ProductResponse\"O\x92A2\x12\x0eUpdate product\x1a Use this API to update a product\x82\xd3\xe4\x93\x02\x142\x12/api/products/{id}\x12\x9d\x01\n" +
+	"\rDeleteProduct\x12#.synasishouse.api.GetProductRequest\x1a\x16.google.protobuf.Empty\"O\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x14*\x12/api/products/{id}B>\x92A\x16\x12\x14\n" +
 	"\rInventory API2\x031.0Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
 
 var file_service_inventory_proto_goTypes = []any{
-	(*GetStockRequest)(nil),      // 0: pb.GetStockRequest
-	(*CreateProductRequest)(nil), // 1: pb.CreateProductRequest
-	(*GetProductRequest)(nil),    // 2: pb.GetProductRequest
-	(*StockResponse)(nil),        // 3: pb.StockResponse
-	(*ProductResponse)(nil),      // 4: pb.ProductResponse
-	(*empty.Empty)(nil),          // 5: google.protobuf.Empty
+	(*CreateStockRequest)(nil),   // 0: synasishouse.api.CreateStockRequest
+	(*CreateProductRequest)(nil), // 1: synasishouse.api.CreateProductRequest
+	(*GetProductRequest)(nil),    // 2: synasishouse.api.GetProductRequest
+	(*UpdateProductRequest)(nil), // 3: synasishouse.api.UpdateProductRequest
+	(*StockResponse)(nil),        // 4: synasishouse.api.StockResponse
+	(*ProductResponse)(nil),      // 5: synasishouse.api.ProductResponse
+	(*empty.Empty)(nil),          // 6: google.protobuf.Empty
 }
 var file_service_inventory_proto_depIdxs = []int32{
-	0, // 0: pb.Inventory.CheckStock:input_type -> pb.GetStockRequest
-	0, // 1: pb.Inventory.ReserveStock:input_type -> pb.GetStockRequest
-	0, // 2: pb.Inventory.ReleaseStock:input_type -> pb.GetStockRequest
-	1, // 3: pb.Inventory.CreateProduct:input_type -> pb.CreateProductRequest
-	2, // 4: pb.Inventory.GetProduct:input_type -> pb.GetProductRequest
-	2, // 5: pb.Inventory.DeleteProduct:input_type -> pb.GetProductRequest
-	3, // 6: pb.Inventory.CheckStock:output_type -> pb.StockResponse
-	3, // 7: pb.Inventory.ReserveStock:output_type -> pb.StockResponse
-	3, // 8: pb.Inventory.ReleaseStock:output_type -> pb.StockResponse
-	4, // 9: pb.Inventory.CreateProduct:output_type -> pb.ProductResponse
-	4, // 10: pb.Inventory.GetProduct:output_type -> pb.ProductResponse
-	5, // 11: pb.Inventory.DeleteProduct:output_type -> google.protobuf.Empty
-	6, // [6:12] is the sub-list for method output_type
-	0, // [0:6] is the sub-list for method input_type
+	0, // 0: synasishouse.api.Inventory.CheckStock:input_type -> synasishouse.api.CreateStockRequest
+	0, // 1: synasishouse.api.Inventory.ReserveStock:input_type -> synasishouse.api.CreateStockRequest
+	0, // 2: synasishouse.api.Inventory.ReleaseStock:input_type -> synasishouse.api.CreateStockRequest
+	1, // 3: synasishouse.api.Inventory.CreateProduct:input_type -> synasishouse.api.CreateProductRequest
+	2, // 4: synasishouse.api.Inventory.GetProduct:input_type -> synasishouse.api.GetProductRequest
+	3, // 5: synasishouse.api.Inventory.UpdateProduct:input_type -> synasishouse.api.UpdateProductRequest
+	2, // 6: synasishouse.api.Inventory.DeleteProduct:input_type -> synasishouse.api.GetProductRequest
+	4, // 7: synasishouse.api.Inventory.CheckStock:output_type -> synasishouse.api.StockResponse
+	4, // 8: synasishouse.api.Inventory.ReserveStock:output_type -> synasishouse.api.StockResponse
+	4, // 9: synasishouse.api.Inventory.ReleaseStock:output_type -> synasishouse.api.StockResponse
+	5, // 10: synasishouse.api.Inventory.CreateProduct:output_type -> synasishouse.api.ProductResponse
+	5, // 11: synasishouse.api.Inventory.GetProduct:output_type -> synasishouse.api.ProductResponse
+	5, // 12: synasishouse.api.Inventory.UpdateProduct:output_type -> synasishouse.api.ProductResponse
+	6, // 13: synasishouse.api.Inventory.DeleteProduct:output_type -> google.protobuf.Empty
+	7, // [7:14] is the sub-list for method output_type
+	0, // [0:7] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

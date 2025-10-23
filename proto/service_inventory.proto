@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pb;
+package synasishouse.api;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
@@ -18,17 +18,17 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service Inventory {
-  rpc CheckStock (GetStockRequest) returns (StockResponse) {
+  rpc CheckStock (CreateStockRequest) returns (StockResponse) {
     option (google.api.http) = {
       post: "/api/stocks"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      description: "Use this API to check a product stock";
+      description: "Use this API to checkout a product stock";
       summary: "Check stock";
     };
   }
-  rpc ReserveStock (GetStockRequest) returns (StockResponse) {
+  rpc ReserveStock (CreateStockRequest) returns (StockResponse) {
     option (google.api.http) = {
       post: "/api/stocks/{code}/reserve"
       body: "*"
@@ -38,7 +38,7 @@ service Inventory {
       summary: "Reserve stock";
     };
   }
-  rpc ReleaseStock (GetStockRequest) returns (StockResponse) {
+  rpc ReleaseStock (CreateStockRequest) returns (StockResponse) {
     option (google.api.http) = {
       post: "/api/stocks/{code}/release"
       body: "*"
@@ -65,6 +65,15 @@ service Inventory {
       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       description: "Use this API to get a product";
       summary: "Get product";
+    };
+  }
+  rpc UpdateProduct (UpdateProductRequest) returns (ProductResponse) {
+    option (google.api.http) = {
+      patch: "/api/products/{id}"
+    };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to update a product";
+      summary: "Update product";
     };
   }
   rpc DeleteProduct (GetProductRequest) returns (google.protobuf.Empty) {

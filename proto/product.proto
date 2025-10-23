@@ -1,15 +1,16 @@
 syntax = "proto3";
 
-package pb;
+package synasishouse.api;
 
 import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/ymanshur/synasishouse/pb";
 
 message Product {
-  string code = 1;
-  int32 total = 2;
-  int32 reserved = 3;
+  string id = 1;
+  string code = 2;
+  int32 total = 3;
+  int32 reserved = 4;
   google.protobuf.Timestamp updated_at = 5;
   google.protobuf.Timestamp created_at = 6;
 }

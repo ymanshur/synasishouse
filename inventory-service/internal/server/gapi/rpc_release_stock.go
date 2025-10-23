@@ -7,8 +7,8 @@ import (
 	"github.com/ymanshur/synasishouse/pb"
 )
 
-func (r *Server) ReleaseStock(ctx context.Context, req *pb.GetStockRequest) (*pb.StockResponse, error) {
-	res, err := r.stockUseCase.Release(ctx, presentation.GetStockRequest{
+func (r *Server) ReleaseStock(ctx context.Context, req *pb.CreateStockRequest) (*pb.StockResponse, error) {
+	res, err := r.stockUseCase.Release(ctx, presentation.CreateStockRequest{
 		Code:   req.GetCode(),
 		Amount: req.GetAmount(),
 	})

@@ -4,19 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/jackc/pgx/v5/pgtype"
 	db "github.com/ymanshur/synasishouse/inventory/db/sqlc"
 )
 
 func (r *repo) CheckStock(ctx context.Context, code string, amount int32) (bool, error) {
 	isAvailable := true
 	err := r.execTx(ctx, func(q *db.Queries) error {
-		product, err := q.UpdateStock(ctx, db.UpdateStockParams{
-			Reserved: pgtype.Int4{
-				Int32: amount,
-				Valid: true,
-			},
-			Code: code,
+		product, err := q.AddStock(ctx, db.AddStockParams{
+			Reserved: amount,
+			Code:     code,
 		})
 		if err != nil {
 			return err
@@ -39,16 +35,10 @@ func (r *repo) CheckStock(ctx context.Context, code string, amount int32) (bool,
 func (r *repo) ReserveStock(ctx context.Context, code string, amount int32) (bool, error) {
 	isAvailable := true
 	err := r.execTx(ctx, func(q *db.Queries) error {
-		product, err := q.UpdateStock(ctx, db.UpdateStockParams{
-			Total: pgtype.Int4{
-				Int32: -amount,
-				Valid: false,
-			},
-			Reserved: pgtype.Int4{
-				Int32: -amount,
-				Valid: true,
-			},
-			Code: code,
+		product, err := q.AddStock(ctx, db.AddStockParams{
+			Total:    -amount,
+			Reserved: -amount,
+			Code:     code,
 		})
 		if err != nil {
 			return err
@@ -76,18 +66,15 @@ func (r *repo) ReserveStock(ctx context.Context, code string, amount int32) (boo
 func (r *repo) ReleaseStock(ctx context.Context, code string, amount int32) (bool, error) {
 	isAvailable := true
 	err := r.execTx(ctx, func(q *db.Queries) error {
-		product, err := q.UpdateStock(ctx, db.UpdateStockParams{
-			Reserved: pgtype.Int4{
-				Int32: amount,
-				Valid: true,
-			},
-			Code: code,
+		product, err := q.AddStock(ctx, db.AddStockParams{
+			Reserved: -amount,
+			Code:     code,
 		})
 		if err != nil {
 			return err
 		}
 
-		if product.Reserved > product.Total {
+		if product.Reserved < 0 {
 			isAvailable = false
 			return fmt.Errorf("out of release")
 		}

@@ -25,7 +25,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbProductResponse"
+              "$ref": "#/definitions/apiProductResponse"
             }
           },
           "default": {
@@ -41,7 +41,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbCreateProductRequest"
+              "$ref": "#/definitions/apiCreateProductRequest"
             }
           }
         ],
@@ -59,7 +59,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbProductResponse"
+              "$ref": "#/definitions/apiProductResponse"
             }
           },
           "default": {
@@ -111,18 +111,54 @@
         "tags": [
           "Inventory"
         ]
+      },
+      "patch": {
+        "summary": "Update product",
+        "description": "Use this API to update a product",
+        "operationId": "Inventory_UpdateProduct",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiProductResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Inventory"
+        ]
       }
     },
     "/api/stocks": {
       "post": {
         "summary": "Check stock",
-        "description": "Use this API to check a product stock",
+        "description": "Use this API to checkout a product stock",
         "operationId": "Inventory_CheckStock",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbStockResponse"
+              "$ref": "#/definitions/apiStockResponse"
             }
           },
           "default": {
@@ -138,7 +174,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbGetStockRequest"
+              "$ref": "#/definitions/apiCreateStockRequest"
             }
           }
         ],
@@ -156,7 +192,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbStockResponse"
+              "$ref": "#/definitions/apiStockResponse"
             }
           },
           "default": {
@@ -196,7 +232,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbStockResponse"
+              "$ref": "#/definitions/apiStockResponse"
             }
           },
           "default": {
@@ -247,7 +283,7 @@
         }
       }
     },
-    "pbCreateProductRequest": {
+    "apiCreateProductRequest": {
       "type": "object",
       "properties": {
         "code": {
@@ -259,7 +295,7 @@
         }
       }
     },
-    "pbGetStockRequest": {
+    "apiCreateStockRequest": {
       "type": "object",
       "properties": {
         "code": {
@@ -271,9 +307,12 @@
         }
       }
     },
-    "pbProduct": {
+    "apiProduct": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string"
+        },
         "code": {
           "type": "string"
         },
@@ -295,15 +334,15 @@
         }
       }
     },
-    "pbProductResponse": {
+    "apiProductResponse": {
       "type": "object",
       "properties": {
         "product": {
-          "$ref": "#/definitions/pbProduct"
+          "$ref": "#/definitions/apiProduct"
         }
       }
     },
-    "pbStockResponse": {
+    "apiStockResponse": {
       "type": "object",
       "properties": {
         "is_available": {

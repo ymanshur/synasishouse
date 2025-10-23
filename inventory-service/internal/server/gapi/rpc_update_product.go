@@ -8,10 +8,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (r *Server) UpdateProduct(ctx context.Context, req *pb.CreateProductRequest) (*pb.ProductResponse, error) {
-	product, err := r.productUseCase.Create(ctx, presentation.CreateProductRequest{
-		Code:  req.Code,
-		Total: int32(req.Total),
+func (r *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest) (*pb.ProductResponse, error) {
+	product, err := r.productUseCase.Update(ctx, presentation.UpdateProductRequest{
+		Code: req.Code,
 	})
 	if err != nil {
 		return nil, translationError(err)
@@ -19,6 +18,7 @@ func (r *Server) UpdateProduct(ctx context.Context, req *pb.CreateProductRequest
 
 	res := &pb.ProductResponse{
 		Product: &pb.Product{
+			Id:        product.ID,
 			Code:      product.Code,
 			Total:     product.Total,
 			Reserved:  product.Reserved,

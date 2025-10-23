@@ -24,9 +24,10 @@ const (
 
 type Product struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
-	Reserved      int32                  `protobuf:"varint,3,opt,name=reserved,proto3" json:"reserved,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
+	Reserved      int32                  `protobuf:"varint,4,opt,name=reserved,proto3" json:"reserved,omitempty"`
 	UpdatedAt     *timestamp.Timestamp   `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	CreatedAt     *timestamp.Timestamp   `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -61,6 +62,13 @@ func (x *Product) ProtoReflect() protoreflect.Message {
 // Deprecated: Use Product.ProtoReflect.Descriptor instead.
 func (*Product) Descriptor() ([]byte, []int) {
 	return file_product_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Product) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
 }
 
 func (x *Product) GetCode() string {
@@ -102,11 +110,12 @@ var File_product_proto protoreflect.FileDescriptor
 
 const file_product_proto_rawDesc = "" +
 	"\n" +
-	"\rproduct.proto\x12\x02pb\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc5\x01\n" +
-	"\aProduct\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x14\n" +
-	"\x05total\x18\x02 \x01(\x05R\x05total\x12\x1a\n" +
-	"\breserved\x18\x03 \x01(\x05R\breserved\x129\n" +
+	"\rproduct.proto\x12\x10synasishouse.api\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd5\x01\n" +
+	"\aProduct\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\x12\x1a\n" +
+	"\breserved\x18\x04 \x01(\x05R\breserved\x129\n" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
 	"\n" +
@@ -126,12 +135,12 @@ func file_product_proto_rawDescGZIP() []byte {
 
 var file_product_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_product_proto_goTypes = []any{
-	(*Product)(nil),             // 0: pb.Product
+	(*Product)(nil),             // 0: synasishouse.api.Product
 	(*timestamp.Timestamp)(nil), // 1: google.protobuf.Timestamp
 }
 var file_product_proto_depIdxs = []int32{
-	1, // 0: pb.Product.updated_at:type_name -> google.protobuf.Timestamp
-	1, // 1: pb.Product.created_at:type_name -> google.protobuf.Timestamp
+	1, // 0: synasishouse.api.Product.updated_at:type_name -> google.protobuf.Timestamp
+	1, // 1: synasishouse.api.Product.created_at:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package pb;
+package synasishouse.api;
 
 option go_package = "github.com/ymanshur/synasishouse/pb";
 
-message GetStockRequest {
+message CreateStockRequest {
   string code = 1;
   int32 amount = 2;
 }

@@ -13,9 +13,9 @@ import (
 )
 
 type Stocker interface {
-	Check(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error)
-	Reserve(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error)
-	Release(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error)
+	Check(ctx context.Context, req presentation.CreateStockRequest) (*presentation.StockResponse, error)
+	Reserve(ctx context.Context, req presentation.CreateStockRequest) (*presentation.StockResponse, error)
+	Release(ctx context.Context, req presentation.CreateStockRequest) (*presentation.StockResponse, error)
 }
 
 type stockUseCase struct {
@@ -26,7 +26,7 @@ func NewStock(repo repo.Repo) Stocker {
 	return &stockUseCase{repo: repo}
 }
 
-func (u *stockUseCase) Check(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error) {
+func (u *stockUseCase) Check(ctx context.Context, req presentation.CreateStockRequest) (*presentation.StockResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
 		return nil, err
@@ -44,7 +44,7 @@ func (u *stockUseCase) Check(ctx context.Context, req presentation.GetStockReque
 	return res, nil
 }
 
-func (u *stockUseCase) Reserve(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error) {
+func (u *stockUseCase) Reserve(ctx context.Context, req presentation.CreateStockRequest) (*presentation.StockResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (u *stockUseCase) Reserve(ctx context.Context, req presentation.GetStockReq
 	return res, nil
 }
 
-func (u *stockUseCase) Release(ctx context.Context, req presentation.GetStockRequest) (*presentation.StockResponse, error) {
+func (u *stockUseCase) Release(ctx context.Context, req presentation.CreateStockRequest) (*presentation.StockResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
 		return nil, err

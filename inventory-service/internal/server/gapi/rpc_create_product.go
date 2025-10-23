@@ -19,6 +19,7 @@ func (r *Server) CreateProduct(ctx context.Context, req *pb.CreateProductRequest
 
 	res := &pb.ProductResponse{
 		Product: &pb.Product{
+			Id:        product.ID,
 			Code:      product.Code,
 			Total:     product.Total,
 			Reserved:  product.Reserved,

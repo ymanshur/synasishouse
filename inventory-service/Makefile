@@ -46,6 +46,9 @@ createdb:
 dropdb:
 	docker exec -it ${POSTGRES_NAME} dropdb ${POSTGRES_DB}
 
+psql: clear
+	docker exec -it ${POSTGRES_NAME} psql -d ${POSTGRES_DB} -U ${POSTGRES_USER}
+
 DB_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
 DB_MIGRATION_PATH?=db/migration
 

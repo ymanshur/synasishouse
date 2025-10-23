@@ -9,8 +9,37 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgtype"
 )
+
+const addStock = `-- name: AddStock :one
+UPDATE products
+SET
+    total = total + $1,
+    reserved = reserved + $2,
+    updated_at = NOW()
+WHERE code = $3
+RETURNING id, code, total, reserved, updated_at, created_at
+`
+
+type AddStockParams struct {
+	Total    int32  `json:"total"`
+	Reserved int32  `json:"reserved"`
+	Code     string `json:"code"`
+}
+
+func (q *Queries) AddStock(ctx context.Context, arg AddStockParams) (Product, error) {
+	row := q.db.QueryRow(ctx, addStock, arg.Total, arg.Reserved, arg.Code)
+	var i Product
+	err := row.Scan(
+		&i.ID,
+		&i.Code,
+		&i.Total,
+		&i.Reserved,
+		&i.UpdatedAt,
+		&i.CreatedAt,
+	)
+	return i, err
+}
 
 const createProduct = `-- name: CreateProduct :one
 INSERT INTO products (
@@ -73,7 +102,9 @@ func (q *Queries) GetProduct(ctx context.Context, id uuid.UUID) (Product, error)
 
 const updateProduct = `-- name: UpdateProduct :one
 UPDATE products
-SET code = $1
+SET
+    code = $1,
+    updated_at = NOW()
 WHERE id = $2
 RETURNING id, code, total, reserved, updated_at, created_at
 `
@@ -85,35 +116,6 @@ type UpdateProductParams struct {
 
 func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (Product, error) {
 	row := q.db.QueryRow(ctx, updateProduct, arg.Code, arg.ID)
-	var i Product
-	err := row.Scan(
-		&i.ID,
-		&i.Code,
-		&i.Total,
-		&i.Reserved,
-		&i.UpdatedAt,
-		&i.CreatedAt,
-	)
-	return i, err
-}
-
-const updateStock = `-- name: UpdateStock :one
-UPDATE products
-SET
-    total = COALESCE($1, total),
-    reserved = COALESCE($2, reserved)
-WHERE code = $3
-RETURNING id, code, total, reserved, updated_at, created_at
-`
-
-type UpdateStockParams struct {
-	Total    pgtype.Int4 `json:"total"`
-	Reserved pgtype.Int4 `json:"reserved"`
-	Code     string      `json:"code"`
-}
-
-func (q *Queries) UpdateStock(ctx context.Context, arg UpdateStockParams) (Product, error) {
-	row := q.db.QueryRow(ctx, updateStock, arg.Total, arg.Reserved, arg.Code)
 	var i Product
 	err := row.Scan(
 		&i.ID,

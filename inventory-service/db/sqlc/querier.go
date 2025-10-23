@@ -11,11 +11,11 @@ import (
 )
 
 type Querier interface {
+	AddStock(ctx context.Context, arg AddStockParams) (Product, error)
 	CreateProduct(ctx context.Context, arg CreateProductParams) (Product, error)
 	DeleteProduct(ctx context.Context, id uuid.UUID) error
 	GetProduct(ctx context.Context, id uuid.UUID) (Product, error)
 	UpdateProduct(ctx context.Context, arg UpdateProductParams) (Product, error)
-	UpdateStock(ctx context.Context, arg UpdateStockParams) (Product, error)
 }
 
 var _ Querier = (*Queries)(nil)

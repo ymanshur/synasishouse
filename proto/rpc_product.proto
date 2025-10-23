@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package pb;
+package synasishouse.api;
 
 import "product.proto";
 
@@ -13,6 +13,11 @@ message CreateProductRequest {
 
 message GetProductRequest {
   string id = 1;
+}
+
+message UpdateProductRequest {
+  string code = 1;
+  string id = 2;
 }
 
 message ProductResponse {
