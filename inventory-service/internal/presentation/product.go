@@ -45,7 +45,6 @@ type ProductResponse struct {
 	Code      string    `json:"code"`
 	Total     int32     `json:"total"`
 	Reserved  int32     `json:"reserved"`
-	Available int32     `json:"available"`
 	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
 }

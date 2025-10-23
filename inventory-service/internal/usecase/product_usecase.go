@@ -94,6 +94,9 @@ func (u *productUseCase) Update(ctx context.Context, req presentation.UpdateProd
 		if common.PGErrorCode(err) == consts.UniqueViolation {
 			return nil, typex.NewUnprocessableEntityError("product unique constraint violated")
 		}
+		if errors.Is(err, consts.ErrRecordNotFound) {
+			return nil, typex.NewNotFoundError("product")
+		}
 		return nil, fmt.Errorf("update product: %w", err)
 	}
 
