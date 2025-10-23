@@ -348,10 +348,14 @@ func TestProduct_Delete(t *testing.T) {
 }
 
 func randomProduct(reserved int32) db.Product {
+	total := randomAmount()
+	if reserved > total {
+		reserved = total
+	}
 	return db.Product{
 		ID:       uuid.New(),
 		Code:     randomProductCode(),
-		Total:    randomInt(1, 100),
+		Total:    total,
 		Reserved: reserved,
 	}
 }
