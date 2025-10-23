@@ -1,7 +1,7 @@
 
 
 APP_NAME?=synasishouse-order
-APP_IMAGE?=ymanshur/synasishouse/order
+APP_IMAGE?=ymanshur/synasishouse:order-latest
 
 clear:
 	clear

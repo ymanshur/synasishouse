@@ -22,7 +22,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ymanshur/synasishouse/inventory
+    image: ymanshur/synasishouse:inventory-latest
     ports:
       - "9090:9090"
     environment:

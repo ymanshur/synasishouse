@@ -2,9 +2,7 @@
 
 Warehousing Microservices with Choreography Pattern
 
-## Design Architecture
-
-<img width="711" height="331" alt="Synasis House-Page-2 drawio" src="https://github.com/user-attachments/assets/72e0164b-eb76-4c86-91a7-165d5ea8b326" />
+***
 
 There are 2 main services to handle the ordering and warehousing process: **Order** and **Inventory** services.
 
@@ -14,12 +12,32 @@ While Inventory serves as the single source of truth for **product and stock man
 
 Communication between services using the **gRPC protocol**, and there is a gateway as a **reverse proxy**, while securing the backend from outside exposure.
 
+## Design Architecture
+
+<img width="711" height="331" alt="Synasis House-Page-2 drawio" src="https://github.com/user-attachments/assets/72e0164b-eb76-4c86-91a7-165d5ea8b326" />
+
 <!-- ### Observability -->
 
 ## Getting Started
 
 ```bash
 make compose
+```
+
+### Container Registry (hub.docker.com)
+
+Pull the images from <https://hub.docker.com/repository/docker/ymanshur/synasishouse>
+
+#### Inventory Service
+
+```bash
+docker pull ymanshur/synasishouse:inventory-latest
+```
+
+#### Order Service
+
+```bash
+docker pull ymanshur/synasishouse:order-latest
 ```
 
 ## API
