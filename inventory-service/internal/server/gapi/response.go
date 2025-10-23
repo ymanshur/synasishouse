@@ -1,6 +1,7 @@
 package gapi
 
 import (
+	"context"
 	"errors"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
@@ -31,7 +32,12 @@ func translationError(err error) error {
 		return status.Error(codes.AlreadyExists, conflictErr.Error())
 	case errors.As(err, &notFoundErr):
 		return status.Error(codes.NotFound, notFoundErr.Error())
+	case errors.Is(err, context.DeadlineExceeded):
+		return status.Error(codes.DeadlineExceeded, err.Error())
+	case errors.Is(err, context.Canceled):
+		return status.Error(codes.Canceled, err.Error())
 	default:
+		status.FromContextError(err)
 		return status.Error(codes.Internal, err.Error())
 	}
 }
