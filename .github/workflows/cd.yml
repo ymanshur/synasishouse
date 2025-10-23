@@ -17,6 +17,11 @@ jobs:
             dockerfile: ./inventory-service/Dockerfile
             image: synasishouse/inventory
 
+          - name: Order Service
+            context: ./order-service
+            dockerfile: ./order-service/Dockerfile
+            image: synasishouse/order
+
     name: Build and publish ${{ matrix.name }} image
     runs-on: ubuntu-latest
     permissions:
