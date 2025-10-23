@@ -5,18 +5,19 @@ services:
       service: inventory-postgres
     volumes:
       - synansishouse_inventory_pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
   inventory-backend:
     extends:
       file: inventory-service/compose.yaml
       service: inventory-backend
     depends_on:
       inventory-postgres:
+        condition: service_healthy
+  order-backend:
+    extends:
+      file: order-service/compose.yaml
+      service: order-backend
+    depends_on:
+      inventory-backend:
         condition: service_healthy
 
 volumes:
@@ -26,4 +27,4 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: inventory-service/tmp/pgdata
+      device: storage/inventory/pgdata

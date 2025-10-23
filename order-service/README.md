@@ -53,7 +53,13 @@ APP_GRPC_CLIENT_INVENTORY_HOST=localhost
 APP_GRPC_CLIENT_INVENTORY_PORT=9090
 ```
 
-Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile)
+Build the image with vendor mode (it's mandatory)
+
+```bash
+make build
+```
+
+Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile), and the Inventory service run at shared network.
 
 ```bash
 make run
@@ -68,13 +74,13 @@ make run
 #### Health Check
 
 ```http
-GET http://0.0.0.0:8000/api/health HTTP/1.1
+GET http://localhost:8000/api/health HTTP/1.1
 ```
 
 ### Create order
 
 ```http
-POST http://0.0.0.0:8000/api/orders HTTP/1.1
+POST http://localhost:8000/api/orders HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 

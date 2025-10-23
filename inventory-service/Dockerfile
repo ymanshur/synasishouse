@@ -11,6 +11,10 @@ COPY . .
 # Bundle app source
 RUN go build -mod=vendor -o main main.go
 
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.5 && \
+    wget -qO/app/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+    chmod +x /app/grpc_health_probe
+
 # Run stage
 FROM scratch
 
@@ -18,6 +22,7 @@ WORKDIR /app
 
 # Bundle executable app and (files) dependencies
 COPY --from=builder /app/main .
+COPY --from=builder /app/grpc_health_probe /bin/grpc_health_probe
 
 COPY app.yaml.dist ./app.yaml
 COPY db/migration ./db/migration

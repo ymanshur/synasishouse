@@ -15,5 +15,5 @@ proto:
 	statik -src=./docs/swagger -dest=./docs
 
 compose:
-	mkdir -p inventory-service/tmp/pgdata
+	mkdir -p storage/inventory/pgdata
 	docker compose up

@@ -1,0 +1,19 @@
+services:
+  order-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ymanshur/synasishouse/order
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENVIRONMENT=development
+      - APP_HTTP_SERVER_ADDR=0.0.0.0:8000
+      - APP_GRPC_CLIENT_INVENTORY_HOST=inventory-backend
+      - APP_GRPC_CLIENT_INVENTORY_PORT=9090
+    command: ["/app/main"]
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1024M

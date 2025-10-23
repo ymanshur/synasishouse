@@ -16,6 +16,12 @@ Communication between services using the **gRPC protocol**, and there is a gatew
 
 <!-- ### Observability -->
 
+## Getting Started
+
+```bash
+make compose
+```
+
 ## API
 
 Open <https://ymanshur.github.io/synasishouse/docs/swagger/> to see API documentation based on the gRPC Gateway proto annotation.

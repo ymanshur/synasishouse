@@ -19,10 +19,16 @@ modsync:
 build: modsync
 	docker build -t ${APP_IMAGE}:latest .
 
+NETWORK?=synasishouse-net
+
+network:
+	docker network create ${NETWORK}
+
 # run with necessary environment variables
 run:
 	docker run --rm \
 	--name ${APP_NAME} \
+	--network ${NETWORK} \
 	-p 9090:9090 \
 	-e APP_DB_HOST=host.docker.internal \
 	${APP_IMAGE}:latest

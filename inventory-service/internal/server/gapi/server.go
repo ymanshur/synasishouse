@@ -14,6 +14,7 @@ import (
 	pb "github.com/ymanshur/synasishouse/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	health "google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 )
@@ -22,6 +23,7 @@ import (
 type Server struct {
 	// UnimplementedInventoryServer enable forward compatibility
 	pb.UnimplementedInventoryServer
+	health.UnimplementedHealthServer
 
 	rpcServerAddr string
 	rpcServer     *grpc.Server
@@ -57,7 +59,9 @@ func NewServer(
 		interceptor.Logger,
 		grpcRecovery,
 	))
+
 	pb.RegisterInventoryServer(server.rpcServer, server)
+	health.RegisterHealthServer(server.rpcServer, server)
 
 	// Allows the gRPC client to explore available RPCs on the server
 	// as some kind of self server documentation.
