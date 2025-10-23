@@ -1,0 +1,13 @@
+grpc_server:
+  host:
+  port:
+  addr: 0.0.0.0:9090
+
+db:
+  name: synansishouse_inventory
+  host: localhost
+  port: 5432
+  user: postgres
+  pass: postgres
+
+db_migration_url: file://db/migration

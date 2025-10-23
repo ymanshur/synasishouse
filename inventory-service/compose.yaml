@@ -1,0 +1,35 @@
+services:
+  inventory-postgres:
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=synansishouse_inventory
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 512M
+  inventory-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ymanshur/synasishouse/inventory
+    ports:
+      - "9090:9090"
+    environment:
+      - APP_GRPC_SERVER_ADDR=0.0.0.0:9090
+      - APP_DB_NAME=synansishouse_inventory
+      - APP_DB_HOST=inventory-postgres
+      - APP_DB_PORT=5432
+      - APP_DB_USER=postgres
+      - APP_DB_PASS=postgres
+      - APP_DB_MIGRATION_URL=file://db/migration
+    command: ["/app/main"]
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1024M

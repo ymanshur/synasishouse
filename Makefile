@@ -14,6 +14,6 @@ proto:
     proto/*.proto
 	statik -src=./docs/swagger -dest=./docs
 
-container:
-	mkdir -p tmp/pg_data
-	docker compose -p ${APP_NAME} --project-directory . -f deployment/docker-compose.yaml up --build
+compose:
+	mkdir -p inventory-service/tmp/pgdata
+	docker compose up

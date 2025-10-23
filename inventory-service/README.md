@@ -39,7 +39,7 @@ Start database PostgreSQL 14 container service:
 make postgres POSTGRES_VERSION=14
 ```
 
-Create `inventory` database:
+Create `synansishouse_inventory` database:
 
 ```bash
 make createdb
@@ -76,10 +76,14 @@ make test
 Environment variables allowed in production:
 
 ```shell
-APP_DB_SOURCE=postgresql://postgres:postgres@localhost:5432/inventory?sslmode=disable
-APP_DB_MIGRATION_URL=file://db/migration
+APP_GRPC_SERVER_ADDR=0.0.0.0:9090
 
-APP_GRPC_SERVER_ADDRESS=0.0.0.0:9090
+APP_DB_NAME=synansishouse_inventory
+APP_DB_HOST=localhost
+APP_DB_PORT=5432
+APP_DB_USER=postgres
+APP_DB_PASS=postgres
+APP_DB_MIGRATION_URL=file://db/migration
 ```
 
 Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile)

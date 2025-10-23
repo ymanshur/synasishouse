@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 
 	"github.com/rs/zerolog/log"
@@ -18,10 +19,36 @@ var (
 
 // Config stores all configurations
 type Config struct {
-	GRPCServerAddress string `mapstructure:"GRPC_SERVER_ADDRESS"`
+	GRPCServer     ServerConfig `mapstructure:"grpc_server"`
+	DB             DBConfig     `mapstructure:"db"`
+	DBMigrationURL string       `mapstructure:"db_migration_url"`
+}
 
-	DBSource       string `mapstructure:"DB_SOURCE"`
-	DBMigrationURL string `mapstructure:"DB_MIGRATION_URL"`
+type DBConfig struct {
+	Name     string `mapstructure:"name"`
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"pass"`
+}
+
+// GetURL get database DSN
+func (c DBConfig) GetURL() string {
+	return fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=disable", c.User, c.Password, c.Host, c.Port, c.Name)
+}
+
+type ServerConfig struct {
+	Host string `mapstructure:"HOST"`
+	Port int    `mapstructure:"PORT"`
+	Addr string `mapstructure:"ADDR"`
+}
+
+// GetAddr get server address
+func (c ServerConfig) GetAddr() string {
+	if c.Addr != "" {
+		return c.Addr
+	}
+	return fmt.Sprintf("%s:%d", c.Host, c.Port)
 }
 
 // LoadConfig return config instance.
@@ -48,6 +75,8 @@ func LoadConfigWithFilename(filename, ext string) (*Config, error) {
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("APP")
+	replacer := strings.NewReplacer(".", "_")
+	viper.SetEnvKeyReplacer(replacer)
 
 	var config Config
 

@@ -86,7 +86,6 @@ func LoadConfigWithFilename(filename, ext string) (*Config, error) {
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("APP")
-
 	// Replace dots in keys with underscores for environment variable compatibility
 	// (e.g., "db.host" becomes "DB_HOST")
 	replacer := strings.NewReplacer(".", "_")

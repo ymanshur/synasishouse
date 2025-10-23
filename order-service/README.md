@@ -1,6 +1,6 @@
 # Order Service
 
-This backend application serves to orchestrate order events and process them to Inventory service though RPC call: **Checkout**, **Reserve**, and **Release** to action stock.
+This backend application serves to orchestrate order events and process them to Inventory service though RPC call to action stock.
 
 ## Table Content
 
@@ -10,9 +10,9 @@ This backend application serves to orchestrate order events and process them to 
 
 ## Requirement
 
-### Functional
+<!-- ### Functional
 
-### Non Functional
+### Non Functional -->
 
 ## Getting Started
 

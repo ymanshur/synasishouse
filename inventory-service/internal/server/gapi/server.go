@@ -38,7 +38,7 @@ func NewServer(
 	config := appctx.LoadConfig()
 
 	server := &Server{
-		rpcServerAddr:  config.GRPCServerAddress,
+		rpcServerAddr:  config.GRPCServer.GetAddr(),
 		productUseCase: productUseCase,
 		stockUseCase:   stockUseCase,
 	}

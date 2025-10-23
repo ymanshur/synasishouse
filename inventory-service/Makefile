@@ -1,8 +1,3 @@
-
-
-APP_NAME?=inventory
-APP_IMAGE?=ymanshur/synasishouse/${APP_NAME}
-
 clear:
 	clear
 
@@ -12,6 +7,9 @@ server: clear
 .PHONY: test
 test:
 	go test -v -cover ./...
+
+APP_NAME?=synasishouse-inventory
+APP_IMAGE?=ymanshur/synasishouse/inventory
 
 modsync:
 	go get -u
@@ -26,14 +24,14 @@ run:
 	docker run --rm \
 	--name ${APP_NAME} \
 	-p 9090:9090 \
-	-e APP_DB_SOURCE="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@host.docker.internal:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable" \
+	-e APP_DB_HOST=host.docker.internal \
 	${APP_IMAGE}:latest
 
 POSTGRES_VERSION?=14-alpine
 POSTGRES_NAME=postgres${POSTGRES_VERSION}
 POSTGRES_USER?=postgres
 POSTGRES_PASSWORD?=postgres
-POSTGRES_DB?=inventory
+POSTGRES_DB?=synansishouse_inventory
 POSTGRES_HOST?=localhost
 POSTGRES_PORT?=5432
 

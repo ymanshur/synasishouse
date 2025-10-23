@@ -19,7 +19,7 @@ WORKDIR /app
 # Bundle executable app and (files) dependencies
 COPY --from=builder /app/main .
 
-COPY app.env.example ./app.env
+COPY app.yaml.dist ./app.yaml
 COPY db/migration ./db/migration
 
 # EXPOSE act as a documentation about which ports are intended to be published
