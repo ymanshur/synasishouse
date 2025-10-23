@@ -13,7 +13,7 @@ import (
 )
 
 type Orderer interface {
-	Checkout(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error)
+	Create(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error)
 }
 
 type orderUseCase struct {
@@ -24,20 +24,20 @@ func NewOrder(conn connector.Inventorier) Orderer {
 	return &orderUseCase{conn: conn}
 }
 
-func (u *orderUseCase) Checkout(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error) {
+func (u *orderUseCase) Create(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
 		return nil, err
 	}
 
-	isAvailable, err := u.conn.CheckStock(ctx, connector.StockParams{
+	isAvailable, err := u.conn.CheckStock(ctx, connector.CheckStockParams{
 		Code:   req.Code,
 		Amount: req.Amount,
 	})
 	if err != nil {
 		errRPC := status.Convert(err)
 		if errRPC.Code() == codes.NotFound {
-			return nil, typex.NewNotFoundError("stock")
+			return nil, typex.NewNotFoundError("product")
 		}
 
 		return nil, fmt.Errorf("check stock: %w", err)

@@ -1,6 +1,8 @@
 package response
 
-import "github.com/ymanshur/synasishouse/order/internal/typex"
+import (
+	"github.com/ymanshur/synasishouse/order/internal/typex"
+)
 
 var (
 	unprocessableEntityErr typex.UnProcessableEnity

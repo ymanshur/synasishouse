@@ -71,28 +71,51 @@ make run
 GET http://0.0.0.0:8000/api/health HTTP/1.1
 ```
 
-### Checkout an order
+### Create order
 
 ```http
-POST http://0.0.0.0:8000/api/checkout HTTP/1.1
+POST http://0.0.0.0:8000/api/orders HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
-    "code": "NO01",
+    "code": "P002",
     "amount": 1
 }
 ```
 
-#### Stock not found
+#### Product not found
 
 ```bash
 HTTP/1.1 404 Not Found
 Content-Type: application/json; charset=utf-8
 
 {
-  "success": false,
-  "message": "stock not found"
+  "code": 404,
+  "message": "product not found"
 }
+```
 
+#### Stock is unavailable
+
+```bash
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 422,
+  "message": "stock is unavailable"
+}
+```
+
+#### Stock is available
+
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 200,
+  "message": "stock is available"
+}
 ```

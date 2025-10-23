@@ -18,5 +18,5 @@ func (u *HealthHandler) Check(c *gin.Context) {
 	rsp := response.New().
 		WithCode(http.StatusOK).
 		WithMessage("UP")
-	c.JSON(rsp.GetCode(), rsp)
+	c.JSON(rsp.Code, rsp)
 }

@@ -8,7 +8,7 @@ import (
 )
 
 type Inventorier interface {
-	CheckStock(ctx context.Context, arg StockParams) (bool, error)
+	CheckStock(ctx context.Context, arg CheckStockParams) (bool, error)
 }
 
 type inventoryConn struct {
@@ -21,13 +21,13 @@ func NewInventory(cc *grpc.ClientConn) Inventorier {
 	}
 }
 
-type StockParams struct {
+type CheckStockParams struct {
 	Code   string
 	Amount int32
 }
 
-func (c *inventoryConn) CheckStock(ctx context.Context, arg StockParams) (bool, error) {
-	res, err := c.client.CheckStock(ctx, &pb.GetStockRequest{
+func (c *inventoryConn) CheckStock(ctx context.Context, arg CheckStockParams) (bool, error) {
+	res, err := c.client.CheckStock(ctx, &pb.CreateStockRequest{
 		Code:   arg.Code,
 		Amount: arg.Amount,
 	})

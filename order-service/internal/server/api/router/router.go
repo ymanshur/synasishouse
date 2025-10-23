@@ -54,7 +54,7 @@ func (r *Router) Route() http.Handler {
 
 	ApiRoutes := router.Group("/api")
 	ApiRoutes.GET("/health", healthHandler.Check)
-	ApiRoutes.POST("/checkout", orderHandler.Checkout)
+	ApiRoutes.POST("/orders", orderHandler.Create)
 
 	return router
 }

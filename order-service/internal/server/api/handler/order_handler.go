@@ -18,7 +18,7 @@ func NewOrder(orderUseCase usecase.Orderer) *OrderHandler {
 	return &OrderHandler{orderUseCase: orderUseCase}
 }
 
-func (h *OrderHandler) Checkout(c *gin.Context) {
+func (h *OrderHandler) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	var req presentation.OrderRequest
@@ -27,14 +27,14 @@ func (h *OrderHandler) Checkout(c *gin.Context) {
 		log.Warn().Err(err).Msg("cannot bind request")
 		response.New().
 			WithCode(http.StatusBadRequest).
-			WithErrors(err).
+			WithMessage(err.Error()).
 			JSON(c)
 		return
 	}
 
-	res, err := h.orderUseCase.Checkout(ctx, req)
+	res, err := h.orderUseCase.Create(ctx, req)
 	if err != nil {
-		log.Error().Err(err).Msg("cannot checkout order")
+		log.Error().Err(err).Msg("cannot create order")
 		response.New().
 			WithTranslationError(err).
 			JSON(c)
@@ -46,6 +46,7 @@ func (h *OrderHandler) Checkout(c *gin.Context) {
 			WithCode(http.StatusUnprocessableEntity).
 			WithMessage("stock is unavailable").
 			JSON(c)
+		return
 	}
 
 	response.New().

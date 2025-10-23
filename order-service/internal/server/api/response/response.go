@@ -5,18 +5,16 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
 	"github.com/ymanshur/synasishouse/pkg/util"
 )
 
 // Response presentation contract object
 type Response struct {
-	code    int
-	Success bool `json:"success"`
-	Errors  any  `json:"errors,omitempty"`
-	Data    any  `json:"data,omitempty"`
-	Meta    any  `json:"meta,omitempty"`
-	Message any  `json:"message,omitempty"`
+	Code    int `json:"code"`
+	Errors  any `json:"errors,omitempty"`
+	Data    any `json:"data,omitempty"`
+	Meta    any `json:"meta,omitempty"`
+	Message any `json:"message,omitempty"`
 }
 
 // MetaData represent meta data response for list data
@@ -29,7 +27,7 @@ type MetaData struct {
 
 // New return [Response] instance
 func New() *Response {
-	return &Response{Success: true}
+	return &Response{}
 }
 
 // NewMeta return [MetaData] instance
@@ -44,13 +42,8 @@ func NewMeta(page, limit, totalPage, totalCount int64) MetaData {
 
 // WithCode set response status code
 func (r *Response) WithCode(code int) *Response {
-	r.code = code
+	r.Code = code
 	return r
-}
-
-// GetCode set response status code
-func (r *Response) GetCode() int {
-	return r.code
 }
 
 // WithData set response data
@@ -59,50 +52,30 @@ func (r *Response) WithData(v any) *Response {
 	return r
 }
 
-// WithErrors parse the Gin validation errors
-func (r *Response) WithErrors(err error) *Response {
-	r.Success = false
-
-	if validationErrors, ok := err.(validator.ValidationErrors); ok {
-		errs := []validationError{}
-		for _, f := range validationErrors {
-			errs = append(errs,
-				validationError{
-					Field: f.Field(),
-					Msg:   validationMsgFromFieldError(f),
-				})
-		}
-		r.Errors = errs
-		r.Message = "invalid paramater"
-		return r
-	}
-	r.Message = err.Error()
-	return r
-}
-
 // WithTranslationError translates response error.
-// It will assign the status code, message and/or error.
+// It will assign the status code, Message and/or Errors.
 func (r *Response) WithTranslationError(err error) *Response {
-	r.Success = false
-
 	switch {
+	case errors.As(err, &validationErrs):
+		r.Code = http.StatusUnprocessableEntity
+		r.Errors = convertValidationErrors(validationErrs)
 	case errors.As(err, &unprocessableEntityErr):
-		r.code = http.StatusUnprocessableEntity
+		r.Code = http.StatusUnprocessableEntity
 		r.Message = unprocessableEntityErr.Error()
 	case errors.As(err, &conflictErr):
-		r.code = http.StatusConflict
+		r.Code = http.StatusConflict
 		r.Message = conflictErr.Error()
 	case errors.As(err, &notFoundErr):
-		r.code = http.StatusNotFound
+		r.Code = http.StatusNotFound
 		r.Message = notFoundErr.Error()
 	default:
 		if code, ok := util.TranslateGRPCError(err); ok {
-			r.code = code
+			r.Code = code
 			r.Message = err.Error()
 			return r
 		}
 
-		r.code = http.StatusInternalServerError
+		r.Code = http.StatusInternalServerError
 		r.Message = "something went wrong"
 	}
 
@@ -126,5 +99,5 @@ func (r *Response) WithMessage(msg string) *Response {
 
 // JSON render response through [*gin.Context]
 func (r *Response) JSON(c *gin.Context) {
-	c.JSON(r.code, r)
+	c.JSON(r.Code, r)
 }
