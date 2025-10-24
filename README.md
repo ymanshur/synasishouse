@@ -26,11 +26,22 @@ Each reserved stock is treated like a **transaction that has an expiry**. Every 
 
 ### User and Product Management
 
-It should be considered to provide the **User** and **Product** services independently. User serivce store user profiles to PostgreSQL and their sessions in **Redis** (which is scalable enough) and route notification to the **Notification** service. Product service is the place where Admin ships the product or product stocks to the Inventory service.
+It should be considered to provide the **User** and **Product** services independently. User service stores user profiles to PostgreSQL and their sessions in **Redis** (which is scalable enough) and routes notifications to the **Notification** service. Product service is the place where Admin ships the product or product stocks to the Inventory service.
 
 ### Observability
 
 Elasticsearch and Filebeat
+
+## Data Model
+
+<img width="720" height="682" alt="Synasis House" src="https://github.com/user-attachments/assets/48efdb90-bd79-47d2-b8a1-b40c17050f0a" />
+
+More details in: <https://dbdocs.io/ymanshur/SynasisHouse>
+
+### Notable Decisions
+
+ - Only exposes shared references, not internal identifiers, i.e., `order_no` and `product_code`. As preparation for beyond service separation.
+ - Reference inventory and transaction are optional; consider decouple each other to minimize lock contention between transactional behaviour and expiry processing, as long as `product_code` never changes.
 
 ## Getting Started
 
