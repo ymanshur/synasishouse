@@ -6,10 +6,10 @@ import (
 	"math/rand/v2"
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	db "github.com/ymanshur/synasishouse/inventory/db/sqlc"
 	"github.com/ymanshur/synasishouse/inventory/internal/consts"
@@ -35,7 +35,7 @@ func TestProduct_Create(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CreateProduct(gomock.Any(), db.CreateProductParams{
+					CreateProduct(mock.Anything, db.CreateProductParams{
 						Code:  product.Code,
 						Total: product.Total,
 					}).
@@ -59,7 +59,7 @@ func TestProduct_Create(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CreateProduct(gomock.Any(), db.CreateProductParams{
+					CreateProduct(mock.Anything, db.CreateProductParams{
 						Code:  product.Code,
 						Total: product.Total,
 					}).
@@ -76,10 +76,7 @@ func TestProduct_Create(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 
@@ -106,7 +103,7 @@ func TestProduct_Get(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					GetProduct(gomock.Any(), product.ID).
+					GetProduct(mock.Anything, product.ID).
 					Times(1).
 					Return(product, nil)
 			},
@@ -126,7 +123,7 @@ func TestProduct_Get(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					GetProduct(gomock.Any(), product.ID).
+					GetProduct(mock.Anything, product.ID).
 					Times(1).
 					Return(db.Product{}, pgx.ErrNoRows)
 			},
@@ -142,9 +139,6 @@ func TestProduct_Get(t *testing.T) {
 				ID: "123",
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
-				mr.EXPECT().
-					GetProduct(gomock.Any(), product.ID).
-					Times(0)
 			},
 			checkResponse: func(t *testing.T, res *presentation.ProductResponse, err error) {
 				require.Error(t, err)
@@ -154,10 +148,7 @@ func TestProduct_Get(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 
@@ -185,7 +176,7 @@ func TestProduct_Update(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					UpdateProduct(gomock.Any(), db.UpdateProductParams{
+					UpdateProduct(mock.Anything, db.UpdateProductParams{
 						Code: product.Code,
 						ID:   product.ID,
 					}).
@@ -207,7 +198,7 @@ func TestProduct_Update(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					UpdateProduct(gomock.Any(), db.UpdateProductParams{
+					UpdateProduct(mock.Anything, db.UpdateProductParams{
 						Code: product.Code,
 						ID:   product.ID,
 					}).
@@ -228,7 +219,7 @@ func TestProduct_Update(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					UpdateProduct(gomock.Any(), db.UpdateProductParams{
+					UpdateProduct(mock.Anything, db.UpdateProductParams{
 						Code: product.Code,
 						ID:   product.ID,
 					}).
@@ -248,9 +239,6 @@ func TestProduct_Update(t *testing.T) {
 				ID:   "123",
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
-				mr.EXPECT().
-					UpdateProduct(gomock.Any(), gomock.Any()).
-					Times(0)
 			},
 			checkResponse: func(t *testing.T, res *presentation.ProductResponse, err error) {
 				require.Error(t, err)
@@ -260,10 +248,7 @@ func TestProduct_Update(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 
@@ -290,7 +275,7 @@ func TestProduct_Delete(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					DeleteProduct(gomock.Any(), product.ID).
+					DeleteProduct(mock.Anything, product.ID).
 					Times(1).
 					Return(nil)
 			},
@@ -305,7 +290,7 @@ func TestProduct_Delete(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					DeleteProduct(gomock.Any(), product.ID).
+					DeleteProduct(mock.Anything, product.ID).
 					Times(1).
 					Return(pgx.ErrNoRows)
 			},
@@ -321,9 +306,6 @@ func TestProduct_Delete(t *testing.T) {
 				ID: "123",
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
-				mr.EXPECT().
-					DeleteProduct(gomock.Any(), product.ID).
-					Times(0)
 			},
 			checkResponse: func(t *testing.T, res *presentation.ProductResponse, err error) {
 				require.Error(t, err)
@@ -333,10 +315,7 @@ func TestProduct_Delete(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 

@@ -29,6 +29,7 @@ This backend application serves to manage product stock and provide an RPC endpo
 
 - Go-lang version 1.24.9
 - PostgreSQL 14+
+- [Mockery](https://github.com/vektra/mockery) 3+
 
 ### Setup Database
 

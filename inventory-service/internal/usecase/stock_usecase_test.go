@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/golang/mock/gomock"
 	"github.com/jackc/pgx/v5"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
 	"github.com/ymanshur/synasishouse/inventory/internal/repo"
@@ -35,7 +35,7 @@ func TestStock_Check(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CheckStock(gomock.Any(), repo.CreateStockParams{
+					CheckStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -64,7 +64,7 @@ func TestStock_Check(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CheckStock(gomock.Any(), repo.CreateStockParams{
+					CheckStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -93,7 +93,7 @@ func TestStock_Check(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CheckStock(gomock.Any(), repo.CreateStockParams{
+					CheckStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -114,10 +114,7 @@ func TestStock_Check(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 
@@ -150,7 +147,7 @@ func TestStock_Reserve(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReserveStock(gomock.Any(), repo.CreateStockParams{
+					ReserveStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -179,7 +176,7 @@ func TestStock_Reserve(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReserveStock(gomock.Any(), repo.CreateStockParams{
+					ReserveStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -208,7 +205,7 @@ func TestStock_Reserve(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReserveStock(gomock.Any(), repo.CreateStockParams{
+					ReserveStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -229,10 +226,7 @@ func TestStock_Reserve(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 
@@ -265,7 +259,7 @@ func TestStock_Release(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReleaseStock(gomock.Any(), repo.CreateStockParams{
+					ReleaseStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -294,7 +288,7 @@ func TestStock_Release(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReleaseStock(gomock.Any(), repo.CreateStockParams{
+					ReleaseStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -323,7 +317,7 @@ func TestStock_Release(t *testing.T) {
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReleaseStock(gomock.Any(), repo.CreateStockParams{
+					ReleaseStock(mock.Anything, repo.CreateStockParams{
 						Stocks: []repo.StockParams{
 							{
 								ProductCode: product.Code,
@@ -344,10 +338,7 @@ func TestStock_Release(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			c := gomock.NewController(t)
-			defer c.Finish()
-
-			repo := mockrepo.NewMockRepo(c)
+			repo := mockrepo.NewMockRepo(t)
 
 			tc.buildStubs(repo)
 
