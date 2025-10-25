@@ -27,12 +27,12 @@ var File_service_inventory_proto protoreflect.FileDescriptor
 
 const file_service_inventory_proto_rawDesc = "" +
 	"\n" +
-	"\x17service_inventory.proto\x12\x10synasishouse.api\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0frpc_stock.proto\x1a\x11rpc_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xc3\t\n" +
+	"\x17service_inventory.proto\x12\x10synasishouse.api\x1a\x1cgoogle/api/annotations.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0frpc_stock.proto\x1a\x11rpc_product.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xb5\t\n" +
 	"\tInventory\x12\xa5\x01\n" +
 	"\n" +
-	"CheckStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"P\x92A7\x12\vCheck stock\x1a(Use this API to checkout a product stock\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/stocks\x12\xb7\x01\n" +
-	"\fReserveStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"`\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/reserve\x12\xb7\x01\n" +
-	"\fReleaseStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"`\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x1f:\x01*\"\x1a/api/stocks/{code}/release\x12\xa9\x01\n" +
+	"CheckStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"P\x92A7\x12\vCheck stock\x1a(Use this API to checkout a product stock\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/api/stocks\x12\xb0\x01\n" +
+	"\fReserveStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"Y\x92A8\x12\rReserve stock\x1a'Use this API to reserve a product stock\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/stocks/reserve\x12\xb0\x01\n" +
+	"\fReleaseStock\x12$.synasishouse.api.CreateStockRequest\x1a\x1f.synasishouse.api.StockResponse\"Y\x92A8\x12\rRelease stock\x1a'Use this API to release a product stock\x82\xd3\xe4\x93\x02\x18:\x01*\"\x13/api/stocks/release\x12\xa9\x01\n" +
 	"\rCreateProduct\x12&.synasishouse.api.CreateProductRequest\x1a!.synasishouse.api.ProductResponse\"M\x92A2\x12\x0eCreate product\x1a Use this API to create a product\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/products\x12\x9f\x01\n" +
 	"\n" +
 	"GetProduct\x12#.synasishouse.api.GetProductRequest\x1a!.synasishouse.api.ProductResponse\"I\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x14\x12\x12/api/products/{id}\x12\xab\x01\n" +

@@ -21,17 +21,68 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type StockRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProductCode   string                 `protobuf:"bytes,1,opt,name=product_code,json=productCode,proto3" json:"product_code,omitempty"`
+	Amount        int32                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StockRequest) Reset() {
+	*x = StockRequest{}
+	mi := &file_rpc_stock_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StockRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StockRequest) ProtoMessage() {}
+
+func (x *StockRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_rpc_stock_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StockRequest.ProtoReflect.Descriptor instead.
+func (*StockRequest) Descriptor() ([]byte, []int) {
+	return file_rpc_stock_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *StockRequest) GetProductCode() string {
+	if x != nil {
+		return x.ProductCode
+	}
+	return ""
+}
+
+func (x *StockRequest) GetAmount() int32 {
+	if x != nil {
+		return x.Amount
+	}
+	return 0
+}
+
 type CreateStockRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Amount        int32                  `protobuf:"varint,2,opt,name=amount,proto3" json:"amount,omitempty"`
+	Stocks        []*StockRequest        `protobuf:"bytes,1,rep,name=stocks,proto3" json:"stocks,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateStockRequest) Reset() {
 	*x = CreateStockRequest{}
-	mi := &file_rpc_stock_proto_msgTypes[0]
+	mi := &file_rpc_stock_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -43,7 +94,7 @@ func (x *CreateStockRequest) String() string {
 func (*CreateStockRequest) ProtoMessage() {}
 
 func (x *CreateStockRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_stock_proto_msgTypes[0]
+	mi := &file_rpc_stock_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -56,21 +107,14 @@ func (x *CreateStockRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateStockRequest.ProtoReflect.Descriptor instead.
 func (*CreateStockRequest) Descriptor() ([]byte, []int) {
-	return file_rpc_stock_proto_rawDescGZIP(), []int{0}
+	return file_rpc_stock_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateStockRequest) GetCode() string {
+func (x *CreateStockRequest) GetStocks() []*StockRequest {
 	if x != nil {
-		return x.Code
+		return x.Stocks
 	}
-	return ""
-}
-
-func (x *CreateStockRequest) GetAmount() int32 {
-	if x != nil {
-		return x.Amount
-	}
-	return 0
+	return nil
 }
 
 type StockResponse struct {
@@ -82,7 +126,7 @@ type StockResponse struct {
 
 func (x *StockResponse) Reset() {
 	*x = StockResponse{}
-	mi := &file_rpc_stock_proto_msgTypes[1]
+	mi := &file_rpc_stock_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -94,7 +138,7 @@ func (x *StockResponse) String() string {
 func (*StockResponse) ProtoMessage() {}
 
 func (x *StockResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_rpc_stock_proto_msgTypes[1]
+	mi := &file_rpc_stock_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -107,7 +151,7 @@ func (x *StockResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StockResponse.ProtoReflect.Descriptor instead.
 func (*StockResponse) Descriptor() ([]byte, []int) {
-	return file_rpc_stock_proto_rawDescGZIP(), []int{1}
+	return file_rpc_stock_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *StockResponse) GetIsAvailable() bool {
@@ -121,10 +165,12 @@ var File_rpc_stock_proto protoreflect.FileDescriptor
 
 const file_rpc_stock_proto_rawDesc = "" +
 	"\n" +
-	"\x0frpc_stock.proto\x12\x10synasishouse.api\"@\n" +
-	"\x12CreateStockRequest\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x16\n" +
-	"\x06amount\x18\x02 \x01(\x05R\x06amount\"2\n" +
+	"\x0frpc_stock.proto\x12\x10synasishouse.api\"I\n" +
+	"\fStockRequest\x12!\n" +
+	"\fproduct_code\x18\x01 \x01(\tR\vproductCode\x12\x16\n" +
+	"\x06amount\x18\x02 \x01(\x05R\x06amount\"L\n" +
+	"\x12CreateStockRequest\x126\n" +
+	"\x06stocks\x18\x01 \x03(\v2\x1e.synasishouse.api.StockRequestR\x06stocks\"2\n" +
 	"\rStockResponse\x12!\n" +
 	"\fis_available\x18\x01 \x01(\bR\visAvailableB%Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
 
@@ -140,17 +186,19 @@ func file_rpc_stock_proto_rawDescGZIP() []byte {
 	return file_rpc_stock_proto_rawDescData
 }
 
-var file_rpc_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_rpc_stock_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_rpc_stock_proto_goTypes = []any{
-	(*CreateStockRequest)(nil), // 0: synasishouse.api.CreateStockRequest
-	(*StockResponse)(nil),      // 1: synasishouse.api.StockResponse
+	(*StockRequest)(nil),       // 0: synasishouse.api.StockRequest
+	(*CreateStockRequest)(nil), // 1: synasishouse.api.CreateStockRequest
+	(*StockResponse)(nil),      // 2: synasishouse.api.StockResponse
 }
 var file_rpc_stock_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: synasishouse.api.CreateStockRequest.stocks:type_name -> synasishouse.api.StockRequest
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_rpc_stock_proto_init() }
@@ -164,7 +212,7 @@ func file_rpc_stock_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_rpc_stock_proto_rawDesc), len(file_rpc_stock_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

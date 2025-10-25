@@ -66,21 +66,12 @@ func request_Inventory_ReserveStock_0(ctx context.Context, marshaler runtime.Mar
 	var (
 		protoReq CreateStockRequest
 		metadata runtime.ServerMetadata
-		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["code"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
-	}
-	protoReq.Code, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
 	}
 	msg, err := client.ReserveStock(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -90,18 +81,9 @@ func local_request_Inventory_ReserveStock_0(ctx context.Context, marshaler runti
 	var (
 		protoReq CreateStockRequest
 		metadata runtime.ServerMetadata
-		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	val, ok := pathParams["code"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
-	}
-	protoReq.Code, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
 	}
 	msg, err := server.ReserveStock(ctx, &protoReq)
 	return msg, metadata, err
@@ -111,21 +93,12 @@ func request_Inventory_ReleaseStock_0(ctx context.Context, marshaler runtime.Mar
 	var (
 		protoReq CreateStockRequest
 		metadata runtime.ServerMetadata
-		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["code"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
-	}
-	protoReq.Code, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
 	}
 	msg, err := client.ReleaseStock(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -135,18 +108,9 @@ func local_request_Inventory_ReleaseStock_0(ctx context.Context, marshaler runti
 	var (
 		protoReq CreateStockRequest
 		metadata runtime.ServerMetadata
-		err      error
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	val, ok := pathParams["code"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "code")
-	}
-	protoReq.Code, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "code", err)
 	}
 	msg, err := server.ReleaseStock(ctx, &protoReq)
 	return msg, metadata, err
@@ -342,7 +306,7 @@ func RegisterInventoryHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/synasishouse.api.Inventory/ReserveStock", runtime.WithHTTPPathPattern("/api/stocks/{code}/reserve"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/synasishouse.api.Inventory/ReserveStock", runtime.WithHTTPPathPattern("/api/stocks/reserve"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -362,7 +326,7 @@ func RegisterInventoryHandlerServer(ctx context.Context, mux *runtime.ServeMux, 
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/synasishouse.api.Inventory/ReleaseStock", runtime.WithHTTPPathPattern("/api/stocks/{code}/release"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/synasishouse.api.Inventory/ReleaseStock", runtime.WithHTTPPathPattern("/api/stocks/release"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -517,7 +481,7 @@ func RegisterInventoryHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/synasishouse.api.Inventory/ReserveStock", runtime.WithHTTPPathPattern("/api/stocks/{code}/reserve"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/synasishouse.api.Inventory/ReserveStock", runtime.WithHTTPPathPattern("/api/stocks/reserve"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -534,7 +498,7 @@ func RegisterInventoryHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/synasishouse.api.Inventory/ReleaseStock", runtime.WithHTTPPathPattern("/api/stocks/{code}/release"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/synasishouse.api.Inventory/ReleaseStock", runtime.WithHTTPPathPattern("/api/stocks/release"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -620,8 +584,8 @@ func RegisterInventoryHandlerClient(ctx context.Context, mux *runtime.ServeMux, 
 
 var (
 	pattern_Inventory_CheckStock_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "stocks"}, ""))
-	pattern_Inventory_ReserveStock_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "stocks", "code", "reserve"}, ""))
-	pattern_Inventory_ReleaseStock_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"api", "stocks", "code", "release"}, ""))
+	pattern_Inventory_ReserveStock_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "stocks", "reserve"}, ""))
+	pattern_Inventory_ReleaseStock_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"api", "stocks", "release"}, ""))
 	pattern_Inventory_CreateProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"api", "products"}, ""))
 	pattern_Inventory_GetProduct_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "products", "id"}, ""))
 	pattern_Inventory_UpdateProduct_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "products", "id"}, ""))

@@ -30,7 +30,7 @@ service Inventory {
   }
   rpc ReserveStock (CreateStockRequest) returns (StockResponse) {
     option (google.api.http) = {
-      post: "/api/stocks/{code}/reserve"
+      post: "/api/stocks/reserve"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -40,7 +40,7 @@ service Inventory {
   }
   rpc ReleaseStock (CreateStockRequest) returns (StockResponse) {
     option (google.api.http) = {
-      post: "/api/stocks/{code}/release"
+      post: "/api/stocks/release"
       body: "*"
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
