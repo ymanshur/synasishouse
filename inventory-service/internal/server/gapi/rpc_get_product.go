@@ -18,10 +18,10 @@ func (r *Server) GetProduct(ctx context.Context, req *pb.GetProductRequest) (*pb
 
 	res := &pb.ProductResponse{
 		Product: &pb.Product{
-			Id: product.ID,
+			Id:        product.ID,
 			Code:      product.Code,
 			Total:     product.Total,
-			Reserved:  product.Reserved,
+			Hold:      product.Hold,
 			UpdatedAt: timestamppb.New(product.UpdatedAt),
 			CreatedAt: timestamppb.New(product.CreatedAt),
 		},

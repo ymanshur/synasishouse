@@ -11,16 +11,16 @@ func (r *repo) CheckStock(ctx context.Context, code string, amount int32) (bool,
 	isAvailable := true
 	err := r.execTx(ctx, func(q *db.Queries) error {
 		product, err := q.AddStock(ctx, db.AddStockParams{
-			Reserved: amount,
-			Code:     code,
+			Hold: amount,
+			Code: code,
 		})
 		if err != nil {
 			return err
 		}
 
-		if product.Reserved > product.Total {
+		if product.Hold > product.Total {
 			isAvailable = false
-			return fmt.Errorf("out of reserved")
+			return fmt.Errorf("out of hold")
 		}
 
 		return nil
@@ -36,9 +36,9 @@ func (r *repo) ReserveStock(ctx context.Context, code string, amount int32) (boo
 	isAvailable := true
 	err := r.execTx(ctx, func(q *db.Queries) error {
 		product, err := q.AddStock(ctx, db.AddStockParams{
-			Total:    -amount,
-			Reserved: -amount,
-			Code:     code,
+			Total: -amount,
+			Hold:  -amount,
+			Code:  code,
 		})
 		if err != nil {
 			return err
@@ -49,9 +49,9 @@ func (r *repo) ReserveStock(ctx context.Context, code string, amount int32) (boo
 			return fmt.Errorf("out of stock")
 		}
 
-		if product.Reserved > product.Total {
+		if product.Hold < 0 {
 			isAvailable = false
-			return fmt.Errorf("out of reserved")
+			return fmt.Errorf("out of hold")
 		}
 
 		return nil
@@ -67,14 +67,14 @@ func (r *repo) ReleaseStock(ctx context.Context, code string, amount int32) (boo
 	isAvailable := true
 	err := r.execTx(ctx, func(q *db.Queries) error {
 		product, err := q.AddStock(ctx, db.AddStockParams{
-			Reserved: -amount,
-			Code:     code,
+			Hold: -amount,
+			Code: code,
 		})
 		if err != nil {
 			return err
 		}
 
-		if product.Reserved < 0 {
+		if product.Hold < 0 {
 			isAvailable = false
 			return fmt.Errorf("out of release")
 		}

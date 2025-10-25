@@ -27,7 +27,7 @@ type Product struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
 	Total         int32                  `protobuf:"varint,3,opt,name=total,proto3" json:"total,omitempty"`
-	Reserved      int32                  `protobuf:"varint,4,opt,name=reserved,proto3" json:"reserved,omitempty"`
+	Hold          int32                  `protobuf:"varint,4,opt,name=hold,proto3" json:"hold,omitempty"`
 	UpdatedAt     *timestamp.Timestamp   `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	CreatedAt     *timestamp.Timestamp   `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -85,9 +85,9 @@ func (x *Product) GetTotal() int32 {
 	return 0
 }
 
-func (x *Product) GetReserved() int32 {
+func (x *Product) GetHold() int32 {
 	if x != nil {
-		return x.Reserved
+		return x.Hold
 	}
 	return 0
 }
@@ -110,12 +110,12 @@ var File_product_proto protoreflect.FileDescriptor
 
 const file_product_proto_rawDesc = "" +
 	"\n" +
-	"\rproduct.proto\x12\x10synasishouse.api\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd5\x01\n" +
+	"\rproduct.proto\x12\x10synasishouse.api\x1a\x1fgoogle/protobuf/timestamp.proto\"\xcd\x01\n" +
 	"\aProduct\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04code\x18\x02 \x01(\tR\x04code\x12\x14\n" +
-	"\x05total\x18\x03 \x01(\x05R\x05total\x12\x1a\n" +
-	"\breserved\x18\x04 \x01(\x05R\breserved\x129\n" +
+	"\x05total\x18\x03 \x01(\x05R\x05total\x12\x12\n" +
+	"\x04hold\x18\x04 \x01(\x05R\x04hold\x129\n" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
 	"\n" +

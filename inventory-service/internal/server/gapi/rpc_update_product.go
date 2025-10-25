@@ -10,7 +10,8 @@ import (
 
 func (r *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest) (*pb.ProductResponse, error) {
 	product, err := r.productUseCase.Update(ctx, presentation.UpdateProductRequest{
-		Code: req.Code,
+		ID:   req.GetId(),
+		Code: req.GetCode(),
 	})
 	if err != nil {
 		return nil, translationError(err)
@@ -21,7 +22,7 @@ func (r *Server) UpdateProduct(ctx context.Context, req *pb.UpdateProductRequest
 			Id:        product.ID,
 			Code:      product.Code,
 			Total:     product.Total,
-			Reserved:  product.Reserved,
+			Hold:      product.Hold,
 			UpdatedAt: timestamppb.New(product.UpdatedAt),
 			CreatedAt: timestamppb.New(product.CreatedAt),
 		},

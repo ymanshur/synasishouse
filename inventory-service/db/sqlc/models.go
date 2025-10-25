@@ -14,7 +14,7 @@ type Product struct {
 	ID        uuid.UUID `json:"id"`
 	Code      string    `json:"code"`
 	Total     int32     `json:"total"`
-	Reserved  int32     `json:"reserved"`
+	Hold      int32     `json:"hold"`
 	UpdatedAt time.Time `json:"updated_at"`
 	CreatedAt time.Time `json:"created_at"`
 }

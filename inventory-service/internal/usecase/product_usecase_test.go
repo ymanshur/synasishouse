@@ -48,7 +48,7 @@ func TestProduct_Create(t *testing.T) {
 				require.NotZero(t, res.ID)
 				require.Equal(t, product.Code, res.Code)
 				require.Equal(t, product.Total, res.Total)
-				require.Zero(t, product.Reserved)
+				require.Zero(t, product.Hold)
 			},
 		},
 		{
@@ -116,7 +116,7 @@ func TestProduct_Get(t *testing.T) {
 				require.NotZero(t, res.ID)
 				require.Equal(t, product.Code, res.Code)
 				require.Equal(t, product.Total, res.Total)
-				require.Equal(t, product.Reserved, int32(10))
+				require.Equal(t, product.Hold, int32(10))
 			},
 		},
 		{
@@ -347,16 +347,16 @@ func TestProduct_Delete(t *testing.T) {
 	}
 }
 
-func randomProduct(reserved int32) db.Product {
+func randomProduct(hold int32) db.Product {
 	total := randomAmount()
-	if reserved > total {
-		reserved = total
+	if hold > total {
+		hold = total
 	}
 	return db.Product{
-		ID:       uuid.New(),
-		Code:     randomProductCode(),
-		Total:    total,
-		Reserved: reserved,
+		ID:    uuid.New(),
+		Code:  randomProductCode(),
+		Total: total,
+		Hold:  hold,
 	}
 }
 

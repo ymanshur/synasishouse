@@ -2,7 +2,7 @@
 INSERT INTO products (
     code,
     total,
-    reserved
+    hold
 ) VALUES (
     $1, $2, $3
 ) RETURNING *;
@@ -27,7 +27,7 @@ WHERE id = $1;
 UPDATE products
 SET
     total = total + sqlc.arg(total),
-    reserved = reserved + sqlc.arg(reserved),
+    hold = hold + sqlc.arg(hold),
     updated_at = NOW()
 WHERE code = sqlc.arg(code)
 RETURNING *;

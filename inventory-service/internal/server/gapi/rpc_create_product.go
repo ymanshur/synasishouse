@@ -10,8 +10,8 @@ import (
 
 func (r *Server) CreateProduct(ctx context.Context, req *pb.CreateProductRequest) (*pb.ProductResponse, error) {
 	product, err := r.productUseCase.Create(ctx, presentation.CreateProductRequest{
-		Code:  req.Code,
-		Total: req.Total,
+		Code:  req.GetCode(),
+		Total: req.GetTotal(),
 	})
 	if err != nil {
 		return nil, translationError(err)
@@ -22,7 +22,7 @@ func (r *Server) CreateProduct(ctx context.Context, req *pb.CreateProductRequest
 			Id:        product.ID,
 			Code:      product.Code,
 			Total:     product.Total,
-			Reserved:  product.Reserved,
+			Hold:      product.Hold,
 			UpdatedAt: timestamppb.New(product.UpdatedAt),
 			CreatedAt: timestamppb.New(product.CreatedAt),
 		},

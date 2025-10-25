@@ -37,7 +37,9 @@ func translationError(err error) error {
 	case errors.Is(err, context.Canceled):
 		return status.Error(codes.Canceled, err.Error())
 	default:
-		status.FromContextError(err)
+		if s := status.FromContextError(err); s.Code() != codes.Unknown {
+			return s.Err()
+		}
 		return status.Error(codes.Internal, err.Error())
 	}
 }

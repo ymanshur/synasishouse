@@ -15,26 +15,26 @@ const addStock = `-- name: AddStock :one
 UPDATE products
 SET
     total = total + $1,
-    reserved = reserved + $2,
+    hold = hold + $2,
     updated_at = NOW()
 WHERE code = $3
-RETURNING id, code, total, reserved, updated_at, created_at
+RETURNING id, code, total, hold, updated_at, created_at
 `
 
 type AddStockParams struct {
-	Total    int32  `json:"total"`
-	Reserved int32  `json:"reserved"`
-	Code     string `json:"code"`
+	Total int32  `json:"total"`
+	Hold  int32  `json:"hold"`
+	Code  string `json:"code"`
 }
 
 func (q *Queries) AddStock(ctx context.Context, arg AddStockParams) (Product, error) {
-	row := q.db.QueryRow(ctx, addStock, arg.Total, arg.Reserved, arg.Code)
+	row := q.db.QueryRow(ctx, addStock, arg.Total, arg.Hold, arg.Code)
 	var i Product
 	err := row.Scan(
 		&i.ID,
 		&i.Code,
 		&i.Total,
-		&i.Reserved,
+		&i.Hold,
 		&i.UpdatedAt,
 		&i.CreatedAt,
 	)
@@ -45,26 +45,26 @@ const createProduct = `-- name: CreateProduct :one
 INSERT INTO products (
     code,
     total,
-    reserved
+    hold
 ) VALUES (
     $1, $2, $3
-) RETURNING id, code, total, reserved, updated_at, created_at
+) RETURNING id, code, total, hold, updated_at, created_at
 `
 
 type CreateProductParams struct {
-	Code     string `json:"code"`
-	Total    int32  `json:"total"`
-	Reserved int32  `json:"reserved"`
+	Code  string `json:"code"`
+	Total int32  `json:"total"`
+	Hold  int32  `json:"hold"`
 }
 
 func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (Product, error) {
-	row := q.db.QueryRow(ctx, createProduct, arg.Code, arg.Total, arg.Reserved)
+	row := q.db.QueryRow(ctx, createProduct, arg.Code, arg.Total, arg.Hold)
 	var i Product
 	err := row.Scan(
 		&i.ID,
 		&i.Code,
 		&i.Total,
-		&i.Reserved,
+		&i.Hold,
 		&i.UpdatedAt,
 		&i.CreatedAt,
 	)
@@ -82,7 +82,7 @@ func (q *Queries) DeleteProduct(ctx context.Context, id uuid.UUID) error {
 }
 
 const getProduct = `-- name: GetProduct :one
-SELECT id, code, total, reserved, updated_at, created_at FROM products
+SELECT id, code, total, hold, updated_at, created_at FROM products
 WHERE id = $1 LIMIT 1
 `
 
@@ -93,7 +93,7 @@ func (q *Queries) GetProduct(ctx context.Context, id uuid.UUID) (Product, error)
 		&i.ID,
 		&i.Code,
 		&i.Total,
-		&i.Reserved,
+		&i.Hold,
 		&i.UpdatedAt,
 		&i.CreatedAt,
 	)
@@ -106,7 +106,7 @@ SET
     code = $1,
     updated_at = NOW()
 WHERE id = $2
-RETURNING id, code, total, reserved, updated_at, created_at
+RETURNING id, code, total, hold, updated_at, created_at
 `
 
 type UpdateProductParams struct {
@@ -121,7 +121,7 @@ func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (P
 		&i.ID,
 		&i.Code,
 		&i.Total,
-		&i.Reserved,
+		&i.Hold,
 		&i.UpdatedAt,
 		&i.CreatedAt,
 	)

@@ -10,7 +10,7 @@ func ProductToResponse(i db.Product) presentation.ProductResponse {
 		ID:        i.ID.String(),
 		Code:      i.Code,
 		Total:     i.Total,
-		Reserved:  i.Reserved,
+		Hold:      i.Hold,
 		UpdatedAt: i.UpdatedAt,
 		CreatedAt: i.CreatedAt,
 	}
