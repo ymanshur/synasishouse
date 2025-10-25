@@ -12,11 +12,19 @@ services:
     depends_on:
       inventory-postgres:
         condition: service_healthy
+  order-postgres:
+    extends:
+      file: order-service/compose.yaml
+      service: order-postgres
+    volumes:
+      - synansishouse_order_pgdata:/var/lib/postgresql/data
   order-backend:
     extends:
       file: order-service/compose.yaml
       service: order-backend
     depends_on:
+      order-postgres:
+        condition: service_healthy
       inventory-backend:
         condition: service_healthy
 
@@ -28,3 +36,10 @@ volumes:
       o: bind
       type: none
       device: storage/inventory/pgdata
+  synansishouse_order_pgdata:
+    name: synansishouse-order-pgdata
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: storage/order/pgdata

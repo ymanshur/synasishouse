@@ -16,7 +16,13 @@ Communication between services using the **gRPC protocol**, and there is a gatew
 
 <img width="711" height="331" alt="Synasis House-Page-2 drawio" src="https://github.com/user-attachments/assets/72e0164b-eb76-4c86-91a7-165d5ea8b326" />
 
-<!-- ### Observability -->
+### Cache
+
+Display total stock for frontend from **cached product data**. The total product stock is stored using *write-through* pattern.
+
+### Observability
+
+Elasticsearch and Filebeat
 
 ## Getting Started
 
@@ -27,18 +33,6 @@ make compose
 ### Container Registry (hub.docker.com)
 
 Pull the images from <https://hub.docker.com/repository/docker/ymanshur/synasishouse>
-
-#### Inventory Service
-
-```bash
-docker pull ymanshur/synasishouse:inventory-latest
-```
-
-#### Order Service
-
-```bash
-docker pull ymanshur/synasishouse:order-latest
-```
 
 ## API
 
