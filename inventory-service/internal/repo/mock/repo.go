@@ -11,6 +11,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	uuid "github.com/google/uuid"
 	db "github.com/ymanshur/synasishouse/inventory/db/sqlc"
+	repo "github.com/ymanshur/synasishouse/inventory/internal/repo"
 )
 
 // MockRepo is a mock of Repo interface.
@@ -52,18 +53,18 @@ func (mr *MockRepoMockRecorder) AddStock(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // CheckStock mocks base method.
-func (m *MockRepo) CheckStock(arg0 context.Context, arg1 string, arg2 int32) (bool, error) {
+func (m *MockRepo) CheckStock(arg0 context.Context, arg1 repo.CreateStockParams) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CheckStock", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "CheckStock", arg0, arg1)
 	ret0, _ := ret[0].(bool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CheckStock indicates an expected call of CheckStock.
-func (mr *MockRepoMockRecorder) CheckStock(arg0, arg1, arg2 interface{}) *gomock.Call {
+func (mr *MockRepoMockRecorder) CheckStock(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckStock", reflect.TypeOf((*MockRepo)(nil).CheckStock), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CheckStock", reflect.TypeOf((*MockRepo)(nil).CheckStock), arg0, arg1)
 }
 
 // CreateProduct mocks base method.
@@ -111,33 +112,33 @@ func (mr *MockRepoMockRecorder) GetProduct(arg0, arg1 interface{}) *gomock.Call 
 }
 
 // ReleaseStock mocks base method.
-func (m *MockRepo) ReleaseStock(arg0 context.Context, arg1 string, arg2 int32) (bool, error) {
+func (m *MockRepo) ReleaseStock(arg0 context.Context, arg1 repo.CreateStockParams) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReleaseStock", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "ReleaseStock", arg0, arg1)
 	ret0, _ := ret[0].(bool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ReleaseStock indicates an expected call of ReleaseStock.
-func (mr *MockRepoMockRecorder) ReleaseStock(arg0, arg1, arg2 interface{}) *gomock.Call {
+func (mr *MockRepoMockRecorder) ReleaseStock(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReleaseStock", reflect.TypeOf((*MockRepo)(nil).ReleaseStock), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReleaseStock", reflect.TypeOf((*MockRepo)(nil).ReleaseStock), arg0, arg1)
 }
 
 // ReserveStock mocks base method.
-func (m *MockRepo) ReserveStock(arg0 context.Context, arg1 string, arg2 int32) (bool, error) {
+func (m *MockRepo) ReserveStock(arg0 context.Context, arg1 repo.CreateStockParams) (bool, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ReserveStock", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "ReserveStock", arg0, arg1)
 	ret0, _ := ret[0].(bool)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // ReserveStock indicates an expected call of ReserveStock.
-func (mr *MockRepoMockRecorder) ReserveStock(arg0, arg1, arg2 interface{}) *gomock.Call {
+func (mr *MockRepoMockRecorder) ReserveStock(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReserveStock", reflect.TypeOf((*MockRepo)(nil).ReserveStock), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReserveStock", reflect.TypeOf((*MockRepo)(nil).ReserveStock), arg0, arg1)
 }
 
 // UpdateProduct mocks base method.

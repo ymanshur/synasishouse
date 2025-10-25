@@ -16,9 +16,7 @@ This backend application serves to manage product stock and provide an RPC endpo
 2. If at any time there is a failure for the next process, the hold **stock can be released**.
 3. For further development, stock can only be held for a certain period of time, such as 24 hours. After that time, the application will hold back the stock and will notify the Order service or send it as an event to a message broker.
 
-    The **expiry system** that will be applied;
-    1. Synchronously, once a product has checked out or released, along with other stock.
-    2. Scheduling and batching processes are carried out so as not to interfere with organic traffic.
+    The **expiry system** that will be applied by scheduling and batching processes. It is carried out so as not to interfere with organic traffic.
 
 ### Non Functional
 
@@ -30,7 +28,7 @@ This backend application serves to manage product stock and provide an RPC endpo
 ### Prerequisite
 
 - Go-lang version 1.24.9
-- PostgreSQL 14
+- PostgreSQL 14+
 
 ### Setup Database
 
@@ -181,8 +179,12 @@ EOM
 ```bash
 grpcurl -plaintext -d @ localhost:9090 synasishouse.api.Inventory/CheckStock <<EOM
 {
-    "code": "P001",
-    "amount": 10
+    "stocks": [
+        {
+            "product_code": "P001",
+            "amount": 10
+        }
+    ]
 }
 EOM
 ```
@@ -192,8 +194,12 @@ EOM
 ```bash
 grpcurl -plaintext -d @ localhost:9090 synasishouse.api.Inventory/ReleaseStock <<EOM
 {
-    "code": "P001",
-    "amount": 10
+    "stocks": [
+        {
+            "product_code": "P001",
+            "amount": 10
+        }
+    ]
 }
 EOM
 ```
@@ -203,8 +209,12 @@ EOM
 ```bash
 grpcurl -plaintext -d @ localhost:9090 synasishouse.api.Inventory/ReserveStock <<EOM
 {
-    "code": "P001",
-    "amount": 10
+    "stocks": [
+        {
+            "product_code": "P001",
+            "amount": 10
+        }
+    ]
 }
 EOM
 ```

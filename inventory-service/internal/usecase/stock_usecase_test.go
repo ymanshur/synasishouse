@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/require"
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
+	"github.com/ymanshur/synasishouse/inventory/internal/repo"
 	mockrepo "github.com/ymanshur/synasishouse/inventory/internal/repo/mock"
 	"github.com/ymanshur/synasishouse/inventory/internal/typex"
 )
@@ -25,12 +26,23 @@ func TestStock_Check(t *testing.T) {
 		{
 			name: "Success",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CheckStock(gomock.Any(), product.Code, amount).
+					CheckStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(true, nil)
 			},
@@ -43,12 +55,23 @@ func TestStock_Check(t *testing.T) {
 		{
 			name: "UnAvailableStock",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CheckStock(gomock.Any(), product.Code, amount).
+					CheckStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(false, nil)
 			},
@@ -61,12 +84,23 @@ func TestStock_Check(t *testing.T) {
 		{
 			name: "NotFound",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					CheckStock(gomock.Any(), product.Code, amount).
+					CheckStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(false, pgx.ErrNoRows)
 			},
@@ -107,12 +141,23 @@ func TestStock_Reserve(t *testing.T) {
 		{
 			name: "Success",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReserveStock(gomock.Any(), product.Code, amount).
+					ReserveStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(true, nil)
 			},
@@ -125,12 +170,23 @@ func TestStock_Reserve(t *testing.T) {
 		{
 			name: "UnAvailableReserve",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReserveStock(gomock.Any(), product.Code, amount).
+					ReserveStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(false, nil)
 			},
@@ -143,12 +199,23 @@ func TestStock_Reserve(t *testing.T) {
 		{
 			name: "NotFound",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReserveStock(gomock.Any(), product.Code, amount).
+					ReserveStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(false, pgx.ErrNoRows)
 			},
@@ -189,12 +256,23 @@ func TestStock_Release(t *testing.T) {
 		{
 			name: "Success",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReleaseStock(gomock.Any(), product.Code, amount).
+					ReleaseStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(true, nil)
 			},
@@ -207,12 +285,23 @@ func TestStock_Release(t *testing.T) {
 		{
 			name: "UnAvailableRelease",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReleaseStock(gomock.Any(), product.Code, amount).
+					ReleaseStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(false, nil)
 			},
@@ -225,12 +314,23 @@ func TestStock_Release(t *testing.T) {
 		{
 			name: "NotFound",
 			req: presentation.CreateStockRequest{
-				Code:   product.Code,
-				Amount: amount,
+				Stocks: []presentation.StockRequest{
+					{
+						ProductCode: product.Code,
+						Amount:      amount,
+					},
+				},
 			},
 			buildStubs: func(mr *mockrepo.MockRepo) {
 				mr.EXPECT().
-					ReleaseStock(gomock.Any(), product.Code, amount).
+					ReleaseStock(gomock.Any(), repo.CreateStockParams{
+						Stocks: []repo.StockParams{
+							{
+								ProductCode: product.Code,
+								Amount:      amount,
+							},
+						},
+					}).
 					Times(1).
 					Return(false, pgx.ErrNoRows)
 			},

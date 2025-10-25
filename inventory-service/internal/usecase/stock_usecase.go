@@ -32,7 +32,15 @@ func (u *stockUseCase) Check(ctx context.Context, req presentation.CreateStockRe
 		return nil, err
 	}
 
-	isAvailable, err := u.repo.CheckStock(ctx, req.Code, req.Amount)
+	params := repo.CreateStockParams{Stocks: []repo.StockParams{}}
+	for _, stock := range req.Stocks {
+		params.Stocks = append(params.Stocks, repo.StockParams{
+			ProductCode: stock.ProductCode,
+			Amount:      stock.Amount,
+		})
+	}
+
+	isAvailable, err := u.repo.CheckStock(ctx, params)
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
 			return nil, typex.NewNotFoundError("stock")
@@ -50,7 +58,15 @@ func (u *stockUseCase) Reserve(ctx context.Context, req presentation.CreateStock
 		return nil, err
 	}
 
-	isAvailable, err := u.repo.ReserveStock(ctx, req.Code, req.Amount)
+	params := repo.CreateStockParams{Stocks: []repo.StockParams{}}
+	for _, stock := range req.Stocks {
+		params.Stocks = append(params.Stocks, repo.StockParams{
+			ProductCode: stock.ProductCode,
+			Amount:      stock.Amount,
+		})
+	}
+
+	isAvailable, err := u.repo.ReserveStock(ctx, params)
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
 			return nil, typex.NewNotFoundError("stock")
@@ -68,7 +84,15 @@ func (u *stockUseCase) Release(ctx context.Context, req presentation.CreateStock
 		return nil, err
 	}
 
-	isAvailable, err := u.repo.ReleaseStock(ctx, req.Code, req.Amount)
+	params := repo.CreateStockParams{Stocks: []repo.StockParams{}}
+	for _, stock := range req.Stocks {
+		params.Stocks = append(params.Stocks, repo.StockParams{
+			ProductCode: stock.ProductCode,
+			Amount:      stock.Amount,
+		})
+	}
+
+	isAvailable, err := u.repo.ReleaseStock(ctx, params)
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
 			return nil, typex.NewNotFoundError("stock")
