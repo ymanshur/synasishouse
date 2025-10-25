@@ -10,15 +10,34 @@ This backend application serves to orchestrate order events and process them to 
 
 ## Requirement
 
-<!-- ### Functional
-
-### Non Functional -->
+- User can create an order of multiple products. The application will acquire the ordered products and waiting for settlement or cancelation.
 
 ## Getting Started
 
 ### Prerequisite
 
 - Go-lang version 1.24.9
+- PostgreSQL 14+
+
+### Setup Database
+
+Start database PostgreSQL 14 container service:
+
+```bash
+make postgres POSTGRES_VERSION=14
+```
+
+Create `synansishouse_order` database:
+
+```bash
+make createdb
+```
+
+Create database migration under database/migration:
+
+```bash
+make migrate name=init_schema
+```
 
 ### Run the backend on the local machine
 
@@ -51,6 +70,13 @@ APP_HTTP_SERVER_ADDR=0.0.0.0:8000
 
 APP_GRPC_CLIENT_INVENTORY_HOST=localhost
 APP_GRPC_CLIENT_INVENTORY_PORT=9090
+
+APP_DB_NAME=synansishouse_order
+APP_DB_HOST=localhost
+APP_DB_PORT=5432
+APP_DB_USER=postgres
+APP_DB_PASS=postgres
+APP_DB_MIGRATION_URL=file://db/migration
 ```
 
 Build the image with vendor mode (it's mandatory)
@@ -67,7 +93,30 @@ make run
 
 ## Documentation
 
-<!-- ### Data Model -->
+### Data Model
+
+#### Order
+
+| Field | Type | Description | Constraint |
+| - | - | - | - |
+| id | UUIDv4 | Order internal indetifier | PK |
+| order_no | String | Order external identifier | Required, Unique |
+| user_id | UUID | User who request order | Required |
+| status | String | Status of order | Values: `pending`, `settled` |
+| expired_at | Timestamp | When the order expired | |
+| updated_at | Timestamp | Last time order was updated | Default: `now()` |
+| created_at | Timestamp | Time order was created | Default: `now()` |
+
+#### Order Detail
+
+| Field | Type | Description | Constraint |
+| - | - | - | - |
+| id | UUIDv4 | Order internal indetifier | PK |
+| order_id | UUIDv4 | Order reference indetifier | FK |
+| product_code | String | Product external identifier | Required, Unique |
+| amount | Number | Amount of product order | Required, Positive |
+| updated_at | Timestamp | Last time order detail was updated | Default: `now()` |
+| created_at | Timestamp | Time order detail was created | Default: `now()` |
 
 ### API
 
@@ -85,8 +134,26 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "code": "P002",
-    "amount": 1
+    "order_no": "O003",
+    "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6",
+    "details": [
+        {
+            "product_code": "P002",
+            "amount": 100
+        }
+    ]
+}
+```
+
+#### Order already exists
+
+```bash
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 422,
+  "message": "order unique constraint violated"
 }
 ```
 
@@ -122,6 +189,17 @@ Content-Type: application/json; charset=utf-8
 
 {
   "code": 200,
-  "message": "stock is available"
+  "data": {
+    "order_no": "O002",
+    "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6",
+    "status": "pending",
+    "details": [
+      {
+        "product_code": "P002",
+        "amount": 10
+      }
+    ]
+  },
+  "message": "order created successfuly"
 }
 ```

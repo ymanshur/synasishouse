@@ -41,16 +41,9 @@ func (h *OrderHandler) Create(c *gin.Context) {
 		return
 	}
 
-	if !res.IsAvailable {
-		response.New().
-			WithCode(http.StatusUnprocessableEntity).
-			WithMessage("stock is unavailable").
-			JSON(c)
-		return
-	}
-
 	response.New().
 		WithCode(http.StatusOK).
-		WithMessage("stock is available").
+		WithMessage("order created successfuly").
+		WithData(res).
 		JSON(c)
 }

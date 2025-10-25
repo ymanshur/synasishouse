@@ -5,6 +5,15 @@ http_server:
   port:
   addr: 0.0.0.0:8000
 
+db:
+  name: synansishouse_order
+  host: localhost
+  port: 5432
+  user: postgres
+  pass: postgres
+
+db_migration_url: file://db/migration
+
 grpc_client:
   inventory:
     host: localhost
