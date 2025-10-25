@@ -183,7 +183,7 @@
         ]
       }
     },
-    "/api/stocks/{code}/release": {
+    "/api/stocks/release": {
       "post": {
         "summary": "Release stock",
         "description": "Use this API to release a product stock",
@@ -204,17 +204,11 @@
         },
         "parameters": [
           {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/InventoryReleaseStockBody"
+              "$ref": "#/definitions/apiCreateStockRequest"
             }
           }
         ],
@@ -223,7 +217,7 @@
         ]
       }
     },
-    "/api/stocks/{code}/reserve": {
+    "/api/stocks/reserve": {
       "post": {
         "summary": "Reserve stock",
         "description": "Use this API to reserve a product stock",
@@ -244,17 +238,11 @@
         },
         "parameters": [
           {
-            "name": "code",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/InventoryReserveStockBody"
+              "$ref": "#/definitions/apiCreateStockRequest"
             }
           }
         ],
@@ -265,24 +253,6 @@
     }
   },
   "definitions": {
-    "InventoryReleaseStockBody": {
-      "type": "object",
-      "properties": {
-        "amount": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
-    "InventoryReserveStockBody": {
-      "type": "object",
-      "properties": {
-        "amount": {
-          "type": "integer",
-          "format": "int32"
-        }
-      }
-    },
     "apiCreateProductRequest": {
       "type": "object",
       "properties": {
@@ -298,12 +268,12 @@
     "apiCreateStockRequest": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "string"
-        },
-        "amount": {
-          "type": "integer",
-          "format": "int32"
+        "stocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/apiStockRequest"
+          }
         }
       }
     },
@@ -339,6 +309,18 @@
       "properties": {
         "product": {
           "$ref": "#/definitions/apiProduct"
+        }
+      }
+    },
+    "apiStockRequest": {
+      "type": "object",
+      "properties": {
+        "product_code": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
