@@ -7,14 +7,12 @@ INSERT INTO orders (
     $1, $2, $3
 ) RETURNING *;
 
--- name: CreateOrderDetail :one
-INSERT INTO order_details (
-    order_id,
-    product_code,
-    amount
-) VALUES (
-    $1, $2, $3
-) RETURNING *;
+-- name: GetUserOrder :one
+SELECT * FROM orders
+WHERE
+    order_no = $1
+    AND user_id = $2
+LIMIT 1;
 
 -- name: UpdateOrderStatus :one
 UPDATE orders

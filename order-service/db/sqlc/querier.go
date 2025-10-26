@@ -6,11 +6,15 @@ package db
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 type Querier interface {
 	CreateOrder(ctx context.Context, arg CreateOrderParams) (Order, error)
 	CreateOrderDetail(ctx context.Context, arg CreateOrderDetailParams) (OrderDetail, error)
+	GetUserOrder(ctx context.Context, arg GetUserOrderParams) (Order, error)
+	ListOrderDetails(ctx context.Context, orderID uuid.UUID) ([]OrderDetail, error)
 	UpdateOrderStatus(ctx context.Context, arg UpdateOrderStatusParams) (Order, error)
 }
 

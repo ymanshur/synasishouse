@@ -42,30 +42,28 @@ func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (Order
 	return i, err
 }
 
-const createOrderDetail = `-- name: CreateOrderDetail :one
-INSERT INTO order_details (
-    order_id,
-    product_code,
-    amount
-) VALUES (
-    $1, $2, $3
-) RETURNING id, order_id, product_code, amount, updated_at, created_at
+const getUserOrder = `-- name: GetUserOrder :one
+SELECT id, order_no, user_id, status, expired_at, updated_at, created_at FROM orders
+WHERE
+    order_no = $1
+    AND user_id = $2
+LIMIT 1
 `
 
-type CreateOrderDetailParams struct {
-	OrderID     uuid.UUID `json:"order_id"`
-	ProductCode string    `json:"product_code"`
-	Amount      int32     `json:"amount"`
+type GetUserOrderParams struct {
+	OrderNo string    `json:"order_no"`
+	UserID  uuid.UUID `json:"user_id"`
 }
 
-func (q *Queries) CreateOrderDetail(ctx context.Context, arg CreateOrderDetailParams) (OrderDetail, error) {
-	row := q.db.QueryRow(ctx, createOrderDetail, arg.OrderID, arg.ProductCode, arg.Amount)
-	var i OrderDetail
+func (q *Queries) GetUserOrder(ctx context.Context, arg GetUserOrderParams) (Order, error) {
+	row := q.db.QueryRow(ctx, getUserOrder, arg.OrderNo, arg.UserID)
+	var i Order
 	err := row.Scan(
 		&i.ID,
-		&i.OrderID,
-		&i.ProductCode,
-		&i.Amount,
+		&i.OrderNo,
+		&i.UserID,
+		&i.Status,
+		&i.ExpiredAt,
 		&i.UpdatedAt,
 		&i.CreatedAt,
 	)

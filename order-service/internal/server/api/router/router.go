@@ -55,6 +55,7 @@ func (r *Router) Route() http.Handler {
 	ApiRoutes := router.Group("/api")
 	ApiRoutes.GET("/health", healthHandler.Check)
 	ApiRoutes.POST("/orders", orderHandler.Create)
+	ApiRoutes.POST("/orders/:order_no/settle", orderHandler.Settle)
 
 	return router
 }

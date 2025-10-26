@@ -145,6 +145,29 @@ Accept: application/json
 }
 ```
 
+#### Success order
+
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 200,
+  "data": {
+    "order_no": "O002",
+    "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6",
+    "status": "pending",
+    "details": [
+      {
+        "product_code": "P002",
+        "amount": 10
+      }
+    ]
+  },
+  "message": "order created successfuly"
+}
+```
+
 #### Order already exists
 
 ```bash
@@ -181,7 +204,19 @@ Content-Type: application/json; charset=utf-8
 }
 ```
 
-#### Stock is available
+### Settle order
+
+```http
+POST http://localhost:8000/api/orders/O001/settle HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6"
+}
+```
+
+#### Success settle order
 
 ```bash
 HTTP/1.1 200 OK
@@ -190,16 +225,10 @@ Content-Type: application/json; charset=utf-8
 {
   "code": 200,
   "data": {
-    "order_no": "O002",
+    "order_no": "O001",
     "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6",
-    "status": "pending",
-    "details": [
-      {
-        "product_code": "P002",
-        "amount": 10
-      }
-    ]
+    "status": "settled"
   },
-  "message": "order created successfuly"
+  "message": "order settled successfuly"
 }
 ```

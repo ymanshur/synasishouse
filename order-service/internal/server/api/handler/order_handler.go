@@ -47,3 +47,35 @@ func (h *OrderHandler) Create(c *gin.Context) {
 		WithData(res).
 		JSON(c)
 }
+
+func (h *OrderHandler) Settle(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	var req presentation.SettleRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		log.Warn().Err(err).Msg("cannot bind request")
+		response.New().
+			WithCode(http.StatusBadRequest).
+			WithMessage(err.Error()).
+			JSON(c)
+		return
+	}
+
+	req.OrderNo = c.Param("order_no")
+
+	res, err := h.orderUseCase.Settle(ctx, req)
+	if err != nil {
+		log.Error().Err(err).Msg("cannot settle order")
+		response.New().
+			WithTranslationError(err).
+			JSON(c)
+		return
+	}
+
+	response.New().
+		WithCode(http.StatusOK).
+		WithMessage("order settled successfuly").
+		WithData(res).
+		JSON(c)
+}

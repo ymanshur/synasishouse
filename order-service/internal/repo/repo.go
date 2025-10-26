@@ -19,6 +19,7 @@ type Repo interface {
 // repo provides all functions to execute SQL queries and transactions
 type repo struct {
 	pool *pgxpool.Pool
+	tx   *pgx.Tx
 
 	// composition
 	*db.Queries
@@ -33,15 +34,16 @@ func NewRepo(pool *pgxpool.Pool) Repo {
 }
 
 // newRepoWithTx creates a new Repo
-func newRepoWithTx(tx pgx.Tx) Repo {
+func newRepoWithTx(pool *pgxpool.Pool, tx pgx.Tx) Repo {
 	return &repo{
+		pool:    pool,
 		Queries: db.New(tx),
 	}
 }
 
 // InTransaction check if the connection already in transaction
 func (r *repo) InTransaction() bool {
-	return r.pool == nil
+	return r.tx != nil
 }
 
 // Transact executes the given function in the context of a SQL transaction at
@@ -54,12 +56,19 @@ func (r *repo) Transact(ctx context.Context, iso pgx.TxIsoLevel, fn func(Repo) e
 
 // execTx executes a function within a database transaction
 func (r *repo) execTx(ctx context.Context, opts pgx.TxOptions, fn func(Repo) error) error {
+	if r.InTransaction() {
+		return fmt.Errorf("repository already in a transaction")
+	}
+	defer func() {
+		r.tx = nil
+	}()
+
 	tx, err := r.pool.BeginTx(ctx, opts)
 	if err != nil {
 		return err
 	}
 
-	repo := newRepoWithTx(tx)
+	repo := newRepoWithTx(r.pool, tx)
 	err = fn(repo)
 	if err != nil {
 		if rbErr := tx.Rollback(ctx); rbErr != nil {

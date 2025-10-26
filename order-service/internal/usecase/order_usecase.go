@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	validation "github.com/go-ozzo/ozzo-validation"
@@ -20,6 +21,7 @@ import (
 
 type Orderer interface {
 	Create(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error)
+	Settle(ctx context.Context, req presentation.SettleRequest) (*presentation.SettleResponse, error)
 }
 
 type orderUseCase struct {
@@ -103,6 +105,86 @@ func (u *orderUseCase) Create(ctx context.Context, req presentation.OrderRequest
 
 		if !isAvailable {
 			return typex.NewUnprocessableEntityError("stocks is not available")
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (u *orderUseCase) Settle(ctx context.Context, req presentation.SettleRequest) (*presentation.SettleResponse, error) {
+	err := validation.Validate(&req)
+	if err != nil {
+		return nil, err
+	}
+
+	userID, err := uuid.Parse(req.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("parse user id: %w", err)
+	}
+
+	userOrder, err := u.repo.GetUserOrder(ctx, db.GetUserOrderParams{
+		OrderNo: req.OrderNo,
+		UserID:  userID,
+	})
+	if err != nil {
+		if errors.Is(err, consts.ErrRecordNotFound) {
+			return nil, typex.NewNotFoundError("user order")
+		}
+		return nil, err
+	}
+
+	if userOrder.Status == consts.OrderStatusSettled {
+		return nil, typex.NewConflictError("user order already settled")
+	}
+
+	res := &presentation.SettleResponse{}
+	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repo) error {
+		var err error
+
+		settledOrder, err := r.UpdateOrderStatus(ctx, db.UpdateOrderStatusParams{
+			ID:     userOrder.ID,
+			Status: consts.OrderStatusSettled,
+		})
+		if err != nil {
+			return fmt.Errorf("update order status: %w", err)
+		}
+
+		res.OrderNo = settledOrder.OrderNo
+		res.UserID = settledOrder.UserID.String()
+		res.Status = settledOrder.Status
+
+		orderDetails, err := u.repo.ListOrderDetails(ctx, userOrder.ID)
+		if err != nil {
+			return fmt.Errorf("list order details: %w", err)
+		}
+
+		params := connector.ReserveStockParams{
+			Stocks: []connector.StockParams{},
+		}
+		for _, detail := range orderDetails {
+			params.Stocks = append(params.Stocks, connector.StockParams{
+				ProductCode: detail.ProductCode,
+				Amount:      detail.Amount,
+			})
+		}
+
+		isAvailable, err := u.conn.ReserveStock(ctx, params)
+		if err != nil {
+			errRPC := status.Convert(err)
+			if errRPC.Code() == codes.NotFound {
+				return typex.NewNotFoundError("product")
+			}
+
+			return fmt.Errorf("reserve stock: %w", err)
+		}
+
+		if !isAvailable {
+			return fmt.Errorf("unmatch order stocks")
 		}
 
 		return nil

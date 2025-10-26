@@ -42,3 +42,21 @@ type OrderDetailResponse struct {
 	ProductCode string `json:"product_code"`
 	Amount      int32  `json:"amount"`
 }
+
+type SettleRequest struct {
+	OrderNo string
+	UserID  string `json:"user_id"`
+}
+
+func (r SettleRequest) Validate() error {
+	return validation.ValidateStruct(&r,
+		validation.Field(&r.OrderNo, validation.Required),
+		validation.Field(&r.UserID, validation.Required, is.UUID),
+	)
+}
+
+type SettleResponse struct {
+	OrderNo string `json:"order_no"`
+	UserID  string `json:"user_id"`
+	Status  string `json:"status"`
+}
