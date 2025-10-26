@@ -51,7 +51,7 @@ func (h *OrderHandler) Create(c *gin.Context) {
 func (h *OrderHandler) Settle(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	var req presentation.SettleRequest
+	var req presentation.UpdateOrderRequest
 	err := c.ShouldBindJSON(&req)
 	if err != nil {
 		log.Warn().Err(err).Msg("cannot bind request")
@@ -76,6 +76,38 @@ func (h *OrderHandler) Settle(c *gin.Context) {
 	response.New().
 		WithCode(http.StatusOK).
 		WithMessage("order settled successfuly").
+		WithData(res).
+		JSON(c)
+}
+
+func (h *OrderHandler) Cancel(c *gin.Context) {
+	ctx := c.Request.Context()
+
+	var req presentation.UpdateOrderRequest
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		log.Warn().Err(err).Msg("cannot bind request")
+		response.New().
+			WithCode(http.StatusBadRequest).
+			WithMessage(err.Error()).
+			JSON(c)
+		return
+	}
+
+	req.OrderNo = c.Param("order_no")
+
+	res, err := h.orderUseCase.Cancel(ctx, req)
+	if err != nil {
+		log.Error().Err(err).Msg("cannot cancel order")
+		response.New().
+			WithTranslationError(err).
+			JSON(c)
+		return
+	}
+
+	response.New().
+		WithCode(http.StatusOK).
+		WithMessage("order canceled successfuly").
 		WithData(res).
 		JSON(c)
 }

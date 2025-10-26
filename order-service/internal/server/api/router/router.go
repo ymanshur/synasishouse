@@ -56,6 +56,7 @@ func (r *Router) Route() http.Handler {
 	ApiRoutes.GET("/health", healthHandler.Check)
 	ApiRoutes.POST("/orders", orderHandler.Create)
 	ApiRoutes.POST("/orders/:order_no/settle", orderHandler.Settle)
+	ApiRoutes.POST("/orders/:order_no/cancel", orderHandler.Cancel)
 
 	return router
 }

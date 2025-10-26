@@ -1,6 +1,7 @@
 package consts
 
 const (
-	OrderStatusPending = "pending"
-	OrderStatusSettled = "settled"
+	OrderStatusPending  = "pending"
+	OrderStatusSettled  = "settled"
+	OrderStatusCanceled = "canceled"
 )

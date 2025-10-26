@@ -21,7 +21,8 @@ import (
 
 type Orderer interface {
 	Create(ctx context.Context, req presentation.OrderRequest) (*presentation.OrderResponse, error)
-	Settle(ctx context.Context, req presentation.SettleRequest) (*presentation.SettleResponse, error)
+	Settle(ctx context.Context, req presentation.UpdateOrderRequest) (*presentation.UpdateOrderResponse, error)
+	Cancel(ctx context.Context, req presentation.UpdateOrderRequest) (*presentation.UpdateOrderResponse, error)
 }
 
 type orderUseCase struct {
@@ -58,7 +59,7 @@ func (u *orderUseCase) Create(ctx context.Context, req presentation.OrderRequest
 		})
 		if err != nil {
 			if common.PGErrorCode(err) == consts.UniqueViolation {
-				return typex.NewUnprocessableEntityError("order unique constraint violated")
+				return typex.NewConflictError("order")
 			}
 			return fmt.Errorf("create order: %w", err)
 		}
@@ -116,7 +117,7 @@ func (u *orderUseCase) Create(ctx context.Context, req presentation.OrderRequest
 	return res, nil
 }
 
-func (u *orderUseCase) Settle(ctx context.Context, req presentation.SettleRequest) (*presentation.SettleResponse, error) {
+func (u *orderUseCase) Settle(ctx context.Context, req presentation.UpdateOrderRequest) (*presentation.UpdateOrderResponse, error) {
 	err := validation.Validate(&req)
 	if err != nil {
 		return nil, err
@@ -133,16 +134,16 @@ func (u *orderUseCase) Settle(ctx context.Context, req presentation.SettleReques
 	})
 	if err != nil {
 		if errors.Is(err, consts.ErrRecordNotFound) {
-			return nil, typex.NewNotFoundError("user order")
+			return nil, typex.NewNotFoundError("order")
 		}
 		return nil, err
 	}
 
 	if userOrder.Status == consts.OrderStatusSettled {
-		return nil, typex.NewConflictError("user order already settled")
+		return nil, typex.NewConflictError("settled order")
 	}
 
-	res := &presentation.SettleResponse{}
+	res := &presentation.UpdateOrderResponse{}
 	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repo) error {
 		var err error
 
@@ -181,6 +182,90 @@ func (u *orderUseCase) Settle(ctx context.Context, req presentation.SettleReques
 			}
 
 			return fmt.Errorf("reserve stock: %w", err)
+		}
+
+		if !isAvailable {
+			return fmt.Errorf("unmatch order stocks")
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (u *orderUseCase) Cancel(ctx context.Context, req presentation.UpdateOrderRequest) (*presentation.UpdateOrderResponse, error) {
+	err := validation.Validate(&req)
+	if err != nil {
+		return nil, err
+	}
+
+	userID, err := uuid.Parse(req.UserID)
+	if err != nil {
+		return nil, fmt.Errorf("parse user id: %w", err)
+	}
+
+	userOrder, err := u.repo.GetUserOrder(ctx, db.GetUserOrderParams{
+		OrderNo: req.OrderNo,
+		UserID:  userID,
+	})
+	if err != nil {
+		if errors.Is(err, consts.ErrRecordNotFound) {
+			return nil, typex.NewNotFoundError("order")
+		}
+		return nil, err
+	}
+
+	if userOrder.Status == consts.OrderStatusCanceled {
+		return nil, typex.NewConflictError("canceled order")
+	}
+
+	if userOrder.Status == consts.OrderStatusSettled {
+		return nil, typex.NewUnprocessableEntityError("order already settled")
+	}
+
+	res := &presentation.UpdateOrderResponse{}
+	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repo) error {
+		var err error
+
+		settledOrder, err := r.UpdateOrderStatus(ctx, db.UpdateOrderStatusParams{
+			ID:     userOrder.ID,
+			Status: consts.OrderStatusCanceled,
+		})
+		if err != nil {
+			return fmt.Errorf("update order status: %w", err)
+		}
+
+		res.OrderNo = settledOrder.OrderNo
+		res.UserID = settledOrder.UserID.String()
+		res.Status = settledOrder.Status
+
+		orderDetails, err := u.repo.ListOrderDetails(ctx, userOrder.ID)
+		if err != nil {
+			return fmt.Errorf("list order details: %w", err)
+		}
+
+		params := connector.ReleaseStockParams{
+			Stocks: []connector.StockParams{},
+		}
+		for _, detail := range orderDetails {
+			params.Stocks = append(params.Stocks, connector.StockParams{
+				ProductCode: detail.ProductCode,
+				Amount:      detail.Amount,
+			})
+		}
+
+		isAvailable, err := u.conn.ReleaseStock(ctx, params)
+		if err != nil {
+			errRPC := status.Convert(err)
+			if errRPC.Code() == codes.NotFound {
+				return typex.NewNotFoundError("product")
+			}
+
+			return fmt.Errorf("release stock: %w", err)
 		}
 
 		if !isAvailable {

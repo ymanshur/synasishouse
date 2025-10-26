@@ -102,7 +102,7 @@ make run
 | id | UUIDv4 | Order internal indetifier | PK |
 | order_no | String | Order external identifier | Required, Unique |
 | user_id | UUID | User who request order | Required |
-| status | String | Status of order | Values: `pending`, `settled` |
+| status | String | Status of order | Values: `pending`, `settled`, `canceled` |
 | expired_at | Timestamp | When the order expired | |
 | updated_at | Timestamp | Last time order was updated | Default: `now()` |
 | created_at | Timestamp | Time order was created | Default: `now()` |
@@ -139,7 +139,7 @@ Accept: application/json
     "details": [
         {
             "product_code": "P002",
-            "amount": 100
+            "amount": 10
         }
     ]
 }
@@ -230,5 +230,59 @@ Content-Type: application/json; charset=utf-8
     "status": "settled"
   },
   "message": "order settled successfuly"
+}
+```
+
+#### Settled order already exists
+
+```bash
+HTTP/1.1 409 Conflict
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 409,
+  "message": "settled order already exists"
+}
+
+```
+
+### Cancel order
+
+```http
+POST http://localhost:8000/api/orders/O003/cancel HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6"
+}
+```
+
+#### Success cancel order
+
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 200,
+  "data": {
+    "order_no": "O003",
+    "user_id": "6c66959b-4cd1-487c-b010-04dde8616cb6",
+    "status": "canceled"
+  },
+  "message": "order canceled successfuly"
+}
+```
+
+#### Order already settled
+
+```bash
+HTTP/1.1 422 Unprocessable Entity
+Content-Type: application/json; charset=utf-8
+
+{
+  "code": 422,
+  "message": "order already settled"
 }
 ```

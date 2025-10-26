@@ -43,19 +43,19 @@ type OrderDetailResponse struct {
 	Amount      int32  `json:"amount"`
 }
 
-type SettleRequest struct {
+type UpdateOrderRequest struct {
 	OrderNo string
 	UserID  string `json:"user_id"`
 }
 
-func (r SettleRequest) Validate() error {
+func (r UpdateOrderRequest) Validate() error {
 	return validation.ValidateStruct(&r,
 		validation.Field(&r.OrderNo, validation.Required),
 		validation.Field(&r.UserID, validation.Required, is.UUID),
 	)
 }
 
-type SettleResponse struct {
+type UpdateOrderResponse struct {
 	OrderNo string `json:"order_no"`
 	UserID  string `json:"user_id"`
 	Status  string `json:"status"`
