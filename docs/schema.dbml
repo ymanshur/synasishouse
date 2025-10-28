@@ -11,24 +11,6 @@ Table inventory.products {
   }
 }
 
-Table transaction.stocks {
-  id uuid [PK]
-  order_no varchar [not null]
-  product_code varchar [ref: > inventory.products.code, not null]
-  amount int [not null]
-  status stock_status [not null]
-  expired_at timestamptz
-  updated_at timestamptz [not null, default: `now()`]
-  created_at timestamptz [not null, default: `now()`]
-
-  Indexes {
-    order_no
-    product_code
-    expired_at
-    status
-  }
-}
-
 Table order.orders {
   id uuid [PK]
   order_no varchar [not null, unique]
