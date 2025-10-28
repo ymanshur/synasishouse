@@ -4,7 +4,7 @@ services:
       file: inventory-service/compose.yaml
       service: inventory-postgres
     volumes:
-      - synansishouse_inventory_pgdata:/var/lib/postgresql/data
+      - synasishouse_inventory_pg_data:/var/lib/postgresql/data
   inventory-backend:
     extends:
       file: inventory-service/compose.yaml
@@ -17,7 +17,7 @@ services:
       file: order-service/compose.yaml
       service: order-postgres
     volumes:
-      - synansishouse_order_pgdata:/var/lib/postgresql/data
+      - synasishouse_order_pg_data:/var/lib/postgresql/data
   order-backend:
     extends:
       file: order-service/compose.yaml
@@ -29,17 +29,17 @@ services:
         condition: service_healthy
 
 volumes:
-  synansishouse_inventory_pgdata:
-    name: synansishouse-inventory-pgdata
+  synasishouse_inventory_pg_data:
+    name: synasishouse-inventory-pg-data
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: storage/inventory/pgdata
-  synansishouse_order_pgdata:
-    name: synansishouse-order-pgdata
+      device: inventory/storage/pg_data
+  synasishouse_order_pg_data:
+    name: synasishouse-order-pg-data
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: storage/order/pgdata
+      device: order/storage/pg_data

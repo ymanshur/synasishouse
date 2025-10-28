@@ -26,10 +26,7 @@ network:
 
 # run with necessary environment variables
 run:
-	docker run --rm \
-	--name ${APP_NAME} \
-	--network ${NETWORK} \
-	-p 9090:9090 \
+	docker run --rm --name ${APP_NAME} --network ${NETWORK} -p 9090:9090 \
 	-e APP_DB_HOST=host.docker.internal \
 	${APP_IMAGE}:latest
 
@@ -38,11 +35,9 @@ POSTGRES_NAME=postgres${POSTGRES_VERSION}
 POSTGRES_USER?=postgres
 POSTGRES_PASSWORD?=postgres
 POSTGRES_DB?=synansishouse_inventory
-POSTGRES_HOST?=localhost
-POSTGRES_PORT?=5432
 
 postgres:
-	docker run --name ${POSTGRES_NAME} -p ${POSTGRES_PORT}:5432 -e POSTGRES_USER=${POSTGRES_USER} -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -d postgres:${POSTGRES_VERSION}
+	docker run --name ${POSTGRES_NAME} -p 5432:5432 -e POSTGRES_USER=${POSTGRES_USER} -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -d postgres:${POSTGRES_VERSION}
 
 createdb:
 	docker exec -it ${POSTGRES_NAME} createdb ${POSTGRES_DB} -U ${POSTGRES_USER}
@@ -53,7 +48,7 @@ dropdb:
 psql: clear
 	docker exec -it ${POSTGRES_NAME} psql -d ${POSTGRES_DB} -U ${POSTGRES_USER}
 
-DB_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
+DB_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@localhost:5432/${POSTGRES_DB}?sslmode=disable
 DB_MIGRATION_PATH?=db/migration
 
 migrate:

@@ -10,14 +10,9 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
-      timeout: 5s
+      timeout: 3s
       retries: 5
       start_period: 10s
-    deploy:
-      resources:
-        limits:
-          cpus: 0.5
-          memory: 512M
   order-backend:
     build:
       context: .
@@ -31,8 +26,3 @@ services:
       - APP_GRPC_CLIENT_INVENTORY_HOST=inventory-backend
       - APP_GRPC_CLIENT_INVENTORY_PORT=9090
     command: ["/app/main"]
-    deploy:
-      resources:
-        limits:
-          cpus: 1
-          memory: 1024M

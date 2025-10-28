@@ -12,7 +12,7 @@ While Inventory serves as the single source of truth for **product and stock man
 
 Communication between services using the **gRPC protocol**, and there is a gateway as a **reverse proxy**, while securing the backend from outside exposure.
 
-Each reserved stock is treated like a **transaction that has an expiry**. Every time a transaction expires, the Inventory service will publish the event and be consumed by the Order service, or at the time when the transaction will be reserved, then Inventory will send an invalid transaction error according to their expiry.
+Each ordered stock is treated like a **transaction that has an expiry**. Once a transaction expired, the Inventory service will publish the event and be consumed by the Order service, or at the time when the transaction will be ordered, then Inventory will send an invalid transaction error according to their expiry.
 
 ## Design Architecture
 
@@ -26,15 +26,15 @@ Each reserved stock is treated like a **transaction that has an expiry**. Every 
 
 ### User and Product Management
 
-It should be considered to provide the **User** and **Product** services independently.
+It should be considered to provide the **User**, **Notification**, and **Product** services independently.
 
-User service stores user profiles to PostgreSQL and their sessions in **Redis** (which is scalable enough) and routes notifications to the **Notification** service.
+User service stores user profiles to PostgreSQL and their sessions in **Redis** (which is scalable enough) and routes notifications to the Notification service.
 
-Product service is the place where Admin ships the product or product stocks to the Inventory service.
+Product service is the place where Admin ships the product or stocks to the Inventory service.
 
 ### Cache
 
-Display total stock for frontend from **cached product data**. The total product stock is stored using *write-through* pattern.
+Display total stock for user from **cached product data**. The total product stocks are stored using *write-through* pattern due to frequently accessed and updated data.
 
 ### Observability
 
