@@ -1,4 +1,4 @@
-module github.com/ymanshur/synasishouse/pkg/util
+module github.com/ymanshur/synasishouse/pkg
 
 go 1.24.9
 
