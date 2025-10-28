@@ -4,19 +4,19 @@ Warehousing Microservices with Choreography Pattern
 
 ***
 
-There are 2 main services to handle the ordering and warehousing process: **Order** and **Inventory** services.
+There are 2 (at least) main services to handle the ordering and warehousing process: **Order** and **Inventory** services.
 
-The Order acts as a facade for the upstream service, which has responsibilities to orchestrate the user's business, including ordering and notification brokering.
+The Order acts as a facade for the upstream service, which has responsibilities to orchestrate the user's order placing and notification brokering.
 
 While Inventory serves as the single source of truth for **product and stock management**. It maintains robustness of product availability and consistency of stock, especially for **distributed transactions** by leveraging **PostgreSQL** ACID properties.
 
 Communication between services using the **gRPC protocol**, and there is a gateway as a **reverse proxy**, while securing the backend from outside exposure.
 
-Each ordered stock is treated like a **transaction that has an expiry**. Once a transaction expired, the Inventory service will publish the event and be consumed by the Order service, or at the time when the transaction will be ordered, then Inventory will send an invalid transaction error according to their expiry.
+Each order is treated like a **transaction that has an expiry**. Once a transaction expires, the Order service will send release-related stocks to the Inventory service through asynchronous processing.
 
 ## Design Architecture
 
-<img width="646" height="311" alt="SynasisHouse-BAU" src="https://github.com/user-attachments/assets/ac1eb332-d9e7-45af-b6a9-bc8dddb9b99d" />
+<img width="767" height="316" alt="SynasisHouse-BAU" src="https://github.com/user-attachments/assets/e92384b7-563e-42c5-8393-a675413e8cca" />
 
 </br>
 <details>
