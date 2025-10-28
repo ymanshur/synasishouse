@@ -4,7 +4,7 @@ package synasishouse.api;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/ymanshur/synasishouse/pb";
+option go_package = "github.com/ymanshur/synasishouse/proto";
 
 message Product {
   string id = 1;

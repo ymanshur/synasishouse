@@ -4,7 +4,7 @@
 // 	protoc        v3.12.4
 // source: rpc_product.proto
 
-package pb
+package proto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -227,7 +227,7 @@ const file_rpc_product_proto_rawDesc = "" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\"F\n" +
 	"\x0fProductResponse\x123\n" +
-	"\aproduct\x18\x01 \x01(\v2\x19.synasishouse.api.ProductR\aproductB%Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
+	"\aproduct\x18\x01 \x01(\v2\x19.synasishouse.api.ProductR\aproductB(Z&github.com/ymanshur/synasishouse/protob\x06proto3"
 
 var (
 	file_rpc_product_proto_rawDescOnce sync.Once

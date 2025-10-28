@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: service_inventory.proto
 
-package pb
+package proto
 
 import (
 	context "context"

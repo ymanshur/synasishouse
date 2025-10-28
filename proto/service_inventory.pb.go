@@ -4,7 +4,7 @@
 // 	protoc        v3.12.4
 // source: service_inventory.proto
 
-package pb
+package proto
 
 import (
 	empty "github.com/golang/protobuf/ptypes/empty"
@@ -37,8 +37,8 @@ const file_service_inventory_proto_rawDesc = "" +
 	"\n" +
 	"GetProduct\x12#.synasishouse.api.GetProductRequest\x1a!.synasishouse.api.ProductResponse\"I\x92A,\x12\vGet product\x1a\x1dUse this API to get a product\x82\xd3\xe4\x93\x02\x14\x12\x12/api/products/{id}\x12\xab\x01\n" +
 	"\rUpdateProduct\x12&.synasishouse.api.UpdateProductRequest\x1a!.synasishouse.api.ProductResponse\"O\x92A2\x12\x0eUpdate product\x1a Use this API to update a product\x82\xd3\xe4\x93\x02\x142\x12/api/products/{id}\x12\x9d\x01\n" +
-	"\rDeleteProduct\x12#.synasishouse.api.GetProductRequest\x1a\x16.google.protobuf.Empty\"O\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x14*\x12/api/products/{id}B>\x92A\x16\x12\x14\n" +
-	"\rInventory API2\x031.0Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
+	"\rDeleteProduct\x12#.synasishouse.api.GetProductRequest\x1a\x16.google.protobuf.Empty\"O\x92A2\x12\x0eDelete product\x1a Use this API to delete a product\x82\xd3\xe4\x93\x02\x14*\x12/api/products/{id}BA\x92A\x16\x12\x14\n" +
+	"\rInventory API2\x031.0Z&github.com/ymanshur/synasishouse/protob\x06proto3"
 
 var file_service_inventory_proto_goTypes = []any{
 	(*CreateStockRequest)(nil),   // 0: synasishouse.api.CreateStockRequest

@@ -4,7 +4,7 @@
 // 	protoc        v3.12.4
 // source: rpc_stock.proto
 
-package pb
+package proto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -172,7 +172,7 @@ const file_rpc_stock_proto_rawDesc = "" +
 	"\x12CreateStockRequest\x126\n" +
 	"\x06stocks\x18\x01 \x03(\v2\x1e.synasishouse.api.StockRequestR\x06stocks\"2\n" +
 	"\rStockResponse\x12!\n" +
-	"\fis_available\x18\x01 \x01(\bR\visAvailableB%Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
+	"\fis_available\x18\x01 \x01(\bR\visAvailableB(Z&github.com/ymanshur/synasishouse/protob\x06proto3"
 
 var (
 	file_rpc_stock_proto_rawDescOnce sync.Once

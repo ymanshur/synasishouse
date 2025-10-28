@@ -1,4 +1,4 @@
-module github.com/ymanshur/synasishouse/pb
+module github.com/ymanshur/synasishouse/proto
 
 go 1.24.9
 

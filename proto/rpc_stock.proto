@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package synasishouse.api;
 
-option go_package = "github.com/ymanshur/synasishouse/pb";
+option go_package = "github.com/ymanshur/synasishouse/proto";
 
 message StockRequest {
   string product_code = 1;

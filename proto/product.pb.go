@@ -4,7 +4,7 @@
 // 	protoc        v3.12.4
 // source: product.proto
 
-package pb
+package proto
 
 import (
 	timestamp "github.com/golang/protobuf/ptypes/timestamp"
@@ -119,7 +119,7 @@ const file_product_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB%Z#github.com/ymanshur/synasishouse/pbb\x06proto3"
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB(Z&github.com/ymanshur/synasishouse/protob\x06proto3"
 
 var (
 	file_product_proto_rawDescOnce sync.Once

@@ -8,7 +8,7 @@ import "rpc_stock.proto";
 import "rpc_product.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-option go_package = "github.com/ymanshur/synasishouse/pb";
+option go_package = "github.com/ymanshur/synasishouse/proto";
 
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
