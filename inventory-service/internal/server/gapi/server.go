@@ -11,7 +11,7 @@ import (
 	"github.com/ymanshur/synasishouse/inventory/internal/appctx"
 	"github.com/ymanshur/synasishouse/inventory/internal/server/gapi/interceptor"
 	"github.com/ymanshur/synasishouse/inventory/internal/usecase"
-	pb "github.com/ymanshur/synasishouse/pb"
+	pb "github.com/ymanshur/synasishouse/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	health "google.golang.org/grpc/health/grpc_health_v1"

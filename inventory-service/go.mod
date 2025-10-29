@@ -2,22 +2,17 @@ module github.com/ymanshur/synasishouse/inventory
 
 go 1.24.9
 
-replace github.com/ymanshur/synasishouse/pb => ../proto
-
-replace github.com/ymanshur/synasishouse/pkg/util => ../pkg/util
-
 require (
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang-migrate/migrate/v4 v4.19.0
-	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.2
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/ymanshur/synasishouse/pb v0.0.0-00010101000000-000000000000
+	github.com/ymanshur/synasishouse/proto v0.0.0-20251028125246-2bcb2ce5b5c3
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251022142026-3a174f9686a8
 	google.golang.org/grpc v1.76.0
 	google.golang.org/protobuf v1.36.10

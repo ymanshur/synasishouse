@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
-	"github.com/ymanshur/synasishouse/pb"
+	pb "github.com/ymanshur/synasishouse/proto"
 )
 
 func StockPBToRequest(i *pb.StockRequest) presentation.StockRequest {

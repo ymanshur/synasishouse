@@ -5,7 +5,7 @@ import (
 
 	"github.com/ymanshur/synasishouse/inventory/internal/dto"
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
-	"github.com/ymanshur/synasishouse/pb"
+	pb "github.com/ymanshur/synasishouse/proto"
 )
 
 func (r *Server) ReleaseStock(ctx context.Context, req *pb.CreateStockRequest) (*pb.StockResponse, error) {

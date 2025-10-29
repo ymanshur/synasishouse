@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/ymanshur/synasishouse/inventory/internal/presentation"
-	"github.com/ymanshur/synasishouse/pb"
+	pb "github.com/ymanshur/synasishouse/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 

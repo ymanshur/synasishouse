@@ -9,7 +9,7 @@ test:
 	go test -v -cover ./...
 
 APP_NAME?=synasishouse-inventory
-APP_IMAGE?=ymanshur/synasishouse:inventory-latest
+APP_IMAGE?=ymanshur/synasishouse-inventory
 
 modsync:
 	go get -u
