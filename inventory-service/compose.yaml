@@ -19,8 +19,8 @@ services:
       dockerfile: Dockerfile
     image: ymanshur/synasishouse-inventory
     # expose only for the same network
-    expose:
-      - "9090"
+    ports:
+      - "9090:9090"
     environment:
       - APP_DB_HOST=inventory-postgres
     command: ["/app/main"]
