@@ -12,8 +12,8 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/inventory/internal/appctx"
 	"github.com/ymanshur/synasishouse/inventory/internal/bootstrap"
+	"github.com/ymanshur/synasishouse/inventory/internal/config"
 	"github.com/ymanshur/synasishouse/inventory/internal/repo"
 	"github.com/ymanshur/synasishouse/inventory/internal/server/gapi"
 	"github.com/ymanshur/synasishouse/inventory/internal/usecase"
@@ -27,7 +27,7 @@ var interuptSignals = []os.Signal{
 
 // Start servers
 func Start() {
-	config := appctx.LoadConfig()
+	config := config.LoadConfig()
 
 	ctx, stop := signal.NotifyContext(context.Background(), interuptSignals...)
 	defer stop()
@@ -74,7 +74,7 @@ func runDBMigration(migrationURL string, dbURL string) {
 }
 
 // postgresDSN return PostgreSQL Data Source Name
-func postgresDSN(config appctx.DBConfig) string {
+func postgresDSN(config config.DBConfig) string {
 	param := url.Values{}
 	param.Add("user", url.QueryEscape(config.User))
 	param.Add("password", url.QueryEscape(config.Password))

@@ -5,11 +5,11 @@ import (
 
 	"github.com/rabbitmq/amqp091-go"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 )
 
 // RegistryRabbitMQ establish RabbitMQ connection
-func RegistryRabbitMQ(config appctx.RabbitMQConfig) *amqp091.Connection {
+func RegistryRabbitMQ(config config.RabbitMQConfig) *amqp091.Connection {
 	url := fmt.Sprintf("amqp://%s:%s@%s:%d/%s",
 		config.User,
 		config.Password,

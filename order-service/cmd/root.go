@@ -13,8 +13,8 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/rabbitmq/amqp091-go"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
 	"github.com/ymanshur/synasishouse/order/internal/bootstrap"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 	"github.com/ymanshur/synasishouse/order/internal/connector"
 	"github.com/ymanshur/synasishouse/order/internal/messaging"
 	"github.com/ymanshur/synasishouse/order/internal/repo"
@@ -34,7 +34,7 @@ var interuptSignals = []os.Signal{
 //
 // TODO: Implement timeout propagation
 func Start() {
-	config := appctx.LoadConfig()
+	config := config.LoadConfig()
 
 	ctx, stop := signal.NotifyContext(context.Background(), interuptSignals...)
 	defer stop()
@@ -122,7 +122,7 @@ func runDBMigration(migrationURL string, dbURL string) {
 }
 
 // postgresDSN return PostgreSQL Data Source Name
-func postgresDSN(config appctx.DBConfig) string {
+func postgresDSN(config config.DBConfig) string {
 	param := url.Values{}
 	param.Add("user", url.QueryEscape(config.User))
 	param.Add("password", url.QueryEscape(config.Password))

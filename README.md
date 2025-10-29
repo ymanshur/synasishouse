@@ -24,7 +24,7 @@ Each order has an expiry, which is 24 hours after stocks are checked out. Once a
   <img width="733" height="682" alt="SynasisHouse-BEYOND" src="https://github.com/user-attachments/assets/071cc190-62d3-4043-88e4-c84e3dc22c2d" />
 </details>
 
-### User and Product Management
+### User and Product Management (Recomendation)
 
 It should be considered to provide the **User**, **Notification**, and **Product** services independently.
 
@@ -32,13 +32,13 @@ User service stores user profiles to PostgreSQL and their sessions in **Redis** 
 
 Product service is the place where Admin ships the product or stocks to the Inventory service.
 
-### Cache
+<!-- ### Cache
 
-Display total stock for user from **cached product data**. The total product stocks are stored using *write-through* pattern due to frequently accessed and updated data.
+Display total stock for user from **cached product data**. The total product stocks are stored using *write-through* pattern due to frequently accessed and updated data. -->
 
-### Observability
+<!-- ### Observability
 
-Elasticsearch and Filebeat
+Elasticsearch and Filebeat -->
 
 ## Data Model
 
@@ -46,10 +46,7 @@ Elasticsearch and Filebeat
 
 More details in: <https://dbdocs.io/ymanshur/SynasisHouse>
 
-### Notable Decisions
-
-- Only exposes shared references, not internal identifiers, i.e., `order_no` and `product_code`. As preparation for beyond service separation.
-- Reference inventory and transaction are optional; consider decouple each other to minimize lock contention between transactional behaviour and expiry processing, as long as `product_code` never changes.
+<!-- ### Notable Decisions -->
 
 ## Getting Started
 
@@ -61,6 +58,6 @@ make compose
 
 Pull the images from <https://hub.docker.com/repository/docker/ymanshur/synasishouse>
 
-## API
+<!-- ## Inventory API
 
-Open <https://ymanshur.github.io/synasishouse/docs/swagger/> to see API documentation based on the gRPC Gateway proto annotation.
+Open <https://ymanshur.github.io/synasishouse/docs/swagger/> to see API documentation based on the gRPC Gateway proto annotation. -->

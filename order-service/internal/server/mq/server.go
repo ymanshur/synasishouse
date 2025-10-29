@@ -7,7 +7,7 @@ import (
 
 	"github.com/rabbitmq/amqp091-go"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 	"github.com/ymanshur/synasishouse/order/internal/server"
 	"github.com/ymanshur/synasishouse/order/internal/server/mq/consumer"
 	"github.com/ymanshur/synasishouse/order/internal/usecase"
@@ -19,7 +19,7 @@ type Processor interface {
 }
 
 type Consumer interface {
-	Config() appctx.RabbitMQClientConfig
+	Config() config.RabbitMQClientConfig
 	Processor
 }
 
@@ -29,7 +29,7 @@ type mqServer struct {
 }
 
 func NewServer(conn *amqp091.Connection, orderUseCase usecase.Orderer) server.Server {
-	config := appctx.LoadConfig()
+	config := config.LoadConfig()
 	configConsumer := config.RabbitMQClient
 
 	consumers := []Consumer{

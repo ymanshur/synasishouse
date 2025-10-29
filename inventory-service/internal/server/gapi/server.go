@@ -8,7 +8,7 @@ import (
 
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/inventory/internal/appctx"
+	"github.com/ymanshur/synasishouse/inventory/internal/config"
 	"github.com/ymanshur/synasishouse/inventory/internal/server/gapi/interceptor"
 	"github.com/ymanshur/synasishouse/inventory/internal/usecase"
 	pb "github.com/ymanshur/synasishouse/proto"
@@ -37,7 +37,7 @@ func NewServer(
 	productUseCase usecase.Producter,
 	stockUseCase usecase.Stocker,
 ) (*Server, error) {
-	config := appctx.LoadConfig()
+	config := config.LoadConfig()
 
 	server := &Server{
 		rpcServerAddr:  config.GRPCServer.GetAddr(),

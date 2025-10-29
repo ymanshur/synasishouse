@@ -18,6 +18,9 @@ compose:
 	mkdir -p storage/order/pg_data
 	docker compose up
 
+compose-down:
+	docker compose down
+
 RABBITMQ_VERSION?=3-management-alpine
 RABBITMQ_NAME=rabbitmq${RABBITMQ_VERSION}
 RABBITMQ_USER?=guest

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 	"github.com/ymanshur/synasishouse/order/internal/consts"
 	"github.com/ymanshur/synasishouse/order/internal/server"
 	"github.com/ymanshur/synasishouse/order/internal/server/api/router"
@@ -23,7 +23,7 @@ type apiServer struct {
 func NewServer(
 	orderUseCase usecase.Orderer,
 ) server.Server {
-	config := appctx.LoadConfig()
+	config := config.LoadConfig()
 
 	return &apiServer{
 		httpServerAddr: config.HTTPServer.GetAddr(),

@@ -6,14 +6,14 @@ import (
 
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 // RegistryGRPCClient establish gRPC client channel
-func RegistryGRPCClient(config appctx.GRPCClientConfig) *grpc.ClientConn {
+func RegistryGRPCClient(config config.GRPCClientConfig) *grpc.ClientConn {
 	retryOpts := []grpc_retry.CallOption{
 		grpc_retry.WithMax(config.MaxRetry),                              // Max 3 retry attempts
 		grpc_retry.WithPerRetryTimeout(config.PerRetryTimeout),           // Timeout for each individual retry

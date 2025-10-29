@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 	"github.com/ymanshur/synasishouse/order/internal/server/api/handler"
 	"github.com/ymanshur/synasishouse/order/internal/usecase"
 	"github.com/ymanshur/synasishouse/pkg/util"
@@ -29,7 +29,7 @@ func NewRouter(
 
 // Route preparing Gin router and return HTTP handler
 func (r *Router) Route() http.Handler {
-	config := appctx.LoadConfig()
+	config := config.LoadConfig()
 
 	if util.TranslateEnv(config.Environment) == "production" {
 		gin.SetMode(gin.ReleaseMode)

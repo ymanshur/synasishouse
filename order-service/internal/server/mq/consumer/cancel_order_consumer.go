@@ -7,25 +7,25 @@ import (
 
 	"github.com/rabbitmq/amqp091-go"
 	"github.com/rs/zerolog/log"
-	"github.com/ymanshur/synasishouse/order/internal/appctx"
+	"github.com/ymanshur/synasishouse/order/internal/config"
 	"github.com/ymanshur/synasishouse/order/internal/presentation"
 	"github.com/ymanshur/synasishouse/order/internal/typex"
 	"github.com/ymanshur/synasishouse/order/internal/usecase"
 )
 
 type CancelOrderConsumer struct {
-	config       appctx.RabbitMQClientConfig
+	config       config.RabbitMQClientConfig
 	orderUseCase usecase.Orderer
 }
 
-func NewCancelOrder(config appctx.RabbitMQClientConfig, orderUseCase usecase.Orderer) *CancelOrderConsumer {
+func NewCancelOrder(config config.RabbitMQClientConfig, orderUseCase usecase.Orderer) *CancelOrderConsumer {
 	return &CancelOrderConsumer{
 		config:       config,
 		orderUseCase: orderUseCase,
 	}
 }
 
-func (c *CancelOrderConsumer) Config() appctx.RabbitMQClientConfig {
+func (c *CancelOrderConsumer) Config() config.RabbitMQClientConfig {
 	return c.config
 }
 

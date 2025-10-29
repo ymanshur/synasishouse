@@ -1,4 +1,4 @@
-package appctx
+package config
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
@@ -31,67 +30,6 @@ type Config struct {
 
 	RabbitMQ       RabbitMQConfig `mapstructure:"rabbitmq"`
 	RabbitMQClient RabbitMQClient `mapstructure:"rabbitmq_client"`
-}
-
-type RabbitMQClient struct {
-	CancelOrder RabbitMQClientConfig `mapstructure:"cancel_order"`
-}
-
-type RabbitMQClientConfig struct {
-	Queue    string `mapstructure:"queue"`
-	Key      string `mapstructure:"key"`
-	Exchange string `mapstructure:"exchange"`
-}
-
-type RabbitMQConfig struct {
-	Host     string `mapstructure:"host"`
-	VHost    string `mapstructure:"vhost"`
-	Port     int    `mapstructure:"port"`
-	User     string `mapstructure:"user"`
-	Password string `mapstructure:"pass"`
-}
-
-// GRPCClient stores all gRPC client configurations
-type GRPCClient struct {
-	Inventory GRPCClientConfig `mapstructure:"inventory"`
-}
-
-type GRPCClientConfig struct {
-	Host            string `mapstructure:"host"`
-	Port            int    `mapstructure:"port"`
-	Addr            string `mapstructure:"addr"`
-	MaxRetry        uint   `mapstructure:"max_retry"`
-	PerRetryTimeout time.Duration
-}
-
-// GetAddr get client address
-func (c GRPCClientConfig) GetAddr() string {
-	if c.Addr != "" {
-		return c.Addr
-	}
-	return fmt.Sprintf("%s:%d", c.Host, c.Port)
-}
-
-type ServerConfig struct {
-	Host string `mapstructure:"host"`
-	Port int    `mapstructure:"port"`
-	Addr string `mapstructure:"addr"`
-}
-
-// GetAddr get server address
-func (c ServerConfig) GetAddr() string {
-	if c.Addr != "" {
-		return c.Addr
-	}
-	return fmt.Sprintf("%s:%d", c.Host, c.Port)
-}
-
-type DBConfig struct {
-	Name     string `mapstructure:"name"`
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	User     string `mapstructure:"user"`
-	Password string `mapstructure:"pass"`
 }
 
 // LoadConfig return config instance.
