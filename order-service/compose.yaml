@@ -2,7 +2,7 @@ services:
   order-postgres:
     image: postgres:14-alpine
     ports:
-      - "5432:5432"
+      - "5433:5433"
     environment:
       - POSTGRES_DB=synansishouse_order
       - POSTGRES_USER=postgres
@@ -21,8 +21,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - APP_ENVIRONMENT=development
-      - APP_HTTP_SERVER_ADDR=0.0.0.0:8000
-      - APP_GRPC_CLIENT_INVENTORY_HOST=inventory-backend
-      - APP_GRPC_CLIENT_INVENTORY_PORT=9090
+      - APP_DB_HOST=order-postgres
+      - APP_DB_PORT=5433
     command: ["/app/main"]

@@ -22,13 +22,7 @@ services:
     expose:
       - "9090"
     environment:
-      - APP_GRPC_SERVER_ADDR=0.0.0.0:9090
-      - APP_DB_NAME=synansishouse_inventory
       - APP_DB_HOST=inventory-postgres
-      - APP_DB_PORT=5432
-      - APP_DB_USER=postgres
-      - APP_DB_PASS=postgres
-      - APP_DB_MIGRATION_URL=file://db/migration
     command: ["/app/main"]
     healthcheck:
       test: ["CMD", "/bin/grpc_health_probe", "--addr=0.0.0.0:9090"]
