@@ -19,10 +19,10 @@ type Stocker interface {
 }
 
 type stockUseCase struct {
-	repo repo.Repo
+	repo repo.Repositorer
 }
 
-func NewStock(repo repo.Repo) Stocker {
+func NewStock(repo repo.Repositorer) Stocker {
 	return &stockUseCase{repo: repo}
 }
 

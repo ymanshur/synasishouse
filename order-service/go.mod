@@ -2,10 +2,6 @@ module github.com/ymanshur/synasishouse/order
 
 go 1.24.9
 
-replace github.com/ymanshur/synasishouse/pb => ../proto
-
-replace github.com/ymanshur/synasishouse/pkg/util => ../pkg/util
-
 require (
 	github.com/gin-gonic/gin v1.11.0
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
@@ -18,8 +14,8 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/ymanshur/synasishouse/pb v0.0.0-00010101000000-000000000000
-	github.com/ymanshur/synasishouse/pkg/util v0.0.0-20251023043953-dfc008435706
+	github.com/ymanshur/synasishouse/pkg/util v0.0.0-20251028025304-1ccdc005f083
+	github.com/ymanshur/synasishouse/proto v0.0.0-20251028125246-2bcb2ce5b5c3
 	google.golang.org/grpc v1.76.0
 )
 

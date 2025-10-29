@@ -3,7 +3,7 @@ package connector
 import (
 	"context"
 
-	"github.com/ymanshur/synasishouse/pb"
+	pb "github.com/ymanshur/synasishouse/proto"
 	"google.golang.org/grpc"
 )
 

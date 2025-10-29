@@ -24,10 +24,10 @@ type Producter interface {
 }
 
 type productUseCase struct {
-	repo repo.Repo
+	repo repo.Repositorer
 }
 
-func NewProduct(repo repo.Repo) Producter {
+func NewProduct(repo repo.Repositorer) Producter {
 	return &productUseCase{repo: repo}
 }
 

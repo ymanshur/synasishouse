@@ -9,7 +9,7 @@ import (
 )
 
 // Repo defines all functions to execute db queries and transactions
-type Repo interface {
+type Repositorer interface {
 	db.Querier
 
 	CheckStock(ctx context.Context, arg CreateStockParams) (bool, error)
@@ -26,7 +26,7 @@ type repo struct {
 }
 
 // NewRepo creates a new Repo
-func NewRepo(pool *pgxpool.Pool) Repo {
+func NewRepo(pool *pgxpool.Pool) Repositorer {
 	return &repo{
 		pool:    pool,
 		Queries: db.New(pool),

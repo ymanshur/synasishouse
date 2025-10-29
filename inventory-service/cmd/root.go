@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"context"
+	"fmt"
+	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
@@ -9,9 +11,9 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
 	"github.com/ymanshur/synasishouse/inventory/internal/appctx"
+	"github.com/ymanshur/synasishouse/inventory/internal/bootstrap"
 	"github.com/ymanshur/synasishouse/inventory/internal/repo"
 	"github.com/ymanshur/synasishouse/inventory/internal/server/gapi"
 	"github.com/ymanshur/synasishouse/inventory/internal/usecase"
@@ -30,14 +32,10 @@ func Start() {
 	ctx, stop := signal.NotifyContext(context.Background(), interuptSignals...)
 	defer stop()
 
-	conn, err := pgxpool.New(ctx, config.DB.GetURL())
-	if err != nil {
-		log.Fatal().Err(err).Msg("cannot connect to database")
-	}
+	dbURL := postgresDSN(config.DB)
+	db := bootstrap.RegistryPostgreSQL(ctx, dbURL)
 
-	runDBMigration(config.DBMigrationURL, config.DB.GetURL())
-
-	repo := repo.NewRepo(conn)
+	repo := repo.NewRepo(db)
 
 	productUseCase := usecase.NewProduct(repo)
 	stockUseCase := usecase.NewStock(repo)
@@ -62,8 +60,8 @@ func runGRPCServer(
 	}
 }
 
-func runDBMigration(migrationURL string, dbSource string) {
-	migration, err := migrate.New(migrationURL, dbSource)
+func runDBMigration(migrationURL string, dbURL string) {
+	migration, err := migrate.New(migrationURL, dbURL)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create new migrate instance")
 	}
@@ -71,4 +69,21 @@ func runDBMigration(migrationURL string, dbSource string) {
 	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
 		log.Fatal().Err(err).Msg("cannot run migrate up")
 	}
+}
+
+// postgresDSN return PostgreSQL Data Source Name
+func postgresDSN(config appctx.DBConfig) string {
+	param := url.Values{}
+	param.Add("user", url.QueryEscape(config.User))
+	param.Add("password", url.QueryEscape(config.Password))
+	param.Add("port", fmt.Sprint(config.Port))
+	param.Add("sslmode", "disable")
+
+	dsn := fmt.Sprintf("postgresql://%s/%s?%s",
+		config.Host,
+		config.Name,
+		param.Encode(),
+	)
+
+	return dsn
 }

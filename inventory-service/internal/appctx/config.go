@@ -32,11 +32,6 @@ type DBConfig struct {
 	Password string `mapstructure:"pass"`
 }
 
-// GetURL get database DSN
-func (c DBConfig) GetURL() string {
-	return fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=disable", c.User, c.Password, c.Host, c.Port, c.Name)
-}
-
 type ServerConfig struct {
 	Host string `mapstructure:"HOST"`
 	Port int    `mapstructure:"PORT"`

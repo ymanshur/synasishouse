@@ -26,11 +26,11 @@ type Orderer interface {
 }
 
 type orderUseCase struct {
-	repo repo.Repo
+	repo repo.Repositorer
 	conn connector.Inventorier
 }
 
-func NewOrder(repo repo.Repo, conn connector.Inventorier) Orderer {
+func NewOrder(repo repo.Repositorer, conn connector.Inventorier) Orderer {
 	return &orderUseCase{
 		repo: repo,
 		conn: conn,
@@ -49,7 +49,7 @@ func (u *orderUseCase) Create(ctx context.Context, req presentation.OrderRequest
 	}
 
 	res := &presentation.OrderResponse{}
-	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repo) error {
+	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repositorer) error {
 		var err error
 
 		newOrder, err := r.CreateOrder(ctx, db.CreateOrderParams{
@@ -144,7 +144,7 @@ func (u *orderUseCase) Settle(ctx context.Context, req presentation.UpdateOrderR
 	}
 
 	res := &presentation.UpdateOrderResponse{}
-	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repo) error {
+	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repositorer) error {
 		var err error
 
 		settledOrder, err := r.UpdateOrderStatus(ctx, db.UpdateOrderStatusParams{
@@ -228,7 +228,7 @@ func (u *orderUseCase) Cancel(ctx context.Context, req presentation.UpdateOrderR
 	}
 
 	res := &presentation.UpdateOrderResponse{}
-	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repo) error {
+	err = u.repo.Transact(ctx, pgx.ReadCommitted, func(r repo.Repositorer) error {
 		var err error
 
 		settledOrder, err := r.UpdateOrderStatus(ctx, db.UpdateOrderStatusParams{

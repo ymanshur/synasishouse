@@ -38,11 +38,6 @@ type DBConfig struct {
 	Password string `mapstructure:"pass"`
 }
 
-// GetURL get database DSN
-func (c DBConfig) GetURL() string {
-	return fmt.Sprintf("postgresql://%s:%s@%s:%d/%s?sslmode=disable", c.User, c.Password, c.Host, c.Port, c.Name)
-}
-
 // GRPCClient stores all gRPC client configurations
 type GRPCClient struct {
 	Inventory ClientConfig `mapstructure:"inventory"`

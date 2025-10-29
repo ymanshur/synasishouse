@@ -14,7 +14,7 @@ import (
 )
 
 // Server serves HTTP requests
-type Server struct {
+type apiServer struct {
 	httpServerAddr string
 	router         router.Router
 }
@@ -25,7 +25,7 @@ func NewServer(
 ) server.Server {
 	config := appctx.LoadConfig()
 
-	return &Server{
+	return &apiServer{
 		httpServerAddr: config.HTTPServer.GetAddr(),
 		router: router.NewRouter(
 			orderUseCase,
@@ -34,12 +34,12 @@ func NewServer(
 }
 
 // Run the HTTP server
-func (s *Server) Run(ctx context.Context) error {
+func (s *apiServer) Run(ctx context.Context) error {
 	log.Info().Msgf("starting HTTP server at %s", s.httpServerAddr)
 
 	httpServer := &http.Server{
 		Addr:    s.httpServerAddr,
-		Handler: s.Route(),
+		Handler: s.router.Route(),
 	}
 
 	errServe := make(chan error)
@@ -68,9 +68,4 @@ func (s *Server) Run(ctx context.Context) error {
 			return nil
 		}
 	}
-}
-
-// Route return the HTTP handler
-func (s *Server) Route() http.Handler {
-	return s.router.Route()
 }
