@@ -22,6 +22,7 @@ run:
 	-e APP_ENVIRONMENT=development \
 	-e APP_DB_HOST=host.docker.internal \
 	-e APP_GRPC_CLIENT_INVENTORY_HOST=host.docker.internal \
+	-e APP_RABBITMQ_HOST=host.docker.internal \
 	${APP_IMAGE}:latest
 
 POSTGRES_VERSION?=14-alpine

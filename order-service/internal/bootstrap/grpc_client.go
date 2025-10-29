@@ -13,7 +13,7 @@ import (
 )
 
 // RegistryGRPCClient establish gRPC client channel
-func RegistryGRPCClient(config appctx.ClientConfig) *grpc.ClientConn {
+func RegistryGRPCClient(config appctx.GRPCClientConfig) *grpc.ClientConn {
 	retryOpts := []grpc_retry.CallOption{
 		grpc_retry.WithMax(config.MaxRetry),                              // Max 3 retry attempts
 		grpc_retry.WithPerRetryTimeout(config.PerRetryTimeout),           // Timeout for each individual retry

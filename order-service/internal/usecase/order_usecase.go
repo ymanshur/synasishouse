@@ -8,10 +8,12 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
+	"github.com/rs/zerolog/log"
 	db "github.com/ymanshur/synasishouse/order/db/sqlc"
 	"github.com/ymanshur/synasishouse/order/internal/common"
 	"github.com/ymanshur/synasishouse/order/internal/connector"
 	"github.com/ymanshur/synasishouse/order/internal/consts"
+	"github.com/ymanshur/synasishouse/order/internal/messaging"
 	"github.com/ymanshur/synasishouse/order/internal/presentation"
 	"github.com/ymanshur/synasishouse/order/internal/repo"
 	"github.com/ymanshur/synasishouse/order/internal/typex"
@@ -26,14 +28,20 @@ type Orderer interface {
 }
 
 type orderUseCase struct {
-	repo repo.Repositorer
-	conn connector.Inventorier
+	repo                    repo.Repositorer
+	conn                    connector.Inventorier
+	autoCancelOrderProducer messaging.Producer
 }
 
-func NewOrder(repo repo.Repositorer, conn connector.Inventorier) Orderer {
+func NewOrder(
+	repo repo.Repositorer,
+	conn connector.Inventorier,
+	autoCancelOrderProducer messaging.Producer,
+) Orderer {
 	return &orderUseCase{
-		repo: repo,
-		conn: conn,
+		repo:                    repo,
+		conn:                    conn,
+		autoCancelOrderProducer: autoCancelOrderProducer,
 	}
 }
 
@@ -112,6 +120,14 @@ func (u *orderUseCase) Create(ctx context.Context, req presentation.OrderRequest
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	err = u.autoCancelOrderProducer.Send(ctx, presentation.UpdateOrderRequest{
+		OrderNo: req.OrderNo,
+		UserID:  req.UserID,
+	})
+	if err != nil {
+		log.Error().Err(err).Msgf("cannot send auto cancel order: %s", err)
 	}
 
 	return res, nil
@@ -263,6 +279,10 @@ func (u *orderUseCase) Cancel(ctx context.Context, req presentation.UpdateOrderR
 			errRPC := status.Convert(err)
 			if errRPC.Code() == codes.NotFound {
 				return typex.NewNotFoundError("product")
+			}
+
+			if errRPC.Code() == codes.Unavailable || errRPC.Code() == codes.ResourceExhausted {
+				return typex.NewUnavailableError("inventory service")
 			}
 
 			return fmt.Errorf("release stock: %w", err)

@@ -68,16 +68,26 @@ APP_ENVIRONMENT=development
 
 APP_HTTP_SERVER_ADDR=0.0.0.0:8000
 
-APP_GRPC_CLIENT_INVENTORY_HOST=localhost
-APP_GRPC_CLIENT_INVENTORY_PORT=9090
-APP_GRPC_CLIENT_INVENTORY_MAX_RETRY=3
-
 APP_DB_NAME=synansishouse_order
 APP_DB_HOST=localhost
 APP_DB_PORT=5432
 APP_DB_USER=postgres
 APP_DB_PASS=postgres
 APP_DB_MIGRATION_URL=file://db/migration
+
+APP_GRPC_CLIENT_INVENTORY_HOST=localhost
+APP_GRPC_CLIENT_INVENTORY_PORT=9090
+APP_GRPC_CLIENT_INVENTORY_MAX_RETRY=3
+
+APP_RABBITMQ_HOST=localhost
+APP_RABBITMQ_VHOST=/
+APP_RABBITMQ_PORT=5672
+APP_RABBITMQ_USER=guest
+APP_RABBITMQ_PASS=guest
+
+APP_RABBITMQ_CANCEL_ORDER_QUEUE=order-delayed
+APP_RABBITMQ_CANCEL_ORDER_KEY=orders.cancel.delayed
+APP_RABBITMQ_CANCEL_ORDER_EXCHANGE=orders.delayed
 ```
 
 Build the image
@@ -140,7 +150,7 @@ Accept: application/json
     "details": [
         {
             "product_code": "P002",
-            "amount": 10
+            "amount": 1
         }
     ]
 }

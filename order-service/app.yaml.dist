@@ -19,3 +19,16 @@ grpc_client:
     host: localhost
     port: 9090
     max_retry: 3
+
+rabbitmq:
+  host: localhost
+  vhost: /
+  port: 5672
+  user: guest
+  pass: guest
+
+rabbitmq_client:
+  cancel_order:
+    queue: order-delayed
+    key: orders.cancel.delayed
+    exchange: orders.delayed

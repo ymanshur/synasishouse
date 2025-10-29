@@ -55,12 +55,12 @@ func (s *apiServer) Run(ctx context.Context) error {
 		case err := <-errServe:
 			return err
 
-		// waiting for a interupt signal
+		// Waiting for a interupt signal
 		case <-ctx.Done():
 			ctxShutdown, cancel := context.WithTimeout(context.Background(), consts.DefaultServerTimeout)
 			defer cancel()
 
-			// shutdown stop the HTTP server gratefully
+			// Shutdown stop the HTTP server gratefully
 			if err := httpServer.Shutdown(ctxShutdown); err != nil {
 				return fmt.Errorf("shutdown: %w", err)
 			}

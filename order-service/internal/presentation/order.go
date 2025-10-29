@@ -44,7 +44,7 @@ type OrderDetailResponse struct {
 }
 
 type UpdateOrderRequest struct {
-	OrderNo string
+	OrderNo string `json:"order_no"`
 	UserID  string `json:"user_id"`
 }
 

@@ -11,11 +11,13 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/jackc/pgx/v5 v5.7.6
+	github.com/rabbitmq/amqp091-go v1.10.0
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
 	github.com/ymanshur/synasishouse/pkg/util v0.0.0-20251028025304-1ccdc005f083
 	github.com/ymanshur/synasishouse/proto v0.0.0-20251028125246-2bcb2ce5b5c3
+	golang.org/x/sync v0.17.0
 	google.golang.org/grpc v1.76.0
 )
 
@@ -66,7 +68,6 @@ require (
 	golang.org/x/crypto v0.43.0 // indirect
 	golang.org/x/mod v0.29.0 // indirect
 	golang.org/x/net v0.46.0 // indirect
-	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect

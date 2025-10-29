@@ -28,11 +28,24 @@ type Config struct {
 	DBMigrationURL string   `mapstructure:"db_migration_url"`
 
 	GRPCClient GRPCClient `mapstructure:"grpc_client"`
+
+	RabbitMQ       RabbitMQConfig `mapstructure:"rabbitmq"`
+	RabbitMQClient RabbitMQClient `mapstructure:"rabbitmq_client"`
 }
 
-type DBConfig struct {
-	Name     string `mapstructure:"name"`
+type RabbitMQClient struct {
+	CancelOrder RabbitMQClientConfig `mapstructure:"cancel_order"`
+}
+
+type RabbitMQClientConfig struct {
+	Queue    string `mapstructure:"queue"`
+	Key      string `mapstructure:"key"`
+	Exchange string `mapstructure:"exchange"`
+}
+
+type RabbitMQConfig struct {
 	Host     string `mapstructure:"host"`
+	VHost    string `mapstructure:"vhost"`
 	Port     int    `mapstructure:"port"`
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"pass"`
@@ -40,10 +53,10 @@ type DBConfig struct {
 
 // GRPCClient stores all gRPC client configurations
 type GRPCClient struct {
-	Inventory ClientConfig `mapstructure:"inventory"`
+	Inventory GRPCClientConfig `mapstructure:"inventory"`
 }
 
-type ClientConfig struct {
+type GRPCClientConfig struct {
 	Host            string `mapstructure:"host"`
 	Port            int    `mapstructure:"port"`
 	Addr            string `mapstructure:"addr"`
@@ -52,7 +65,7 @@ type ClientConfig struct {
 }
 
 // GetAddr get client address
-func (c ClientConfig) GetAddr() string {
+func (c GRPCClientConfig) GetAddr() string {
 	if c.Addr != "" {
 		return c.Addr
 	}
@@ -71,6 +84,14 @@ func (c ServerConfig) GetAddr() string {
 		return c.Addr
 	}
 	return fmt.Sprintf("%s:%d", c.Host, c.Port)
+}
+
+type DBConfig struct {
+	Name     string `mapstructure:"name"`
+	Host     string `mapstructure:"host"`
+	Port     int    `mapstructure:"port"`
+	User     string `mapstructure:"user"`
+	Password string `mapstructure:"pass"`
 }
 
 // LoadConfig return config instance.
