@@ -35,6 +35,8 @@ func Start() {
 	dbURL := postgresDSN(config.DB)
 	db := bootstrap.RegistryPostgreSQL(ctx, dbURL)
 
+	runDBMigration(config.DBMigrationURL, dbURL)
+
 	repo := repo.NewRepo(db)
 
 	productUseCase := usecase.NewProduct(repo)
