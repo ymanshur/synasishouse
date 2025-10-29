@@ -12,6 +12,8 @@ db:
   user: postgres
   pass: postgres
 
+db_migration_url: file://db/migration
+
 grpc_client:
   inventory:
     host: localhost

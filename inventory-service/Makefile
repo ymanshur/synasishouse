@@ -11,22 +11,12 @@ test:
 APP_NAME?=synasishouse-inventory
 APP_IMAGE?=ymanshur/synasishouse-inventory
 
-modsync:
-	go get -u
-	go mod tidy
-	go mod vendor
-
-build: modsync
+build:
 	docker build -t ${APP_IMAGE}:latest .
-
-NETWORK?=synasishouse-net
-
-network:
-	docker network create ${NETWORK}
 
 # run with necessary environment variables
 run:
-	docker run --rm --name ${APP_NAME} --network ${NETWORK} -p 9090:9090 \
+	docker run --rm --name ${APP_NAME} -p 9090:9090 \
 	-e APP_DB_HOST=host.docker.internal \
 	${APP_IMAGE}:latest
 

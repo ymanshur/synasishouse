@@ -86,16 +86,10 @@ APP_DB_PASS=postgres
 APP_DB_MIGRATION_URL=file://db/migration
 ```
 
-Build the image with vendor mode (it's mandatory)
+Build the image
 
 ```bash
 make build
-```
-
-Create a network to communicate with Order service
-
-```bash
-make network
 ```
 
 Make sure the environment variables are defined when running the following command, update at [Makefile](./Makefile)

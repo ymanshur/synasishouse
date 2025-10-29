@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ymanshur/synasishouse:inventory-latest
+    image: ymanshur/synasishouse-inventory
     # expose only for the same network
     expose:
       - "9090"

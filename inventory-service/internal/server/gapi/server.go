@@ -80,12 +80,10 @@ func (s *Server) Run(ctx context.Context) error {
 
 	errServe := make(chan error)
 
-	// Start the service listening for requests.
 	go func() {
 		errServe <- s.rpcServer.Serve(listener)
 	}()
 
-	// Blocking and waiting for shutdown or error from server.
 	select {
 	case err := <-errServe:
 		if err != nil {
@@ -94,6 +92,8 @@ func (s *Server) Run(ctx context.Context) error {
 			}
 			return err
 		}
+
+	// Waiting for a interupt signal
 	case <-ctx.Done():
 		s.rpcServer.GracefulStop()
 	}

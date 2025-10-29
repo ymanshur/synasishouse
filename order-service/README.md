@@ -80,7 +80,7 @@ APP_DB_PASS=postgres
 APP_DB_MIGRATION_URL=file://db/migration
 ```
 
-Build the image with vendor mode (it's mandatory)
+Build the image
 
 ```bash
 make build

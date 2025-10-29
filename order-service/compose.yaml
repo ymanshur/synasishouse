@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ymanshur/synasishouse:order-latest
+    image: ymanshur/synasishouse-order
     ports:
       - "8000:8000"
     environment:

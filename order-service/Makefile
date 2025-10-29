@@ -13,25 +13,15 @@ server: clear
 test:
 	go test -v -cover ./...
 
-modsync:
-	go get -u
-	go mod tidy
-	go mod vendor
-
-build: modsync
+build:
 	docker build -t ${APP_IMAGE}:latest .
-
-NETWORK?=synasishouse-net
-
-network:
-	docker network create ${NETWORK}
 
 # run with necessary environment variables
 run:
-	docker run --rm --name ${APP_NAME} --network ${NETWORK} -p 8000:8000 \
+	docker run --rm --name ${APP_NAME} -p 8000:8000 \
 	-e APP_ENVIRONMENT=development \
-	-e APP_GRPC_CLIENT_INVENTORY_HOST=synasishouse-inventory \
 	-e APP_DB_HOST=host.docker.internal \
+	-e APP_GRPC_CLIENT_INVENTORY_HOST=host.docker.internal \
 	${APP_IMAGE}:latest
 
 POSTGRES_VERSION?=14-alpine

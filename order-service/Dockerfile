@@ -9,7 +9,7 @@ WORKDIR /app
 COPY . .
 
 # Bundle app source
-RUN go build -mod=vendor -o main main.go
+RUN go build -o main main.go
 
 # Run stage
 FROM scratch
@@ -20,6 +20,7 @@ WORKDIR /app
 COPY --from=builder /app/main .
 
 COPY app.yaml.dist ./app.yaml
+COPY db/migration ./db/migration
 
 # EXPOSE act as a documentation about which ports are intended to be published
 EXPOSE 8000/tcp
