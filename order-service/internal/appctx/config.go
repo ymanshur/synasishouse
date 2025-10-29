@@ -47,7 +47,7 @@ type ClientConfig struct {
 	Host            string `mapstructure:"host"`
 	Port            int    `mapstructure:"port"`
 	Addr            string `mapstructure:"addr"`
-	MaxRetry        uint
+	MaxRetry        uint   `mapstructure:"max_retry"`
 	PerRetryTimeout time.Duration
 }
 

@@ -2,7 +2,7 @@
 .vscode
 
 # Local environment variables
-app*.env
+app*.yaml
 
 # Log files
 *.log

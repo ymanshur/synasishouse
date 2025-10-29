@@ -16,3 +16,4 @@ grpc_client:
   inventory:
     host: localhost
     port: 9090
+    max_retry: 3
