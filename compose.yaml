@@ -1,45 +1,59 @@
 services:
+  rabbitmq:
+    image: rabbitmq:3-alpine
+    expose:
+      - "5672" # AMQP port
+    ports:
+      - "15672:15672" # Management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_PLUGINS_DIR: /opt/rabbitmq/plugins:/usr/lib/rabbitmq/plugins
+    volumes:
+      - ./rabbitmq/data/:/var/lib/rabbitmq/
+      - ./rabbitmq/:/var/log/rabbitmq/
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:rw
+      - ./rabbitmq/plugins:/usr/lib/rabbitmq/plugins
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
   inventory-postgres:
     extends:
       file: inventory-service/compose.yaml
       service: inventory-postgres
     volumes:
-      - synasishouse_inventory_pg_data:/var/lib/postgresql/data
+      - ./inventory-service/storage/pg_data:/var/lib/postgresql/data
   inventory-backend:
     extends:
       file: inventory-service/compose.yaml
       service: inventory-backend
+    image: ymanshur/synasishouse:inventory-latest
     depends_on:
       inventory-postgres:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
   order-postgres:
     extends:
       file: order-service/compose.yaml
       service: order-postgres
     volumes:
-      - synasishouse_order_pg_data:/var/lib/postgresql/data
+      - ./order-service/storage/pg_data:/var/lib/postgresql/data
   order-backend:
     extends:
       file: order-service/compose.yaml
       service: order-backend
+    image: ymanshur/synasishouse:order-latest
+    environment:
+      - APP_GRPC_CLIENT_INVENTORY_HOST=inventory-backend
+      - APP_RABBITMQ_HOST=rabbitmq
     depends_on:
       order-postgres:
         condition: service_healthy
       inventory-backend:
         condition: service_healthy
-
-volumes:
-  synasishouse_inventory_pg_data:
-    name: synasishouse-inventory-pg-data
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: inventory/storage/pg_data
-  synasishouse_order_pg_data:
-    name: synasishouse-order-pg-data
-    driver: local
-    driver_opts:
-      o: bind
-      type: none
-      device: order/storage/pg_data
+      rabbitmq:
+        condition: service_healthy

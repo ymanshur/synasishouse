@@ -1,2 +1,4 @@
 .vscode
-storage
+
+rabbitmq/data/*
+rabbitmq/lib/*
